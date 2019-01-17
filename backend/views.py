@@ -17,7 +17,7 @@ def dev(request, upstream=f'http://{os.environ.get("NETWORK_IP", "")}:9000'):
 			'content': content,
 			'test': 'Hello World!',
 		}
-		return render(request, 'dev_index.html', context)
+		return render(request, 'development.html', context)
 	else:
 		return http.StreamingHttpResponse(
 			streaming_content=response.iter_content(2 ** 12),
