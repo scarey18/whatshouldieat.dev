@@ -1,0 +1,65 @@
+@import 'index.scss';
+
+
+.searchBar {
+	height: 3rem;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 1rem 0;
+
+	button {
+		height: 100%;
+		width: 27%;
+		font: inherit;
+		border: none;
+		background-color: $green;
+		color: $white;
+		border-radius: 0 4px 4px 0;
+
+		&:hover {
+			cursor: pointer;
+			background-color: #3d581e;
+		}
+
+		&:active {
+			background-color: #334a19;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
+
+.autocompleteContainer {
+	height: 100%;
+	width: 70%;
+	position: relative;
+}
+
+.inputContainer {
+	display: flex;
+
+	& .suggestion {
+		height: 2.5rem;
+		padding-left: 2%;
+		border: 1px solid rgba(0, 0, 0, 0.3);
+		font: 400 13.333px inherit;
+		box-shadow: 0 2px 3px rgba(0, 0, 0, 0.06);
+	}
+
+	input {
+		height: 100%;
+		width: 100%;
+		border: 1px solid $gray;
+		padding: 0 0 0 2%;
+		background-color: $white;
+
+		&:focus {
+			outline: none;
+			border-color: $green;
+		}
+	}
+}

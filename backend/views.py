@@ -1,12 +1,12 @@
 import requests
 import os
-from django import http
+from django.http import StreamingHttpResponse
 from django.conf import settings
 from django.template import engines
 from django.shortcuts import render
 
 
-def dev(request, upstream=f'http://{os.environ.get("NETWORK_IP", "")}:9000'):
+def dev(request, upstream=f'http://{os.environ.get("HOST", "")}:9000'):
 	upstream_url = upstream + request.path
 	response = requests.get(upstream_url, stream=True)
 	content_type = response.headers.get('Content-Type')
@@ -19,7 +19,7 @@ def dev(request, upstream=f'http://{os.environ.get("NETWORK_IP", "")}:9000'):
 		}
 		return render(request, 'development.html', context)
 	else:
-		return http.StreamingHttpResponse(
+		return StreamingHttpResponse(
 			streaming_content=response.iter_content(2 ** 12),
 			content_type=content_type,
 			status=response.status_code,
