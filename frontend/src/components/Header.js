@@ -8,7 +8,8 @@ class Header extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			expanded: props.expanded,
+			shouldExpand: props.shouldExpand,
+			expanded: props.shouldExpand,
 		}
 	}
 

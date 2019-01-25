@@ -16,7 +16,7 @@
 		border: none;
 		background-color: $green;
 		color: $white;
-		border-radius: 0 4px 4px 0;
+		border-radius: 2px;
 
 		&:hover {
 			cursor: pointer;
@@ -33,33 +33,68 @@
 	}
 }
 
-.autocompleteContainer {
+.suggestionsContainer {
 	height: 100%;
 	width: 70%;
 	position: relative;
+
+	@media screen and (max-width: 650px) {
+		width: 100%;
+	}
+}
+
+.inputContainer, .suggestion {
+	height: 3rem;
+	font: 400 13px Arial;
+	box-shadow: 0 5px 7px rgba(0, 0, 0, 0.06);
+	background-color: $white;
+
+	@media screen and (max-width: 650px) {
+		height: 2rem;
+	}
 }
 
 .inputContainer {
 	display: flex;
 
-	& .suggestion {
-		height: 2.5rem;
-		padding-left: 2%;
-		border: 1px solid rgba(0, 0, 0, 0.3);
-		font: 400 13.333px inherit;
-		box-shadow: 0 2px 3px rgba(0, 0, 0, 0.06);
+	&:focus {
+		border-color: $green;
 	}
 
 	input {
 		height: 100%;
 		width: 100%;
-		border: 1px solid $gray;
-		padding: 0 0 0 2%;
-		background-color: $white;
+		padding-left: 2%;
+		border: 2px solid $white;
+		transition: all 400ms ease;
+		-webkit-transition: all 400ms ease;
 
 		&:focus {
 			outline: none;
 			border-color: $green;
 		}
+	}
+}
+
+.suggestion {
+	width: 100%;
+	border-bottom: 2px solid #e0e0e0;
+	border-top: none;
+	z-index: 80;
+	top: 100%;
+	display: flex;
+	align-items: center;
+	padding-left: 2%;
+	line-height: 1.25rem;
+
+	@media screen and (max-width: 650px) {
+		width: 90vw;
+	}
+
+	&:hover {
+		cursor: pointer;
+		background-color: $green;
+		color: $white;
+		border-color: $green;
 	}
 }

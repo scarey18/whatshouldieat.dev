@@ -26,7 +26,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className={styles.app}>
-				<Header expanded={this.state.view === 'home'}/>
+				<Header shouldExpand={this.state.view === 'home'}/>
 				{this.setContent()}
 			</div>
 		);
