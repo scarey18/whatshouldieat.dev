@@ -20,7 +20,7 @@ class SearchBar extends React.Component {
 		}
 	};
 
-	updateSuggestions(value) {
+	updateSuggestions = value => {
 		const url = `http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${value}&category=Address,Primary+Postal,City&countryCode=USA&f=json`;
 
 	  fetch(url) 
@@ -41,9 +41,9 @@ class SearchBar extends React.Component {
 				}, []);
 				this.setState({suggestions});
 			});
-	}
+	};
 
-	renderSuggestions() {
+	renderSuggestions = () => {
 		if (!this.state.inputFocused || this.state.value.length <= 3) {
 			return;
 		}
@@ -56,7 +56,7 @@ class SearchBar extends React.Component {
 				{suggestion}
 			</div>
 		));
-	}
+	};
 
 	handleSuggestionClick = event => {
 		const value = event.target.textContent;

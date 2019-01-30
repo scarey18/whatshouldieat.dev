@@ -13,7 +13,7 @@ class Header extends React.Component {
 		}
 	}
 
-	renderExpandedContent() {
+	renderExpandedContent = () => {
 		if (this.state.expanded) {
 			return (
 				<div className={`${styles.container} ${styles.expandedContent}`}>

@@ -1,7 +1,6 @@
 import requests
 import os
 from django.http import Http404, HttpResponse
-from django.views.decorators.csrf import csrf_protect
 
 
 def restaurants(request):

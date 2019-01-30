@@ -31,7 +31,7 @@ class App extends React.Component {
 	};
 
 
-	renderContent() {
+	renderContent = () => {
 		switch (this.state.view) {
 			case 'home': {
 				return <HomeContent />
