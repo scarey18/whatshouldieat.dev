@@ -13,21 +13,25 @@ class Header extends React.Component {
 		}
 	}
 
+	renderExpandedContent() {
+		if (this.state.expanded) {
+			return (
+				<div className={`${styles.container} ${styles.expandedContent}`}>
+					<div className={styles.searchContainer}>
+						<h1>Hungry?</h1>
+						<SearchBar isMobile={this.props.isMobile}/>
+					</div>
+					<img src={sadPlate} alt="Sad, empty plate :("></img>
+				</div>
+			);
+		}
+	}
+
 	render() {
 		const classList = [styles.header];
 		if (this.state.expanded) {
 			classList.push(styles.expanded);
 		}
-
-		const expandedContent = (
-			<div className={`${styles.container} ${styles.expandedContent}`}>
-				<div className={styles.searchContainer}>
-					<h1>Hungry?</h1>
-					<SearchBar />
-				</div>
-				<img src={sadPlate} alt="Sad, empty plate :("></img>
-			</div>
-		)
 
 		return (
 			<div className={classList.join(' ')}>
@@ -35,7 +39,7 @@ class Header extends React.Component {
 					<p>TODO: Logo</p>
 					<p>TODO: Links</p>
 				</div>
-				{this.state.expanded ? expandedContent : null}
+				{this.renderExpandedContent()}
 			</div>
 		);
 	}

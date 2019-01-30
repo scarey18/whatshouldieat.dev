@@ -9,24 +9,6 @@ class SearchBar extends React.Component {
 			value: props.value || '',
 			suggestions: [],
 			inputFocused: false,
-			isMobile: false,
-		}
-		this.mql = window.matchMedia('(max-width: 650px)');
-	}
-
-	componentDidMount() {
-		this.mql.addListener(this.handleResize);
-	}
-
-	componentWillUnmount() {
-		this.mql.removeListener(this.handleResize);
-	}
-
-	handleResize = event => {
-		if (event.matches && !this.state.isMobile) {
-			this.setState({isMobile: true});
-		} else if (!event.matches && this.state.isMobile) {
-			this.setState({isMobile: false});
 		}
 	}
 
@@ -39,7 +21,7 @@ class SearchBar extends React.Component {
 	};
 
 	updateSuggestions(value) {
-		const url = `http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${value}&countryCode=USA&f=json`;
+		const url = `http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${value}&category=Address,Primary+Postal,City&countryCode=USA&f=json`;
 
 	  fetch(url) 
 			.then(response => {
@@ -50,34 +32,48 @@ class SearchBar extends React.Component {
 				}
 			})
 			.then(json => {
-				const suggestions = json.suggestions.map(s => trim(s.text));
+				const suggestions = json.suggestions.reduce((acc, suggestion) => {
+					const trimmed = trim(suggestion.text);
+					if (!acc.includes(trimmed)) {
+						acc.push(trimmed);
+					}
+					return acc;
+				}, []);
 				this.setState({suggestions});
 			});
 	}
 
 	renderSuggestions() {
-		if (this.state.inputFocused && this.state.value.length >= 3) {
-			return this.state.suggestions.map(suggestion => {
-				return (
-					<div className={styles.suggestion} key={suggestion}>
-						{suggestion}
-					</div>
-				);
-			});
+		if (!this.state.inputFocused || this.state.value.length <= 3) {
+			return;
 		}
+		return this.state.suggestions.map(suggestion => (
+			<div 
+				className={styles.suggestion} 
+				key={suggestion} 
+				onClick={this.handleSuggestionClick}
+			>
+				{suggestion}
+			</div>
+		));
 	}
 
+	handleSuggestionClick = event => {
+		const value = event.target.textContent;
+		this.setState({value});
+	};
+
 	onFocus = () => this.setState({inputFocused: true});
-	onBlur = () => this.setState({inputFocused: false});
+	onBlur = () => setTimeout(() => this.setState({inputFocused: false}), 500);
 
 	render() {
 		return (
-			<form className={styles.searchBar} autoComplete="off">
+			<form className={styles.searchBar} autoComplete="off" action="/api/location">
 				<div className={styles.suggestionsContainer}>
 					<div className={styles.inputContainer}>
 						<input 
 							type="text" 
-							name="search"
+							name="location"
 							value={this.state.value} 
 							placeholder="Enter your location"
 							onChange={this.handleChange}
@@ -87,16 +83,18 @@ class SearchBar extends React.Component {
 					</div>
 					{this.renderSuggestions()}
 				</div>
-				{this.state.isMobile ? null : <button type="submit">Find Me Food!</button>}
+				{this.props.isMobile ? null : <button type="submit">Find Me Food!</button>}
 			</form>
 		);
 	}
 }
 
 
+const REGEX = /USA( \(.+\))?/;
+
 function trim(text) {
 	const splitString = text.split(', ');
-	const filtered = splitString.filter(str => str !== 'USA');
+	const filtered = splitString.filter(str => !REGEX.test(str));
 	return filtered.join(', ');
 }
 
