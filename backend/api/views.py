@@ -4,8 +4,7 @@ from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_protect
 
 
-@csrf_protect
-def location(request):
+def restaurants(request):
 	location = request.GET['location']
 	params = {
 		'location': location,
