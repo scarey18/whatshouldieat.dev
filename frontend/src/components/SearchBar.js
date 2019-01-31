@@ -67,13 +67,18 @@ class SearchBar extends React.Component {
 	onFocus = () => this.props.updateState({searchBarInputFocused: true});
 	onBlur = () => {
 		this.timeout = setTimeout(() => this.props.updateState({
-			searchBarInputFocused: false
-		}), 200)
+			searchBarInputFocused: false,
+		}), 200);
 	};
 
 	render() {
+		const classList = [styles.searchBar];
+		if (this.props.expanded) {
+			classList.push(styles.expanded);
+		}
+
 		return (
-			<form className={styles.searchBar} autoComplete="off" action="/api/restaurants">
+			<form className={classList.join(' ')} autoComplete="off" action="/api/restaurants">
 				<div className={styles.suggestionsContainer}>
 					<div className={styles.inputContainer}>
 						<input 

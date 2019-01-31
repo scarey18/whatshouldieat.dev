@@ -7,14 +7,34 @@ import sadPlate from 'assets/sad-plate.png';
 class Header extends React.Component {
 	constructor(props) {
 		super(props);
+		const shouldExpand = window.location.pathname === '/';
 		this.state = {
-			shouldExpand: window.location.pathname === '/',
-			expanded: window.location.pathname === '/',
+			shouldExpand,
+			expanded: shouldExpand,
+			// SearchBar states kept here to keep state when Header expands/contracts.
 			searchBarValue: '',
 			searchBarSuggestions: [],
 			searchBarInputFocused: false,
 		}
 	}
+
+	componentDidMount() {
+		if (this.state.shouldExpand) {
+			window.addEventListener('scroll', this.toggleExpand);
+		}
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('scroll', this.toggleExpand);
+	}
+
+	toggleExpand = () => {
+		if (window.scrollY <= 150 && !this.state.expanded) {
+			this.setState({expanded: true});
+		} else if (window.scrollY > 150 && this.state.expanded) {
+			this.setState({expanded: false});
+		}
+	};
 
 	updateState = state => this.setState(state);
 
@@ -24,7 +44,8 @@ class Header extends React.Component {
 				<div className={`${styles.container} ${styles.expandedContent}`}>
 					<div className={styles.searchContainer}>
 						<h1>Hungry?</h1>
-						<SearchBar 
+						<SearchBar
+							expanded={this.state.expanded}
 							isMobile={this.props.isMobile}
 							value={this.state.searchBarValue}
 							suggestions={this.state.searchBarSuggestions}
@@ -50,6 +71,7 @@ class Header extends React.Component {
 					<p>TODO: Logo</p>
 					{!this.state.expanded &&
 						<SearchBar
+							expanded={this.state.expanded}
 							isMobile={this.props.isMobile}
 							value={this.state.searchBarValue}
 							suggestions={this.state.searchBarSuggestions}
@@ -58,9 +80,6 @@ class Header extends React.Component {
 						/>
 					}
 					<p>TODO: Links</p>
-					<button onClick={() => this.setState({expanded: !this.state.expanded})}>
-						Toggle Expand
-					</button>
 				</div>
 				{this.renderExpandedContent()}
 			</div>
