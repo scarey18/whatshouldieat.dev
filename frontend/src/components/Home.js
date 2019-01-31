@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from 'styles/HomeContent.module.scss';
+import styles from 'styles/Home.module.scss';
 
 
 class Home extends React.Component {
 	render() {
 		return (
-			<div></div>
+			<div>Nah</div>
 		)
 	}
 }

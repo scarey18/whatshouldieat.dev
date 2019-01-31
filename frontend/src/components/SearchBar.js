@@ -3,18 +3,19 @@ import styles from 'styles/SearchBar.module.scss';
 
 
 class SearchBar extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			value: props.value || '',
-			suggestions: [],
-			inputFocused: false,
+	componentDidMount() {
+		if (this.props.inputFocused) {
+			this.input.focus();
 		}
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.timeout);
 	}
 
 	handleChange = event => {
 		const value = event.target.value;
-		this.setState({value});
+		this.props.updateState({searchBarValue: value});
 		if (value.length >= 3) {
 			this.updateSuggestions(value);
 		}
@@ -39,15 +40,15 @@ class SearchBar extends React.Component {
 					}
 					return acc;
 				}, []);
-				this.setState({suggestions});
+				this.props.updateState({searchBarSuggestions: suggestions});
 			});
 	};
 
 	renderSuggestions = () => {
-		if (!this.state.inputFocused || this.state.value.length <= 3) {
+		if (!this.props.inputFocused || this.props.value.length <= 3) {
 			return;
 		}
-		return this.state.suggestions.map(suggestion => (
+		return this.props.suggestions.map(suggestion => (
 			<div 
 				className={styles.suggestion} 
 				key={suggestion} 
@@ -60,11 +61,15 @@ class SearchBar extends React.Component {
 
 	handleSuggestionClick = event => {
 		const value = event.target.textContent;
-		this.setState({value});
+		this.props.updateState({searchBarValue: value});
 	};
 
-	onFocus = () => this.setState({inputFocused: true});
-	onBlur = () => setTimeout(() => this.setState({inputFocused: false}), 200);
+	onFocus = () => this.props.updateState({searchBarInputFocused: true});
+	onBlur = () => {
+		this.timeout = setTimeout(() => this.props.updateState({
+			searchBarInputFocused: false
+		}), 200)
+	};
 
 	render() {
 		return (
@@ -74,16 +79,17 @@ class SearchBar extends React.Component {
 						<input 
 							type="text" 
 							name="location"
-							value={this.state.value} 
+							value={this.props.value} 
 							placeholder="Enter your location"
 							onChange={this.handleChange}
 							onFocus={this.onFocus}
 							onBlur={this.onBlur}
+							ref={input => this.input = input}
 						/>
 					</div>
 					{this.renderSuggestions()}
 				</div>
-				{this.props.isMobile ? null : <button type="submit">Find Me Food!</button>}
+				{!this.props.isMobile && <button type="submit">Find Me Food!</button>}
 			</form>
 		);
 	}
