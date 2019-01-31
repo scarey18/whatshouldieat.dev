@@ -8,8 +8,8 @@ class Header extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			shouldExpand: props.shouldExpand,
-			expanded: props.shouldExpand,
+			shouldExpand: window.location.pathname === '/',
+			expanded: window.location.pathname === '/',
 		}
 	}
 

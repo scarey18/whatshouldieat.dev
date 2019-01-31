@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from 'styles/App.module.scss';
 import Header from './Header';
-import HomeContent from './HomeContent';
+import Main from './Main';
 
 
 class App extends React.Component {
@@ -9,7 +9,6 @@ class App extends React.Component {
 		super(props);
 		this.mql = window.matchMedia('(max-width: 650px)');
 		this.state = {
-			view: 'home',
 			isMobile: this.mql.matches,
 		}
 	}
@@ -30,26 +29,11 @@ class App extends React.Component {
 		}
 	};
 
-
-	renderContent = () => {
-		switch (this.state.view) {
-			case 'home': {
-				return <HomeContent />
-			}
-			default: {
-				break;
-			}
-		}
-	}
-
 	render() {
 		return (
 			<div className={styles.app}>
-				<Header 
-					shouldExpand={this.state.view === 'home'}
-					isMobile={this.state.isMobile}
-				/>
-				{this.renderContent()}
+				<Header isMobile={this.state.isMobile} />
+				<Main />
 			</div>
 		);
 	}
