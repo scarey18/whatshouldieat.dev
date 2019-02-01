@@ -41,7 +41,7 @@ class Header extends React.Component {
 	renderExpandedContent = () => {
 		if (this.state.expanded) {
 			return (
-				<div className={`${styles.container} ${styles.expandedContent}`}>
+				<div className={styles.expandedContent}>
 					<div className={styles.searchContainer}>
 						<h1>Hungry?</h1>
 						<SearchBar
@@ -67,7 +67,7 @@ class Header extends React.Component {
 
 		return (
 			<div className={classList.join(' ')}>
-				<div className={`${styles.container} ${styles.permanentContent}`}>
+				<div className={styles.permanentContent}>
 					<p>TODO: Logo</p>
 					{!this.state.expanded &&
 						<SearchBar

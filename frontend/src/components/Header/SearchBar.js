@@ -49,27 +49,34 @@ class SearchBar extends React.Component {
 			return;
 		}
 		return this.props.suggestions.map(suggestion => (
-			<div 
+			<a 
+				href={this.buildLink(suggestion)}
 				className={styles.suggestion} 
 				key={suggestion} 
-				onClick={this.handleSuggestionClick}
 			>
 				{suggestion}
-			</div>
+			</a>
 		));
 	};
 
-	handleSuggestionClick = event => {
-		const value = event.target.textContent;
-		this.props.updateState({searchBarValue: value});
-	};
+	buildLink = location => {
+		const urled = location.split(' ').join('+');
+		return '/suggest/'+urled;
+	}
 
 	onFocus = () => this.props.updateState({searchBarInputFocused: true});
+
 	onBlur = () => {
 		this.timeout = setTimeout(() => this.props.updateState({
 			searchBarInputFocused: false,
 		}), 200);
 	};
+
+	btnClick = event => {
+		event.preventDefault();
+		clearTimeout(this.timeout);
+		this.input.focus();
+	}
 
 	render() {
 		const classList = [styles.searchBar];
@@ -78,7 +85,10 @@ class SearchBar extends React.Component {
 		}
 
 		return (
-			<form className={classList.join(' ')} autoComplete="off" action="/api/restaurants">
+			<form 
+				className={classList.join(' ')} 
+				autoComplete="off" 
+			>
 				<div className={styles.suggestionsContainer}>
 					<div className={styles.inputContainer}>
 						<input 
@@ -94,7 +104,8 @@ class SearchBar extends React.Component {
 					</div>
 					{this.renderSuggestions()}
 				</div>
-				{!this.props.isMobile && <button type="submit">Find Me Food!</button>}
+				{!this.props.isMobile && 
+					<button onClick={this.btnClick}>Find Me Food!</button>}
 			</form>
 		);
 	}

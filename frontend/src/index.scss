@@ -1,18 +1,7 @@
-$white: #fff;
-$red: #d13525;
-$purple: #4c3f54;
-$yellow: #f2c057;
-$lighter-yellow: #efce8a;
-$green: #486824;
-$gray: #bdbdbd;
-
-$primary-font: 'Raleway', sans-serif;
-
-$header-height: 5rem;
+@import 'styles/variables';
 
 
 html, body, #root {
-	height: 100vh;
 	width: 100vw;
 }
 
@@ -23,4 +12,10 @@ body {
 		font-size: 12px;
 	}
 	background-color: $lighter-yellow;
+	overflow-x: hidden;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
 }

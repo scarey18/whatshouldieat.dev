@@ -1,8 +1,8 @@
-@import 'index.scss';
+@import 'variables';
 
 
 .main {
-	top: $header-height;
+	@extend %flex-center;
+	margin-top: $header-height;
 	width: 100vw;
-	height: 200vh;
 }

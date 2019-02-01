@@ -1,0 +1,29 @@
+$white: #fff;
+$red: #d13525;
+$purple: #4c3f54;
+$yellow: #f2c057;
+$lighter-yellow: #efce8a;
+$green: #486824;
+$gray: #bdbdbd;
+
+$primary-font: 'Raleway', sans-serif;
+
+$header-height: 5rem;
+
+
+%container {
+	width: 100%;
+	max-width: 1200px;
+	padding: 0 5vw;
+}
+
+%flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+%flex-center-column {
+	@extend %flex-center;
+	flex-direction: column;
+}

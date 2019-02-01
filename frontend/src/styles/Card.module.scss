@@ -1,0 +1,14 @@
+@import 'variables';
+
+
+$shadow: #676767;
+
+.card {
+	height: 100%;
+	width: 100%;
+	background-color: $white;
+	border-radius: 20px;
+	box-shadow: 0 0 30px $shadow;
+	z-index: 90;
+	position: absolute;
+}
