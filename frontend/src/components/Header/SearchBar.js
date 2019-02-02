@@ -13,6 +13,12 @@ class SearchBar extends React.Component {
 		clearTimeout(this.timeout);
 	}
 
+	componentDidUpdate(prevProps) {
+		if (this.props.value !== prevProps.value &&
+					this.props.suggestions === prevProps.suggestions)
+			this.updateSuggestions(this.props.value);
+	}
+
 	handleChange = event => {
 		const value = event.target.value;
 		this.props.updateState({searchBarValue: value});
@@ -49,20 +55,15 @@ class SearchBar extends React.Component {
 			return;
 		}
 		return this.props.suggestions.map(suggestion => (
-			<a 
-				href={this.buildLink(suggestion)}
+			<div 
 				className={styles.suggestion} 
-				key={suggestion} 
+				key={suggestion}
+				onClick={() => this.props.setLocation(suggestion)} 
 			>
 				{suggestion}
-			</a>
+			</div>
 		));
 	};
-
-	buildLink = location => {
-		const urled = location.split(' ').join('+');
-		return '/suggest/'+urled;
-	}
 
 	onFocus = () => this.props.updateState({searchBarInputFocused: true});
 

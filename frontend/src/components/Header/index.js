@@ -7,26 +7,45 @@ import sadPlate from 'assets/sad-plate.png';
 class Header extends React.Component {
 	constructor(props) {
 		super(props);
-		const shouldExpand = window.location.pathname === '/';
 		this.state = {
-			shouldExpand,
-			expanded: shouldExpand,
+			expanded: props.location === null,
 			// SearchBar states kept here to keep state when Header expands/contracts.
-			searchBarValue: '',
+			searchBarValue: props.location || '',
 			searchBarSuggestions: [],
 			searchBarInputFocused: false,
 		}
 	}
 
 	componentDidMount() {
-		if (this.state.shouldExpand) {
+		if (this.props.location === null) {
 			window.addEventListener('scroll', this.toggleExpand);
 		}
+		this.initialState = this.state;
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('scroll', this.toggleExpand);
 	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.location !== prevProps.location) {
+			this.handleLocationChange();
+		}
+	}
+
+	handleLocationChange = () => {
+		if (this.props.location === null) {
+			window.addEventListener('scroll', this.toggleExpand);
+			this.setState(this.initialState)
+		} else {
+			window.removeEventListener('scroll', this.toggleExpand);
+			this.setState({
+				searchBarValue: this.props.location, 
+				expanded: false,
+				searchBarInputFocused: false,
+			});
+		}
+	};
 
 	toggleExpand = () => {
 		if (window.scrollY <= 150 && !this.state.expanded) {
@@ -51,6 +70,7 @@ class Header extends React.Component {
 							suggestions={this.state.searchBarSuggestions}
 							inputFocused={this.state.searchBarInputFocused}
 							updateState={state => this.updateState(state)}
+							setLocation={value => this.props.setLocation(value)}
 						/>
 					</div>
 					<img src={sadPlate} alt="Sad, empty plate :("></img>
@@ -77,6 +97,7 @@ class Header extends React.Component {
 							suggestions={this.state.searchBarSuggestions}
 							inputFocused={this.state.searchBarInputFocused}
 							updateState={state => this.updateState(state)}
+							setLocation={value => this.props.setLocation(value)}
 						/>
 					}
 					<p>TODO: Links</p>

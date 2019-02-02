@@ -10,15 +10,25 @@ class App extends React.Component {
 		this.mql = window.matchMedia('(max-width: 650px)');
 		this.state = {
 			isMobile: this.mql.matches,
+			userLocation: null,
 		}
 	}
 
 	componentDidMount() {
 		this.mql.addListener(this.handleResize);
+		window.addEventListener('popstate', this.handlePopstate)
 	}
 
 	componentWillUnmount() {
 		this.mql.removeListener(this.handleResize);
+	}
+
+	handlePopstate = event => {
+		if (event.state === null) {
+			this.setState({userLocation: null});
+		} else {
+			this.setState({userLocation: event.state.userLocation});
+		}
 	}
 
 	handleResize = mql => {
@@ -29,11 +39,20 @@ class App extends React.Component {
 		}
 	};
 
+	setLocation = value => {
+		window.history.pushState({userLocation: value}, '', '/suggest');
+		this.setState({userLocation: value});
+	}
+
 	render() {
 		return (
 			<div className={styles.app}>
-				<Header isMobile={this.state.isMobile} />
-				<Main />
+				<Header 
+					isMobile={this.state.isMobile} 
+					location={this.state.userLocation}
+					setLocation={value => this.setLocation(value)}
+				/>
+				<Main location={this.state.userLocation} />
 			</div>
 		);
 	}
