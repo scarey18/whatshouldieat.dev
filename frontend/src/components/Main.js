@@ -9,7 +9,9 @@ function Main(props) {
 		<main className={styles.main}>
 			{props.location === null ?
 				<Home /> :
-				<SuggestRestaurants />
+				<SuggestRestaurants 
+					location={props.location}
+				/>
 			}
 		</main>
 	);

@@ -38,7 +38,7 @@ class Header extends React.Component {
 	handleLocationChange = () => {
 		if (this.props.location === null) {
 			window.addEventListener('scroll', this.toggleExpand);
-			this.setState(this.initialState)
+			this.setState(this.initialState);
 		} else {
 			window.removeEventListener('scroll', this.toggleExpand);
 			this.setState({
@@ -54,30 +54,6 @@ class Header extends React.Component {
 			this.setState({expanded: true});
 		} else if (window.scrollY > 150 && this.state.expanded) {
 			this.setState({expanded: false});
-		}
-	};
-
-	updateState = state => this.setState(state);
-
-	renderExpandedContent = () => {
-		if (this.state.expanded) {
-			return (
-				<div className={styles.expandedContent}>
-					<div className={styles.searchContainer}>
-						<h1>Hungry?</h1>
-						<SearchBar
-							expanded={this.state.expanded}
-							isMobile={this.props.isMobile}
-							value={this.state.searchBarValue}
-							suggestions={this.state.searchBarSuggestions}
-							inputFocused={this.state.searchBarInputFocused}
-							updateState={state => this.updateState(state)}
-							setLocation={value => this.props.setLocation(value)}
-						/>
-					</div>
-					<img src={sadPlate} alt="Sad, empty plate :("></img>
-				</div>
-			);
 		}
 	};
 
@@ -98,13 +74,29 @@ class Header extends React.Component {
 							value={this.state.searchBarValue}
 							suggestions={this.state.searchBarSuggestions}
 							inputFocused={this.state.searchBarInputFocused}
-							updateState={state => this.updateState(state)}
+							updateState={state => this.setState(state)}
 							setLocation={value => this.props.setLocation(value)}
 						/>
 					}
 					<p>TODO: Links</p>
 				</div>
-				{this.renderExpandedContent()}
+				{this.state.expanded &&
+					(<div className={styles.expandedContent}>
+						<div className={styles.searchContainer}>
+							<h1>Hungry?</h1>
+							<SearchBar
+								expanded={this.state.expanded}
+								isMobile={this.props.isMobile}
+								value={this.state.searchBarValue}
+								suggestions={this.state.searchBarSuggestions}
+								inputFocused={this.state.searchBarInputFocused}
+								updateState={state => this.setState(state)}
+								setLocation={value => this.props.setLocation(value)}
+							/>
+						</div>
+						<img src={sadPlate} alt="Sad, empty plate :("></img>
+					</div>)
+				}
 			</div>
 		);
 	}

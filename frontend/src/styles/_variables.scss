@@ -27,3 +27,18 @@ $header-height: 5rem;
 	@extend %flex-center;
 	flex-direction: column;
 }
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@mixin fadeInAnimation($delay) {
+	animation-name: fadeIn;
+	animation-duration: 2s;
+	animation-delay: $delay;
+}

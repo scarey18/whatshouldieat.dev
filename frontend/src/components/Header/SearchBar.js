@@ -3,15 +3,26 @@ import styles from 'styles/SearchBar.module.scss';
 
 
 class SearchBar extends React.Component {
+
+
 	componentDidMount() {
 		if (this.props.inputFocused) {
 			this.input.focus();
 		}
+		this.input.addEventListener('keydown', this.handleEnter);
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.timeout);
+		this.input.removeEventListener('keydown', this.handleEnter);
 	}
+
+	handleEnter = event => {
+		if (event.code === 'Enter' && this.props.suggestions.length > 0) {
+			const value = this.props.suggestions[0];
+			this.setLocation(value);
+		}
+	};
 
 	handleChange = event => {
 		const value = event.target.value;
@@ -44,26 +55,6 @@ class SearchBar extends React.Component {
 			});
 	};
 
-	renderSuggestions = () => {
-		if (!this.props.inputFocused || this.props.value.length <= 3) {
-			return;
-		}
-		return this.props.suggestions.map(suggestion => (
-			<div 
-				className={styles.suggestion} 
-				key={suggestion}
-				onClick={() => this.setLocation(suggestion)} 
-			>
-				{suggestion}
-			</div>
-		));
-	};
-
-	setLocation = value => {
-		this.updateSuggestions(value);
-		this.props.setLocation(value);
-	};
-
 	onFocus = () => {
 		this.props.updateState({searchBarInputFocused: true});
 		if (this.props.value.length >= 3 && 
@@ -82,7 +73,23 @@ class SearchBar extends React.Component {
 		event.preventDefault();
 		clearTimeout(this.timeout);
 		this.input.focus();
-	}
+	};
+
+	renderSuggestions = () => {
+		if (!this.props.inputFocused || this.props.value.length <= 3) {
+			return;
+		}
+		return this.props.suggestions.map(suggestion => (
+			<div 
+				className={styles.suggestion} 
+				key={suggestion}
+				onClick={() => this.props.setLocation(suggestion)}
+			>
+				{suggestion}
+			</div>
+		));
+	};
+
 
 	render() {
 		const classList = [styles.searchBar];
