@@ -32,27 +32,23 @@ class SearchBar extends React.Component {
 		}
 	};
 
-	updateSuggestions = value => {
+	updateSuggestions = async value => {
 		const url = `http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${value}&category=Address,Primary+Postal,City&countryCode=USA&f=json`;
-
-	  fetch(url) 
-			.then(response => {
-				if (response.ok) {
-					return response.json();
-				} else {
-					throw new Error("Server response not ok");
-				}
-			})
-			.then(json => {
-				const suggestions = json.suggestions.reduce((acc, suggestion) => {
-					const trimmed = trim(suggestion.text);
-					if (!acc.includes(trimmed)) {
-						acc.push(trimmed);
-					}
-					return acc;
-				}, []);
-				this.props.updateState({searchBarSuggestions: suggestions});
-			});
+	  const resp = await fetch(url);
+	  let data;
+	  if (resp.ok) {
+	  	data = await resp.json();
+	  } else {
+	  	throw new Error("Server response not ok");
+	  }
+	  const suggestions =  data.suggestions.reduce((acc, suggestion) => {
+			const trimmed = trim(suggestion.text);
+			if (!acc.includes(trimmed)) {
+				acc.push(trimmed);
+			}
+			return acc;
+		}, []);
+		this.props.updateState({searchBarSuggestions: suggestions});
 	};
 
 	onFocus = () => {

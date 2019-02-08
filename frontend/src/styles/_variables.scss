@@ -37,8 +37,7 @@ $header-height: 5rem;
 	}
 }
 
-@mixin fadeInAnimation($delay) {
+@mixin fadeInAnimation($duration) {
 	animation-name: fadeIn;
-	animation-duration: 2s;
-	animation-delay: $delay;
+	animation-duration: $duration;
 }

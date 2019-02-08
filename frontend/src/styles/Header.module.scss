@@ -32,7 +32,7 @@
 
 	img {
 		width: 40%;
-		@include fadeInAnimation(0);
+		@include fadeInAnimation(2s);
 	}
 }
 
@@ -43,7 +43,7 @@
 	justify-content: space-between;
 
 	h1 {
-		@include fadeInAnimation(0);
+		@include fadeInAnimation(2s);
 		font-size: 5rem;
 		@media screen and (max-width: 650px) {
 			font-size: 36px;
