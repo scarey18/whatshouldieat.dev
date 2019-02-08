@@ -13,12 +13,6 @@ class SearchBar extends React.Component {
 		clearTimeout(this.timeout);
 	}
 
-	componentDidUpdate(prevProps) {
-		if (this.props.value !== prevProps.value &&
-					this.props.suggestions === prevProps.suggestions)
-			this.updateSuggestions(this.props.value);
-	}
-
 	handleChange = event => {
 		const value = event.target.value;
 		this.props.updateState({searchBarValue: value});
@@ -58,14 +52,25 @@ class SearchBar extends React.Component {
 			<div 
 				className={styles.suggestion} 
 				key={suggestion}
-				onClick={() => this.props.setLocation(suggestion)} 
+				onClick={() => this.setLocation(suggestion)} 
 			>
 				{suggestion}
 			</div>
 		));
 	};
 
-	onFocus = () => this.props.updateState({searchBarInputFocused: true});
+	setLocation = value => {
+		this.updateSuggestions(value);
+		this.props.setLocation(value);
+	};
+
+	onFocus = () => {
+		this.props.updateState({searchBarInputFocused: true});
+		if (this.props.value.length >= 3 && 
+				this.props.suggestions.length === 0) {
+			this.updateSuggestions(this.props.value);
+		}
+	};
 
 	onBlur = () => {
 		this.timeout = setTimeout(() => this.props.updateState({

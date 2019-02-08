@@ -10,7 +10,7 @@ class CardList extends React.Component {
 		return restaurants.map(r => {
 			if (i < 7) {
 				i++;
-				return <div className={styles.stackedCard}></div>
+				return <div className={styles.stackedCard} key={i}></div>
 			}
 		});
 	}

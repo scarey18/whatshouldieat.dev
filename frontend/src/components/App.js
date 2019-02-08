@@ -16,20 +16,30 @@ class App extends React.Component {
 
 	componentDidMount() {
 		this.mql.addListener(this.handleResize);
-		window.addEventListener('popstate', this.handlePopstate)
+		window.addEventListener('popstate', this.handlePopstate);
+		const userLocation = localStorage.getItem('userLocation');
+		if (userLocation !== null) {
+			window.history.replaceState({userLocation: userLocation}, '', '/suggest');
+			this.setState({userLocation});
+		} else {
+			window.history.replaceState({userLocation: null}, '', '/');
+		}
 	}
 
 	componentWillUnmount() {
 		this.mql.removeListener(this.handleResize);
+		window.removeEventListener('popstate', this.handlePopstate);
 	}
 
 	handlePopstate = event => {
-		if (event.state === null) {
-			this.setState({userLocation: null});
+		const value = event.state === null ? null : event.state.userLocation;
+		this.setState({userLocation: value});
+		if (value === null) {
+			localStorage.removeItem('userLocation');
 		} else {
-			this.setState({userLocation: event.state.userLocation});
+			localStorage.setItem('userLocation', value);
 		}
-	}
+	};
 
 	handleResize = mql => {
 		if (mql.matches && !this.state.isMobile) {
@@ -42,7 +52,8 @@ class App extends React.Component {
 	setLocation = value => {
 		window.history.pushState({userLocation: value}, '', '/suggest');
 		this.setState({userLocation: value});
-	}
+		localStorage.setItem('userLocation', value);
+	};
 
 	render() {
 		return (
