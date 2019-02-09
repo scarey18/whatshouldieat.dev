@@ -47,6 +47,15 @@ class App extends React.Component {
 		} else if (!mql.matches && this.state.isMobile) {
 			this.setState({isMobile: false});
 		}
+	};review
+
+	goHome = () => {
+		if (this.state.userLocation === null) {
+			return;
+		}
+		window.history.pushState({userLocation: null}, '', '/');
+		localStorage.removeItem('userLocation');
+		this.setState({userLocation: null});
 	};
 
 	setLocation = value => {
@@ -62,8 +71,12 @@ class App extends React.Component {
 					isMobile={this.state.isMobile} 
 					location={this.state.userLocation}
 					setLocation={value => this.setLocation(value)}
+					goHome={this.goHome}
 				/>
-				<Main location={this.state.userLocation} />
+				<Main 
+					location={this.state.userLocation} 
+					isMobile={this.state.isMobile}
+				/>
 			</div>
 		);
 	}

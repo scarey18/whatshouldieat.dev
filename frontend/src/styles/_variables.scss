@@ -28,6 +28,7 @@ $header-height: 5rem;
 	flex-direction: column;
 }
 
+
 @keyframes fadeIn {
 	from {
 		opacity: 0;
@@ -39,5 +40,20 @@ $header-height: 5rem;
 
 @mixin fadeInAnimation($duration) {
 	animation-name: fadeIn;
+	animation-duration: $duration;
+}
+
+
+@keyframes widen {
+	from {
+		width: 0;
+	}
+	to {
+		width: 100%;
+	}
+}
+
+@mixin widenAnimation($duration) {
+	animation-name: widen;
 	animation-duration: $duration;
 }

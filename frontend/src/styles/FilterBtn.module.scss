@@ -1,0 +1,23 @@
+@import 'variables';
+
+
+.filterBtn {
+	background-color: $purple;
+	color: $white;
+	height: 2rem;
+	@extend %flex-center;
+	margin-right: 7px;
+	padding: 10px;
+	cursor: pointer;
+	border-radius: 2px;
+	position: relative;
+}
+
+.border {
+	position: absolute;
+	bottom: 0;
+	height: 3px;
+	width: 100%;
+	background-color: $yellow;
+	@include widenAnimation(0.5s);
+}

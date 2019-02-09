@@ -11,6 +11,7 @@ function Main(props) {
 				<Home /> :
 				<SuggestRestaurants 
 					location={props.location}
+					isMobile={props.isMobile}
 				/>
 			}
 		</main>

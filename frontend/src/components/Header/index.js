@@ -66,7 +66,7 @@ class Header extends React.Component {
 		return (
 			<div className={classList.join(' ')}>
 				<div className={styles.permanentContent}>
-					<p>TODO: Logo</p>
+					<p onClick={this.props.goHome}>TODO: Logo</p>
 					{!this.state.expanded &&
 						<SearchBar
 							expanded={this.state.expanded}

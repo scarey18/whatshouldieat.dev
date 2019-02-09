@@ -11,6 +11,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     'api',
 ]
 
@@ -68,4 +69,8 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
+STATIC_URL = '/assets/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/src/assets/'),
+]

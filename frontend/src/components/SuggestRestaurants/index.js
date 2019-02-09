@@ -1,5 +1,5 @@
 import React from 'react';
-import CardList from './CardList';
+import Card from './Card';
 import styles from 'styles/SuggestRestaurants.module.scss';
 import data from './test.json';
 
@@ -45,10 +45,25 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	render() {
+		let i = 0;
+		const stackedCards = this.state.restaurants.map(r => {
+			if (i < 9) {
+				i++;
+				return <div className={styles.stackedCard} key={r.id}></div>
+			}
+		});
+
 		return (
 			<div className={styles.suggestRestaurants}>
 				{!this.state.loading &&
-					<CardList />}
+					<div className={styles.cardStack}>
+						<Card 
+							restaurant={this.state.restaurants[this.state.index]}
+							isMobile={this.props.isMobile}
+						/>
+						{stackedCards}
+					</div>
+				}
 			</div>
 		);
 	}
