@@ -1,10 +1,11 @@
 import React from 'react';
 import styles from 'styles/Card.module.scss';
 import FilterBtn from './FilterBtn';
+import ActionBtn from './ActionBtn';
+import FlexibleImg from 'components/common/FlexibleImg';
 
 
 class Card extends React.Component {
-
 	getRatingImgPath = () => {
 		const prefix = this.props.isMobile ? 'small' : 'regular';
 		const rating = this.props.restaurant.rating;
@@ -36,10 +37,10 @@ class Card extends React.Component {
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<img
+								<FlexibleImg
 									src={this.props.restaurant.image_url}
 									alt={this.props.restaurant.name}
-								></img>
+								/>
 							</a>
 						</div>
 					}
@@ -71,8 +72,10 @@ class Card extends React.Component {
 						<div className={styles.filterBtns}>{filterBtns}</div>
 					</div>
 				</div>
-				<div className={styles.buttons}>
-
+				<div className={styles.actionBtns}>
+					<ActionBtn id={0} />
+					<ActionBtn id={1} />
+					<ActionBtn id={2} />
 				</div>
 			</div>
 		);

@@ -12,16 +12,10 @@
 	button {
 		height: 100%;
 		width: 27%;
-		font: inherit;
-		border: none;
-		background-color: $green;
+		@include colorize($green);
 		color: $white;
 		border-radius: 2px;
-
-		&:hover {
-			cursor: pointer;
-			background-color: #3d581e;
-		}
+		cursor: pointer;
 
 		&:active {
 			background-color: #334a19;

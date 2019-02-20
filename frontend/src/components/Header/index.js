@@ -21,12 +21,10 @@ class Header extends React.Component {
 			window.addEventListener('scroll', this.toggleExpand);
 		}
 		this.initialState = this.state;
-		window.addEventListener('popstate', this.handlePopstate);
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('scroll', this.toggleExpand);
-		window.removeEventListener('popstate', this.handlePopstate);
 	}
 
 	componentDidUpdate(prevProps) {

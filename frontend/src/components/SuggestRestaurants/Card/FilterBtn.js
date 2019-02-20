@@ -10,12 +10,14 @@ class FilterBtn extends React.Component {
 			hover: false,
 			showFilterText: false,
 		}
+
 		this.firstFilterOption = this.props.category.title ? 
 			"I don't want " + this.props.category.title :
 			"I'm looking for something cheaper";
+
 		this.secondFilterOption = this.props.category.title ?
 			"Only show me " + this.props.category.title : 
-			"I'm looking for something around this price";
+			"Only show me restaurants around this price";
 	}
 
 	componentDidMount() {

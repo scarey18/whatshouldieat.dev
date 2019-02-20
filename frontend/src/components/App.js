@@ -47,7 +47,7 @@ class App extends React.Component {
 		} else if (!mql.matches && this.state.isMobile) {
 			this.setState({isMobile: false});
 		}
-	};review
+	};
 
 	goHome = () => {
 		if (this.state.userLocation === null) {

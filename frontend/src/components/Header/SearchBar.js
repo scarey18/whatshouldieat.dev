@@ -3,8 +3,6 @@ import styles from 'styles/SearchBar.module.scss';
 
 
 class SearchBar extends React.Component {
-
-
 	componentDidMount() {
 		if (this.props.inputFocused) {
 			this.input.focus();
@@ -20,7 +18,7 @@ class SearchBar extends React.Component {
 	handleEnter = event => {
 		if (event.code === 'Enter' && this.props.suggestions.length > 0) {
 			const value = this.props.suggestions[0];
-			this.setLocation(value);
+			this.props.setLocation(value);
 		}
 	};
 
