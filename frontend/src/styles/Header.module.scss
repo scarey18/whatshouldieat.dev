@@ -11,7 +11,7 @@
 	height: $header-height;
 	background-color: $yellow;
 	box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.15);
-	transition: all 0.6s cubic-bezier(.2, .8, .4, 1);
+	transition: height 0.6s cubic-bezier(.2, .8, .4, 1);
 }
 
 .expanded {

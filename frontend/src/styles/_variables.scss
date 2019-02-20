@@ -5,6 +5,9 @@ $yellow: #f2c057;
 $lighter-yellow: #efce8a;
 $green: #486824;
 $gray: #bdbdbd;
+$black: #2b2b2b;
+
+$shadow: #676767;
 
 $primary-font: 'Raleway', sans-serif;
 
@@ -40,20 +43,5 @@ $header-height: 5rem;
 
 @mixin fadeInAnimation($duration) {
 	animation-name: fadeIn;
-	animation-duration: $duration;
-}
-
-
-@keyframes widen {
-	from {
-		width: 0;
-	}
-	to {
-		width: 100%;
-	}
-}
-
-@mixin widenAnimation($duration) {
-	animation-name: widen;
 	animation-duration: $duration;
 }

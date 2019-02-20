@@ -11,13 +11,48 @@
 	cursor: pointer;
 	border-radius: 2px;
 	position: relative;
+	transition: all 0.3s ease-in-out;
+}
+
+.focused {
+	background-color: $yellow;
+	color: $purple;
+	box-shadow: 0 2px 12px $shadow;
 }
 
 .border {
 	position: absolute;
 	bottom: 0;
 	height: 3px;
-	width: 100%;
 	background-color: $yellow;
-	@include widenAnimation(0.5s);
+	transition: width 0.2s ease-in-out;
+}
+
+.expanded {
+	position: absolute;
+	top: 100%;
+	background-color: $yellow;
+	border-radius: 15px;
+	transition: height 0.2s ease-in-out;
+	z-index: 99;
+	box-shadow: 0 4px 12px $shadow;
+}
+
+.filterOption {
+	@extend %flex-center;
+	height: 50%;
+	width: 100%;
+	color: $purple;
+	border-radius: 0 0 15px 15px;
+	white-space: nowrap;
+	padding: 0 15px;
+
+	&:hover {
+		background-color: darken($yellow, 10%)
+	}
+}
+
+.firstOption {
+	border-bottom: 2px solid $purple;
+	border-radius: 15px 15px 0 0;
 }

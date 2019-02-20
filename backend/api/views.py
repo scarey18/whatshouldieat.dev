@@ -1,6 +1,6 @@
 import requests
 import os
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 
 
 def restaurants(request):

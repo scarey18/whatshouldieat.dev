@@ -20,13 +20,11 @@ class Card extends React.Component {
 		}
 
 		const categories = [this.props.restaurant.price].concat(this.props.restaurant.categories);
-		const filterBtns = categories.map(category => {
-			return (
-				<FilterBtn
-					category={category}
-				/>
-			)
-		});
+		const filterBtns = categories.map(category => (
+			<FilterBtn
+				category={category}
+			/>
+		));
 
 		return (
 			<div className={styles.card}>
