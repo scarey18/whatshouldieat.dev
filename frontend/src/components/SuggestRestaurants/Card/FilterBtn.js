@@ -11,6 +11,7 @@ class FilterBtn extends React.Component {
 			showFilterText: false,
 		}
 
+	{/* Different filter depending on whether button is for price/food category */}
 		this.firstFilterOption = this.props.category.title ? 
 			"I don't want " + this.props.category.title :
 			"I'm looking for something cheaper";
@@ -35,6 +36,7 @@ class FilterBtn extends React.Component {
 		}
 	}
 
+// Wait for css transition before we show text
 	startTimeout = () => {
 		clearTimeout(this.filterTextTimeout);
 		const time = this.state.expanded ? 200 : 0;
@@ -80,7 +82,11 @@ class FilterBtn extends React.Component {
 				title="Click to filter"
 			>
 				{this.props.category.title || this.props.category}
+
+			{/* Absolute div to act as bottom border for css transition */}
 				<div className={styles.border} style={borderStyle}></div>
+
+			{/* Filter options */}
 				<div className={styles.expanded} style={expandedStyle}>
 					<div 
 						className={`${styles.filterOption} ${styles.firstOption}`}

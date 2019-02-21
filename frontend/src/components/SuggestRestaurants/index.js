@@ -7,6 +7,8 @@ import data from './test.json';
 const devState = {
 	restaurants: data.businesses,
 	index: 0,
+	offset: 0,
+	history: [],
 	categories: [],
 	filters: [],
 	loading: false,
@@ -15,6 +17,8 @@ const devState = {
 const prodState = {
 	restaurants: [],
 	index: 0,
+	offset: 0,
+	history: [],
 	categories: [],
 	filters: [],
 	loading: true,
@@ -39,17 +43,44 @@ class SuggestRestaurants extends React.Component {
 	}
 
 	getRestaurants = async () => {
-		const resp = await fetch('/api/restaurants?location='+this.props.location);
+		const params = [
+			'location='+this.props.location,
+			'offset='+this.state.offset,
+		];
+		const resp = await fetch('/api/restaurants?'+params.join('&'));
 		const data = await resp.json();
 		this.setState({restaurants: data.businesses, loading: false});
 	};
 
+	nextRestaurant = saveRestaurant => {
+		const index = this.state.index + 1;
+		const history = this.state.history.slice();
+		history.push(this.state);
+		const restaurants = this.state.restaurants.slice();
+		if (saveRestaurant) {
+			restaurants.push(this.state.restaurants[this.state.index]);
+		}
+		this.setState({history, index, restaurants});
+	};
+
 	render() {
-		let i = 0;
-		const stackedCards = this.state.restaurants.map(r => {
+		let i = -1;
+		const restaurants = this.state.restaurants.slice(this.state.index);
+
+	{/* Render maximum of 9 stacked cards */}
+		const stackedCards = restaurants.map(r => {
 			if (i < 9) {
 				i++;
-				return <div className={styles.stackedCard} key={r.id}></div>
+				const renderContent = i === 0;
+				return (
+					<Card
+						renderContent={renderContent}
+						restaurant={r}
+						isMobile={this.props.isMobile}
+						nextRestaurant={this.nextRestaurant}
+						key={r.id}
+					/>
+				)
 			}
 		});
 
@@ -57,10 +88,6 @@ class SuggestRestaurants extends React.Component {
 			<div className={styles.suggestRestaurants}>
 				{!this.state.loading &&
 					<div className={styles.cardStack}>
-						<Card 
-							restaurant={this.state.restaurants[this.state.index]}
-							isMobile={this.props.isMobile}
-						/>
 						{stackedCards}
 					</div>
 				}

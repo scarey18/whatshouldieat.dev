@@ -11,7 +11,7 @@ class FlexibleImg extends React.Component {
 	}
 
 	styleImg = () => {
-		this.className = this.img.naturalHeight > this.img.naturalWidth ?
+		this.className = this.img.naturalHeight > this.img.naturalWidth ? 
 			styles.portrait : styles.landscape;
 		this.setState({renderImg: true});
 	};
@@ -27,7 +27,7 @@ class FlexibleImg extends React.Component {
 				onLoad={this.styleImg}
 				ref={img => this.img = img}
 			></img>
-		)
+		);
 	}
 }
 

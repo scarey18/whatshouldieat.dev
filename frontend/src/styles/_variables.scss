@@ -32,16 +32,15 @@ $header-height: 5rem;
 }
 
 
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-
 @mixin fadeInAnimation($duration) {
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 	animation-name: fadeIn;
 	animation-duration: $duration;
 }

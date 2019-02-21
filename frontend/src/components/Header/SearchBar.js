@@ -51,8 +51,9 @@ class SearchBar extends React.Component {
 
 	onFocus = () => {
 		this.props.updateState({searchBarInputFocused: true});
+		{/* Update suggestions if they get lost on a page change */}
 		if (this.props.value.length >= 3 && 
-				this.props.suggestions.length === 0) {
+					this.props.suggestions.length === 0) {
 			this.updateSuggestions(this.props.value);
 		}
 	};
@@ -67,21 +68,6 @@ class SearchBar extends React.Component {
 		event.preventDefault();
 		clearTimeout(this.timeout);
 		this.input.focus();
-	};
-
-	renderSuggestions = () => {
-		if (!this.props.inputFocused || this.props.value.length <= 3) {
-			return;
-		}
-		return this.props.suggestions.map(suggestion => (
-			<div 
-				className={styles.suggestion} 
-				key={suggestion}
-				onClick={() => this.props.setLocation(suggestion)}
-			>
-				{suggestion}
-			</div>
-		));
 	};
 
 
@@ -109,8 +95,21 @@ class SearchBar extends React.Component {
 							ref={input => this.input = input}
 						/>
 					</div>
-					{this.renderSuggestions()}
+
+					{/* Suggestions */}
+					{this.props.inputFocused && 
+						this.props.value.length >= 3 &&
+						this.props.suggestions.map(suggestion => (
+							<div 
+								className={styles.suggestion} 
+								key={suggestion}
+								onClick={() => this.props.setLocation(suggestion)}
+							>
+								{suggestion}
+							</div>
+						))}
 				</div>
+
 				{!this.props.isMobile && 
 					<button onClick={this.btnClick}>Find Me Food!</button>}
 			</form>
@@ -119,11 +118,10 @@ class SearchBar extends React.Component {
 }
 
 
-const REGEX = /USA( \(.+\))?/;
-
 function trim(text) {
 	const splitString = text.split(', ');
-	const filtered = splitString.filter(str => !REGEX.test(str));
+	const regex = /USA( \(.+\))?/;
+	const filtered = splitString.filter(str => !regex.test(str));
 	return filtered.join(', ');
 }
 

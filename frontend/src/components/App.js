@@ -31,6 +31,7 @@ class App extends React.Component {
 		window.removeEventListener('popstate', this.handlePopstate);
 	}
 
+// On page change store and retrieve userLocation in localStorage
 	handlePopstate = event => {
 		const value = event.state === null ? null : event.state.userLocation;
 		this.setState({userLocation: value});

@@ -15,68 +15,88 @@ class Card extends React.Component {
 	};
 
 	render() {
+		const cardClassList = [styles.card];
+		if (!this.props.renderContent) {
+			cardClassList.push(styles.stackedCard);
+		}
 		const infoClassList = [styles.info];
 		if (this.props.isMobile) {
 			infoClassList.push(styles.isMobile);
 		}
-
 		const categories = [this.props.restaurant.price].concat(this.props.restaurant.categories);
-		const filterBtns = categories.map(category => (
-			<FilterBtn
-				category={category}
-			/>
-		));
 
 		return (
-			<div className={styles.card}>
-				<div className={styles.content}>
-					{!this.props.isMobile &&
-						<div className={styles.imgContainer}>
-							<a 
-								href={this.props.restaurant.image_url} 
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								<FlexibleImg
-									src={this.props.restaurant.image_url}
-									alt={this.props.restaurant.name}
-								/>
-							</a>
+			<div className={cardClassList.join(' ')}>
+			{this.props.renderContent &&
+				<React.Fragment>
+
+					<div className={styles.content}>
+
+					{/* Restaurant image */}
+						{!this.props.isMobile &&
+							<div className={styles.imgContainer}>
+								<a 
+									href={this.props.restaurant.image_url} 
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<FlexibleImg
+										src={this.props.restaurant.image_url}
+										alt={this.props.restaurant.name}
+									/>
+								</a>
+							</div>
+						}
+
+					{/* Restaurant info and Yelp rating/logo */}
+						<div className={infoClassList.join(' ')}>
+							<h1>{this.props.restaurant.name}</h1>
+							<div className={styles.yelpInfo}>
+								<a 
+									className={styles.reviewInfo}
+									href={this.props.restaurant.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									title={this.props.restaurant.rating + " star rating"}
+								>
+									<img 
+										src={this.getRatingImgPath()}
+										alt={this.props.restaurant.rating + " star rating"}
+									></img>
+									<p>Based on {this.props.restaurant.review_count} Reviews</p>
+								</a>
+								<a 
+									href={this.props.restaurant.url}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<img 
+										className={styles.yelpLogo}
+										src='assets/YelpLogo_Trademark/Screen(R)/Yelp_trademark_RGB_outline.png'
+										title='www.yelp.com'
+										alt="Yelp logo"
+									></img>
+								</a>
+							</div>
+
+						{/* Category buttons */}
+							<div className={styles.filterBtns}>
+								{categories.map(category => (
+									<FilterBtn
+										category={category}
+									/>
+								))}
+							</div>
 						</div>
-					}
-					<div className={infoClassList.join(' ')}>
-						<h1>{this.props.restaurant.name}</h1>
-						<div className={styles.yelpInfo}>
-							<a 
-								className={styles.reviewInfo}
-								href={this.props.restaurant.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								title={this.props.restaurant.rating + " star rating"}
-							>
-								<img src={this.getRatingImgPath()}></img>
-								<p>Based on {this.props.restaurant.review_count} Reviews</p>
-							</a>
-							<a 
-								href={this.props.restaurant.url}
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								<img 
-									className={styles.yelpLogo}
-									src='assets/YelpLogo_Trademark/Screen(R)/Yelp_trademark_RGB_outline.png'
-									title='www.yelp.com'
-								></img>
-							</a>
-						</div>
-						<div className={styles.filterBtns}>{filterBtns}</div>
 					</div>
-				</div>
-				<div className={styles.actionBtns}>
-					<ActionBtn id={0} />
-					<ActionBtn id={1} />
-					<ActionBtn id={2} />
-				</div>
+
+				{/* Bottom action buttons */}
+					<div className={styles.actionBtns}>
+						<ActionBtn id={0} action={() => this.props.nextRestaurant(false)}/>
+						<ActionBtn id={1} action={() => this.props.nextRestaurant(true)}/>
+						<ActionBtn id={2} />
+					</div>
+				</React.Fragment>}
 			</div>
 		);
 	}

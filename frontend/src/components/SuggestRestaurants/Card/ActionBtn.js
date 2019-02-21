@@ -27,7 +27,7 @@ function ActionBtn(props) {
 	}
 
 	return (
-		<div className={classList.join(' ')}>
+		<div className={classList.join(' ')} onClick={props.action}>
 			{value}
 		</div>
 	);

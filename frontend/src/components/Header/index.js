@@ -63,6 +63,8 @@ class Header extends React.Component {
 
 		return (
 			<div className={classList.join(' ')}>
+
+				{/* Upper, permanent links */}
 				<div className={styles.permanentContent}>
 					<p onClick={this.props.goHome}>TODO: Logo</p>
 					{!this.state.expanded &&
@@ -78,6 +80,8 @@ class Header extends React.Component {
 					}
 					<p>TODO: Links</p>
 				</div>
+
+			{/* Home content */}
 				{this.state.expanded &&
 					(<div className={styles.expandedContent}>
 						<div className={styles.searchContainer}>
