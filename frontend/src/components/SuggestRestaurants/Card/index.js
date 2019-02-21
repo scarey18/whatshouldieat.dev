@@ -29,7 +29,6 @@ class Card extends React.Component {
 			<div className={cardClassList.join(' ')}>
 			{this.props.renderContent &&
 				<React.Fragment>
-
 					<div className={styles.content}>
 
 					{/* Restaurant image */}

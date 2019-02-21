@@ -71,10 +71,9 @@ class SuggestRestaurants extends React.Component {
 		const stackedCards = restaurants.map(r => {
 			if (i < 9) {
 				i++;
-				const renderContent = i === 0;
 				return (
 					<Card
-						renderContent={renderContent}
+						renderContent={i === 0}
 						restaurant={r}
 						isMobile={this.props.isMobile}
 						nextRestaurant={this.nextRestaurant}

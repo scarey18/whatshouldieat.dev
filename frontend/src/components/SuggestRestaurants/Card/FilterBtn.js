@@ -11,7 +11,7 @@ class FilterBtn extends React.Component {
 			showFilterText: false,
 		}
 
-	{/* Different filter depending on whether button is for price/food category */}
+	// Different filter depending on whether button is for price or food category
 		this.firstFilterOption = this.props.category.title ? 
 			"I don't want " + this.props.category.title :
 			"I'm looking for something cheaper";
@@ -66,7 +66,9 @@ class FilterBtn extends React.Component {
 		if (this.state.expanded) {
 			classList.push(styles.focused);
 		}
-		const borderStyle = {width: (this.state.hover || this.state.expanded ? "100%" : 0)};
+		const borderStyle = {
+			width: (this.state.hover || this.state.expanded ? "100%" : 0),
+		};
 		const expandedStyle = {height: (this.state.expanded ? "6rem" : 0)};
 		const filterOptionStyle = {
 			visibility: (this.state.showFilterText ? 'visible' : 'hidden'),
@@ -103,7 +105,7 @@ class FilterBtn extends React.Component {
 					</div>
 				</div>
 			</div>
-		)
+		);
 	}
 }
 
