@@ -11,7 +11,12 @@
 	@extend %flex-center-column;
 	justify-content: space-between;
 	padding: 40px 15px;
-	transition: all 0.2s linear;
+	transition: all 0.3s linear;
+}
+
+.transitionOut {
+	position: absolute;
+	transform: translate(-100vw) rotate(-90deg);
 }
 
 .stackedCard {

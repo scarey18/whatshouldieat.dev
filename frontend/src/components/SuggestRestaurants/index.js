@@ -64,10 +64,9 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	render() {
+		{/* Render maximum of 9 stacked cards */}
 		let i = -1;
 		const restaurants = this.state.restaurants.slice(this.state.index);
-
-	{/* Render maximum of 9 stacked cards */}
 		const stackedCards = restaurants.map(r => {
 			if (i < 9) {
 				i++;
@@ -79,7 +78,7 @@ class SuggestRestaurants extends React.Component {
 						nextRestaurant={this.nextRestaurant}
 						key={r.id}
 					/>
-				)
+				);
 			}
 		});
 

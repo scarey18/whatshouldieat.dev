@@ -6,6 +6,30 @@ import FlexibleImg from 'components/common/FlexibleImg';
 
 
 class Card extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			transitionOut: false,
+			saveRestaurant: false,
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.transitionTimeout) {
+			clearTimeout(this.transitionTimeout);
+			this.props.nextRestaurant(this.state.saveRestaurant);
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.state.transitionOut && !prevState.transitionOut) {
+			this.transitionTimeout = setTimeout(
+				() => this.props.nextRestaurant(this.state.saveRestaurant),
+				200
+			);
+		}
+	}
+
 	getRatingImgPath = () => {
 		const prefix = this.props.isMobile ? 'small' : 'regular';
 		const rating = this.props.restaurant.rating;
@@ -14,15 +38,24 @@ class Card extends React.Component {
 		return `assets/yelp_stars/web_and_ios/${prefix}/${prefix}_${num}.png`;
 	};
 
+	nextRestaurant = saveRestaurant => {
+		this.setState({transitionOut: true, saveRestaurant});
+	};
+
 	render() {
 		const cardClassList = [styles.card];
 		if (!this.props.renderContent) {
 			cardClassList.push(styles.stackedCard);
 		}
+		if (this.state.transitionOut) {
+			cardClassList.push(styles.transitionOut);
+		}
+
 		const infoClassList = [styles.info];
 		if (this.props.isMobile) {
 			infoClassList.push(styles.isMobile);
 		}
+		
 		const categories = [this.props.restaurant.price].concat(this.props.restaurant.categories);
 
 		return (
@@ -91,8 +124,8 @@ class Card extends React.Component {
 
 				{/* Bottom action buttons */}
 					<div className={styles.actionBtns}>
-						<ActionBtn id={0} action={() => this.props.nextRestaurant(false)}/>
-						<ActionBtn id={1} action={() => this.props.nextRestaurant(true)}/>
+						<ActionBtn id={0} action={() => this.nextRestaurant(false)}/>
+						<ActionBtn id={1} action={() => this.nextRestaurant(true)}/>
 						<ActionBtn id={2} />
 					</div>
 				</React.Fragment>}
