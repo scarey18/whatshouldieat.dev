@@ -13,7 +13,7 @@ class FilterBtn extends React.Component {
 
 	// Different filter depending on whether button is for price or food category
 		this.firstFilterOption = this.props.category.title ? 
-			"I don't want " + this.props.category.title :
+			"Don't show me any more " + this.props.category.title :
 			"I'm looking for something cheaper";
 
 		this.secondFilterOption = this.props.category.title ?

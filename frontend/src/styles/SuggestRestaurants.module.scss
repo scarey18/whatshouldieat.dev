@@ -2,15 +2,27 @@
 
 
 .suggestRestaurants {
+	@extend %flex-center-column;
 	@extend %container;
-	@extend %flex-center;
-	width: 100%;
+	width: 100vw;
 }
 
 .cardStack {
 	@extend %flex-center;
 	position: relative;
 	height: 60vh;
-	width: 90vw;
+	width: 100%;
 	margin-top: 6rem;
+}
+
+.undoBtn {
+	@extend %flex-center;
+	margin-top: 20px;
+	@include colorize($purple);
+	border-radius: 50px;
+	width: 3rem;
+	height: 3rem;
+	color: $white;
+	cursor: pointer;
+	@include fadeInAnimation(0.5s);
 }

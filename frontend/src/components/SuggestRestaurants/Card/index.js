@@ -14,20 +14,21 @@ class Card extends React.Component {
 		}
 	}
 
-	componentWillUnmount() {
-		if (this.transitionTimeout) {
-			clearTimeout(this.transitionTimeout);
-			this.props.nextRestaurant(this.state.saveRestaurant);
-		}
-	}
-
 	componentDidUpdate(prevProps, prevState) {
+		// Wait for animation before changing restaurants
 		if (this.state.transitionOut && !prevState.transitionOut) {
 			this.transitionTimeout = setTimeout(
 				() => this.props.nextRestaurant(this.state.saveRestaurant),
 				200
 			);
 		}
+		if (this.props.retrievedFromHistory) {
+			console.log('nah');
+		}
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.transitionTimeout);
 	}
 
 	getRatingImgPath = () => {
@@ -48,14 +49,17 @@ class Card extends React.Component {
 			cardClassList.push(styles.stackedCard);
 		}
 		if (this.state.transitionOut) {
-			cardClassList.push(styles.transitionOut);
+			cardClassList.push(styles.transformOffscreen);
+		}
+		if (this.props.retrievedFromHistory) {
+			cardClassList.push(styles.retrievedFromHistory);
 		}
 
 		const infoClassList = [styles.info];
 		if (this.props.isMobile) {
 			infoClassList.push(styles.isMobile);
 		}
-		
+
 		const categories = [this.props.restaurant.price].concat(this.props.restaurant.categories);
 
 		return (

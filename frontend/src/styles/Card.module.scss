@@ -14,9 +14,12 @@
 	transition: all 0.3s linear;
 }
 
-.transitionOut {
-	position: absolute;
+.transformOffscreen {
 	transform: translate(-100vw) rotate(-90deg);
+}
+
+.retrievedFromHistory {
+	@include flyInAnimation(0.3s);
 }
 
 .stackedCard {
@@ -26,7 +29,7 @@
 	box-shadow: 0 0 10px $gray;
 	position: absolute;
 
-	@for $i from 2 through 10 {
+	@for $i from 2 through 16 {
 		&:nth-child(#{$i}) {
 			bottom: #{($i - 1) * 8}px;
 			width: #{102% - ($i * 2)};
@@ -102,11 +105,9 @@
 }
 
 .actionBtns {
-	flex-grow: 1;
-	min-height: 20%;
+	height: 20%;
 	width: 100%;
 	padding: 0 10px;
 	margin-top: 10px;
 	@extend %flex-center;
-	@include fadeInAnimation(1s);
 }

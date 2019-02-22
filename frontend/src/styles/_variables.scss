@@ -53,3 +53,16 @@ $header-height: 5rem;
 		background-color: darken($color, 5%);
 	}
 }
+
+@mixin flyInAnimation($duration) {
+	@keyframes flyIn {
+		from {
+			transform: translate(-100vw) rotate(-90deg);
+		}
+		to {
+			transform: translate(0) rotate(0);
+		}
+	}
+	animation-name: flyIn;
+	animation-duration: $duration;
+}

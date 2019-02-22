@@ -12,6 +12,7 @@ const devState = {
 	categories: [],
 	filters: [],
 	loading: false,
+	retrievedFromHistory: false,
 }
 
 const prodState = {
@@ -22,6 +23,7 @@ const prodState = {
 	categories: [],
 	filters: [],
 	loading: true,
+	retrievedFromHistory: false,
 }
 
 
@@ -29,13 +31,14 @@ class SuggestRestaurants extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = devState;
+		this.retrievedFromHistory = false;
 	}
 
 	componentDidMount() {
 		// this.getRestaurants();
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		// if (this.props.location !== prevProps.location) {
 		// 	this.setState({loading: true});
 		// 	this.getRestaurants();
@@ -60,15 +63,19 @@ class SuggestRestaurants extends React.Component {
 		if (saveRestaurant) {
 			restaurants.push(this.state.restaurants[this.state.index]);
 		}
-		this.setState({history, index, restaurants});
+		this.setState({history, index, restaurants, retrievedFromHistory: false});
+	};
+
+	undo = () => {
+		const historyState = this.state.history[this.state.history.length - 1];
+		this.setState({...historyState, retrievedFromHistory: true});
 	};
 
 	render() {
-		{/* Render maximum of 9 stacked cards */}
 		let i = -1;
 		const restaurants = this.state.restaurants.slice(this.state.index);
 		const stackedCards = restaurants.map(r => {
-			if (i < 9) {
+			if (i < 15) {
 				i++;
 				return (
 					<Card
@@ -76,6 +83,7 @@ class SuggestRestaurants extends React.Component {
 						restaurant={r}
 						isMobile={this.props.isMobile}
 						nextRestaurant={this.nextRestaurant}
+						retrievedFromHistory={this.state.retrievedFromHistory && i === 0}
 						key={r.id}
 					/>
 				);
@@ -87,6 +95,15 @@ class SuggestRestaurants extends React.Component {
 				{!this.state.loading &&
 					<div className={styles.cardStack}>
 						{stackedCards}
+					</div>
+				}
+				{this.state.index > 0 &&
+					<div 
+						className={styles.undoBtn} 
+						onClick={this.undo}
+						title="Undo"
+					>
+						<i className="fas fa-undo fa-lg"></i>
 					</div>
 				}
 			</div>
