@@ -2,6 +2,7 @@ import React from 'react';
 import Card from './Card';
 import styles from 'styles/SuggestRestaurants.module.scss';
 import data from './test.json';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 
 const devState = {
@@ -12,7 +13,7 @@ const devState = {
 	categories: [],
 	filters: [],
 	loading: false,
-	retrievedFromHistory: false,
+	savedRestaurants: [],
 }
 
 const prodState = {
@@ -23,7 +24,7 @@ const prodState = {
 	categories: [],
 	filters: [],
 	loading: true,
-	retrievedFromHistory: false,
+	savedRestaurants: [],
 }
 
 
@@ -31,7 +32,6 @@ class SuggestRestaurants extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = devState;
-		this.retrievedFromHistory = false;
 	}
 
 	componentDidMount() {
@@ -57,45 +57,52 @@ class SuggestRestaurants extends React.Component {
 
 	nextRestaurant = saveRestaurant => {
 		const index = this.state.index + 1;
-		const history = this.state.history.slice();
-		history.push(this.state);
+		const history = this.state.history.slice().concat([this.state]);
 		const restaurants = this.state.restaurants.slice();
+		const savedRestaurants = this.state.savedRestaurants.slice();
 		if (saveRestaurant) {
-			restaurants.push(this.state.restaurants[this.state.index]);
+			savedRestaurants.push(this.state.restaurants[this.state.index]);
 		}
-		this.setState({history, index, restaurants, retrievedFromHistory: false});
+		this.setState({history, index, restaurants, savedRestaurants});
 	};
 
 	undo = () => {
 		const historyState = this.state.history[this.state.history.length - 1];
-		this.setState({...historyState, retrievedFromHistory: true});
+		this.setState(historyState);
 	};
 
 	render() {
 		let i = -1;
 		const restaurants = this.state.restaurants.slice(this.state.index);
 		const stackedCards = restaurants.map(r => {
-			if (i < 15) {
-				i++;
-				return (
+			i++;
+			return (
+				<CSSTransition
+					key={r.id}
+					timeout={300}
+					classNames={{
+						enter: styles.cardEnter,
+						enterActive: styles.cardEnterActive,
+						exit: styles.cardExit,
+						exitActive: styles.cardExitActive,
+					}}
+				>
 					<Card
 						renderContent={i === 0}
 						restaurant={r}
 						isMobile={this.props.isMobile}
 						nextRestaurant={this.nextRestaurant}
-						retrievedFromHistory={this.state.retrievedFromHistory && i === 0}
-						key={r.id}
 					/>
-				);
-			}
+				</CSSTransition>
+			);
 		});
 
 		return (
 			<div className={styles.suggestRestaurants}>
-				{!this.state.loading &&
-					<div className={styles.cardStack}>
+				{!this.state.loading && 
+					<TransitionGroup className={styles.cardStack}>
 						{stackedCards}
-					</div>
+					</TransitionGroup>
 				}
 				{this.state.index > 0 &&
 					<div 

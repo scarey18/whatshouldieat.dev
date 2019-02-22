@@ -14,13 +14,13 @@
 	transition: all 0.3s linear;
 }
 
-.transformOffscreen {
-	transform: translate(-100vw) rotate(-90deg);
-}
+// .transformOffscreen {
+// 	transform: translate(-100vw) rotate(-90deg);
+// }
 
-.retrievedFromHistory {
-	@include flyInAnimation(0.3s);
-}
+// .retrievedFromHistory {
+// 	@include flyInAnimation(0.3s);
+// }
 
 .stackedCard {
 	height: 100%;
@@ -29,7 +29,7 @@
 	box-shadow: 0 0 10px $gray;
 	position: absolute;
 
-	@for $i from 2 through 16 {
+	@for $i from 2 through 50 {
 		&:nth-child(#{$i}) {
 			bottom: #{($i - 1) * 8}px;
 			width: #{102% - ($i * 2)};
@@ -44,6 +44,7 @@
 	width: 100%;
 	@extend %flex-center;
 	align-items: flex-start;
+	@include fadeInAnimation(0.5s);
 }
 
 .imgContainer {
@@ -110,4 +111,5 @@
 	padding: 0 10px;
 	margin-top: 10px;
 	@extend %flex-center;
+	@include fadeInAnimation(0.5s);
 }

@@ -9,21 +9,19 @@ class Card extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			transitionOut: false,
-			saveRestaurant: false,
+			renderContent: props.renderContent,
 		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		// Wait for animation before changing restaurants
-		if (this.state.transitionOut && !prevState.transitionOut) {
+		if (this.props.renderContent && !this.state.renderContent) {
 			this.transitionTimeout = setTimeout(
-				() => this.props.nextRestaurant(this.state.saveRestaurant),
-				200
+				() => this.setState({renderContent: true}), 
+				300
 			);
-		}
-		if (this.props.retrievedFromHistory) {
-			console.log('nah');
+		} else if (!this.props.renderContent && this.state.renderContent) {
+			this.setState({renderContent: false});
 		}
 	}
 
@@ -39,20 +37,10 @@ class Card extends React.Component {
 		return `assets/yelp_stars/web_and_ios/${prefix}/${prefix}_${num}.png`;
 	};
 
-	nextRestaurant = saveRestaurant => {
-		this.setState({transitionOut: true, saveRestaurant});
-	};
-
 	render() {
 		const cardClassList = [styles.card];
-		if (!this.props.renderContent) {
+		if (!this.state.renderContent) {
 			cardClassList.push(styles.stackedCard);
-		}
-		if (this.state.transitionOut) {
-			cardClassList.push(styles.transformOffscreen);
-		}
-		if (this.props.retrievedFromHistory) {
-			cardClassList.push(styles.retrievedFromHistory);
 		}
 
 		const infoClassList = [styles.info];
@@ -64,7 +52,7 @@ class Card extends React.Component {
 
 		return (
 			<div className={cardClassList.join(' ')}>
-			{this.props.renderContent &&
+			{this.state.renderContent &&
 				<React.Fragment>
 					<div className={styles.content}>
 
@@ -128,8 +116,8 @@ class Card extends React.Component {
 
 				{/* Bottom action buttons */}
 					<div className={styles.actionBtns}>
-						<ActionBtn id={0} action={() => this.nextRestaurant(false)}/>
-						<ActionBtn id={1} action={() => this.nextRestaurant(true)}/>
+						<ActionBtn id={0} action={() => this.props.nextRestaurant(false)}/>
+						<ActionBtn id={1} action={() => this.props.nextRestaurant(true)}/>
 						<ActionBtn id={2} />
 					</div>
 				</React.Fragment>}

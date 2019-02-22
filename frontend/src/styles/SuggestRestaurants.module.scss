@@ -16,13 +16,32 @@
 }
 
 .undoBtn {
-	@extend %flex-center;
+	@extend %raisedBtn;
 	margin-top: 20px;
 	@include colorize($purple);
 	border-radius: 50px;
 	width: 3rem;
 	height: 3rem;
 	color: $white;
-	cursor: pointer;
-	@include fadeInAnimation(0.5s);
+}
+
+
+// React Transition Group classes
+
+.cardEnter {
+	transform: translate(-100vw) rotate(-90deg);
+}
+
+.cardEnterActive {
+	transform: translate(0) rotate(0);
+	transition: all 0.3s linear;
+}
+
+.cardExit {
+	transform: translate(0) rotate(0);
+}
+
+.cardExitActive {
+	transform: translate(-100vw) rotate(-90deg);
+	transition: all 0.3s linear;
 }

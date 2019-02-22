@@ -2,18 +2,12 @@
 
 
 .actionBtn {
+	@extend %raisedBtn;
 	height: 5rem;
-	@extend %flex-center;
 	padding: 0 20px;
 	color: $white;
 	border-radius: 50px;
-	cursor: pointer;
-	box-shadow: 0 3px 10px $shadow;
 	margin: 0 10px;
-	
-	&:active {
-		box-shadow: inset 0 0 10px $shadow;
-	}
 }
 
 .reject {
