@@ -5,26 +5,20 @@ import data from './test.json';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 
-const devState = {
-	restaurants: data.businesses,
-	index: 0,
-	offset: 0,
-	history: [],
-	categories: [],
-	filters: [],
-	loading: false,
-	savedRestaurants: [],
-}
-
 const prodState = {
 	restaurants: [],
-	index: 0,
 	offset: 0,
 	history: [],
 	categories: [],
 	filters: [],
 	loading: true,
 	savedRestaurants: [],
+}
+
+const devState = {
+	...prodState,
+	restaurants: data.businesses,
+	loading: false,
 }
 
 
@@ -56,14 +50,13 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	nextRestaurant = saveRestaurant => {
-		const index = this.state.index + 1;
 		const history = this.state.history.slice().concat([this.state]);
-		const restaurants = this.state.restaurants.slice();
+		const restaurants = this.state.restaurants.slice(1);
 		const savedRestaurants = this.state.savedRestaurants.slice();
 		if (saveRestaurant) {
-			savedRestaurants.push(this.state.restaurants[this.state.index]);
+			savedRestaurants.push(this.state.restaurants[0]);
 		}
-		this.setState({history, index, restaurants, savedRestaurants});
+		this.setState({history, restaurants, savedRestaurants});
 	};
 
 	undo = () => {
@@ -71,10 +64,59 @@ class SuggestRestaurants extends React.Component {
 		this.setState(historyState);
 	};
 
+	addCategory = category => {
+		const categories = this.state.categories.slice();
+		if (!categories.includes(category)) {
+			categories.push(category);
+			const restaurants = this.eliminateThroughCategories(categories);
+			const history = this.state.history.slice().concat([this.state]);
+			this.setState({categories, restaurants, history});
+		}
+	};
+
+	addFilter = filter => {
+		const filters = this.state.filters.slice();
+		if (!filters.includes(filter)) {
+			filters.push(filter);
+			const restaurants = this.eliminateThroughFilters(filters);
+			const history = this.state.history.slice().concat([this.state]);
+			this.setState({filters, restaurants, history});
+		}
+	};
+
+	eliminateThroughFilters = filters => {
+		return this.state.restaurants.slice().filter(r => {
+			const restaurantCategories = r.categories.map(c => c.alias);
+			for (const filter of filters) {
+				const isPrice = filter.includes('$');
+				if (isPrice && filter.length > 1 && r.price.length >= filter.length) {
+					return false;
+				} else if (!isPrice && restaurantCategories.includes(filter)) {
+					return false;
+				}
+			}
+			return true;
+		});
+	};
+
+	eliminateThroughCategories = categories => {
+		return this.state.restaurants.slice().filter(r => {
+			const restaurantCategories = r.categories.map(c => c.alias);
+			for (const category of categories) {
+				const isPrice = category.includes('$');
+				if (isPrice && r.price.length !== category.length) {
+					return false;
+				} else if (!isPrice && !restaurantCategories.includes(category)) {
+					return false;
+				}
+			}
+			return true;
+		});
+	};
+
 	render() {
 		let i = -1;
-		const restaurants = this.state.restaurants.slice(this.state.index);
-		const stackedCards = restaurants.map(r => {
+		const stackedCards = this.state.restaurants.map(r => {
 			i++;
 			return (
 				<CSSTransition
@@ -92,6 +134,8 @@ class SuggestRestaurants extends React.Component {
 						restaurant={r}
 						isMobile={this.props.isMobile}
 						nextRestaurant={this.nextRestaurant}
+						addCategory={this.addCategory}
+						addFilter={this.addFilter}
 					/>
 				</CSSTransition>
 			);
@@ -104,7 +148,7 @@ class SuggestRestaurants extends React.Component {
 						{stackedCards}
 					</TransitionGroup>
 				}
-				{this.state.index > 0 &&
+				{this.state.history.length > 0 &&
 					<div 
 						className={styles.undoBtn} 
 						onClick={this.undo}

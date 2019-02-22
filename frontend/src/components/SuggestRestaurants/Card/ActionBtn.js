@@ -12,7 +12,7 @@ function ActionBtn(props) {
 			break;
 		}
 		case 1: {
-			value = "Maybe. Let's see the other options first";
+			value = "Save this but show me other options";
 			classList.push(styles.maybe);
 			break;
 		}

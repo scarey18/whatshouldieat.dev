@@ -34,7 +34,6 @@
 
 .cardEnterActive {
 	transform: translate(0) rotate(0);
-	transition: all 0.3s linear;
 }
 
 .cardExit {
@@ -43,5 +42,4 @@
 
 .cardExitActive {
 	transform: translate(-100vw) rotate(-90deg);
-	transition: all 0.3s linear;
 }

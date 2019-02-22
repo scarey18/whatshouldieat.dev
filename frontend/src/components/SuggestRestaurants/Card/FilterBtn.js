@@ -93,13 +93,14 @@ class FilterBtn extends React.Component {
 					<div 
 						className={`${styles.filterOption} ${styles.firstOption}`}
 						style={filterOptionStyle}
-						onClick={() => console.log('nah')}
+						onClick={this.props.addFilter}
 					>
 						{this.firstFilterOption}
 					</div>
 					<div 
 						className={styles.filterOption}
 						style={filterOptionStyle}
+						onClick={this.props.addCategory}
 					>
 						{this.secondFilterOption}
 					</div>

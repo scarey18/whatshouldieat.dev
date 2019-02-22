@@ -14,7 +14,7 @@ class Card extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		// Wait for animation before changing restaurants
+		// Wait for animation before rendering new restaurant
 		if (this.props.renderContent && !this.state.renderContent) {
 			this.transitionTimeout = setTimeout(
 				() => this.setState({renderContent: true}), 
@@ -105,11 +105,17 @@ class Card extends React.Component {
 
 						{/* Category buttons */}
 							<div className={styles.filterBtns}>
-								{categories.map(category => (
-									<FilterBtn
-										category={category}
-									/>
-								))}
+								{categories.map(category => {
+									const filterValue = category.alias || category;
+									return (
+										<FilterBtn
+											category={category}
+											addCategory={() => this.props.addCategory(filterValue)}
+											addFilter={() => this.props.addFilter(filterValue)}
+											key={category.alias}
+										/>
+									);
+								})}
 							</div>
 						</div>
 					</div>
