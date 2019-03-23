@@ -114,6 +114,17 @@ class SuggestRestaurants extends React.Component {
 		});
 	};
 
+	bringBackSavedRestaurants = () => {
+		const savedRestaurants = this.state.savedRestaurants.slice();
+		const restaurants = this.state.restaurants.slice();
+		const history = this.state.history.slice().concat([this.state]);
+		this.setState({
+			restaurants: savedRestaurants.concat(restaurants),
+			savedRestaurants: [],
+			history,
+		});
+	};
+
 	render() {
 		let i = -1;
 		const stackedCards = this.state.restaurants.map(r => {
@@ -148,15 +159,26 @@ class SuggestRestaurants extends React.Component {
 						{stackedCards}
 					</TransitionGroup>
 				}
-				{this.state.history.length > 0 &&
-					<div 
-						className={styles.undoBtn} 
-						onClick={this.undo}
-						title="Undo"
-					>
-						<i className="fas fa-undo fa-lg"></i>
-					</div>
-				}
+				<div className={styles.historyBtns}>
+					{this.state.history.length > 0 &&
+						<button 
+							className={styles.undoBtn} 
+							onClick={this.undo}
+							title="Undo"
+						>
+							<i className="fas fa-undo fa-lg"></i>
+						</button>
+					}
+					{this.state.savedRestaurants.length > 0 &&
+						<button 
+							className={styles.savedRestaurantsBtn} 
+							title="Saved Restaurants"
+							onClick={this.bringBackSavedRestaurants}
+						>
+							Bring back saved restaurants
+						</button>
+					}
+				</div>
 			</div>
 		);
 	}

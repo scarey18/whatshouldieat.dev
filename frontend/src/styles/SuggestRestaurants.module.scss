@@ -15,14 +15,21 @@
 	margin-top: 6rem;
 }
 
-.undoBtn {
-	@extend %raisedBtn;
+.historyBtns {
 	margin-top: 20px;
-	@include colorize($purple);
-	border-radius: 50px;
-	width: 3rem;
-	height: 3rem;
-	color: $white;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+
+	button {
+		@extend %raisedBtn;
+		@include colorize($purple);
+		@include fadeInAnimation(1s);
+		border-radius: 50px;
+		padding: 1rem;
+		color: $white;
+		margin: 0 5px;
+	}
 }
 
 
