@@ -30,10 +30,6 @@ function ActionBtn(props) {
 		}
 	}
 
-	if (props.isMobile) {
-		classList.push(styles.isMobile);
-	}
-
 	return (
 		<div className={classList.join(' ')} onClick={props.action}>
 			{value}

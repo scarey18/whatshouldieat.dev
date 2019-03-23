@@ -4,7 +4,7 @@
 .suggestRestaurants {
 	@extend %flex-center-column;
 	@extend %container;
-	width: 100vw;
+	width: 100%;
 }
 
 .cardStack {
@@ -12,7 +12,7 @@
 	position: relative;
 	height: 60vh;
 	width: 100%;
-	margin-top: 6rem;
+	margin-top: 5rem;
 }
 
 .historyBtns {

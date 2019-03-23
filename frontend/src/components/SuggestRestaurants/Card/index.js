@@ -2,6 +2,7 @@ import React from 'react';
 import styles from 'styles/Card.module.scss';
 import FilterBtn from './FilterBtn';
 import ActionBtn from './ActionBtn';
+import FlexibleImg from 'components/common/FlexibleImg';
 
 
 class Card extends React.Component {
@@ -42,11 +43,6 @@ class Card extends React.Component {
 			cardClassList.push(styles.stackedCard);
 		}
 
-		const infoClassList = [styles.info];
-		if (this.props.isMobile) {
-			infoClassList.push(styles.isMobile);
-		}
-
 		const categories = [this.props.restaurant.price].concat(this.props.restaurant.categories);
 
 		return (
@@ -63,16 +59,18 @@ class Card extends React.Component {
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									<img 
+									<FlexibleImg 
 										src={this.props.restaurant.image_url}
 										alt={this.props.restaurant.name}
-									></img>
+										parentDepth={2}
+										delay={315}
+									/>
 								</a>
 							</div>
 						}
 
 					{/* Restaurant info and Yelp rating/logo */}
-						<div className={infoClassList.join(' ')}>
+						<div className={styles.info}>
 							<h1>{this.props.restaurant.name}</h1>
 
 							<div className={styles.yelpInfo}>
@@ -140,20 +138,9 @@ class Card extends React.Component {
 
 				{/* Bottom action buttons */}
 					<div className={styles.actionBtns}>
-						<ActionBtn 
-							id={0} 
-							action={() => this.props.nextRestaurant(false)}
-							isMobile={this.props.isMobile}
-						/>
-						<ActionBtn 
-							id={1} 
-							action={() => this.props.nextRestaurant(true)}
-							isMobile={this.props.isMobile}
-						/>
-						<ActionBtn 
-							id={2}
-							isMobile={this.props.isMobile}
-						/>
+						<ActionBtn id={0} action={() => this.props.nextRestaurant(false)} />
+						<ActionBtn id={1} action={() => this.props.nextRestaurant(true)} />
+						<ActionBtn id={2} />
 					</div>
 				</React.Fragment>}
 			</div>

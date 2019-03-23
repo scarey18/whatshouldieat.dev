@@ -1,14 +1,22 @@
 @import 'styles/variables';
 
 
+html {
+	margin-left: calc(100vw - 100%);
+}
+
 body {
 	font-family: $primary-font;
 	font-size: 16px;
 	color: $black;
+	background-color: $lighter-yellow;
+	width: 100vw;
+	max-width: 100%;
+	overflow-x: hidden;
+
 	@media (max-width: 700px) {
 		font-size: 12px;
 	}
-	background-color: $lighter-yellow;
 }
 
 p {

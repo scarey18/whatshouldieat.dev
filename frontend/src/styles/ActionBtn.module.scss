@@ -11,6 +11,11 @@
 	margin: 0 10px;
 	z-index: 51;
 	text-align: center;
+
+	@media (max-width: 650px) {
+		height: 3.5rem;
+		min-width: 3.5rem;
+	}
 }
 
 .reject {
@@ -24,9 +29,4 @@
 
 .accept {
 	@include colorize($green);
-}
-
-.isMobile {
-	height: 3.5rem;
-	min-width: 3.5rem;
 }

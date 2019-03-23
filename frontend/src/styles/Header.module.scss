@@ -8,7 +8,7 @@
 	z-index: 90;
 	top: 0;
 	left: 0;
-	width: 100%;
+	width: 100vw;
 	height: $header-height;
 	background-color: $yellow;
 	box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.15);
@@ -46,12 +46,13 @@
 	h1 {
 		@include fadeInAnimation(2s);
 		font-size: 5rem;
-		@media screen and (max-width: 650px) {
-			font-size: 36px;
-		}
 		background-color: $red;
 		color: $white;
 		padding: 0 10px 10px 10px;
 		margin: 0 auto 0 0;
+
+		@media screen and (max-width: 650px) {
+			font-size: 36px;
+		}
 	}
 }
