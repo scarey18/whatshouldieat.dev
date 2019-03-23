@@ -5,11 +5,11 @@ import styles from 'styles/ActionBtn.module.scss';
 function ActionBtn(props) {
 	let value;
 	const classList = [styles.actionBtn];
-	const faClassList = props.isMobile ? 
-		"fas fa-thumbs-down fa-lg" : 
-		"fas fa-thumbs-down fa-2x";
+	let faClassList;
+	const faSize = props.isMobile ? "fa-lg" : "fa-2x";
 	switch (props.id) {
 		case 0: {
+			faClassList = `fa fa-thumbs-down ${faSize}`;
 			value = <i className={faClassList}></i>;
 			classList.push(styles.reject);
 			break;
@@ -20,6 +20,7 @@ function ActionBtn(props) {
 			break;
 		}
 		case 2: {
+			faClassList = `fa fa-thumbs-up ${faSize}`;
 			value = <i className={faClassList}></i>;
 			classList.push(styles.accept);
 			break;
