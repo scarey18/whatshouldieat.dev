@@ -1,0 +1,39 @@
+@import 'variables';
+
+
+.modal {
+	@extend %flex-center;
+	z-index: 1000;
+	height: 100vh;
+	width: 100vw;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: transparentize($black, 0.2);
+
+	i {
+		color: $white;
+		position: absolute;
+		top: 5%;
+		right: 5%;
+		cursor: pointer;
+	}
+
+	iframe {
+		height: 80%;
+		width: 80%;
+		border: none;
+		z-index: 50;
+	}
+}
+
+.loadingRingContainer {
+	width: 200px;
+	height: 200px;
+	position: fixed;
+	color: $white;
+}
+
+.hidden {
+	visibility: hidden;
+}

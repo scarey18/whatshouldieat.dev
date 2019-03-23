@@ -131,7 +131,9 @@ class Card extends React.Component {
 											${this.props.restaurant.location.zip_code}`}
 									</p>
 								</div>
-								<a>Show on Map</a>
+								<a onClick={this.props.showOnMap}>
+									Show on Map
+								</a>
 							</div>
 						</div>
 					</div>

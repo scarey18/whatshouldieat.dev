@@ -3,6 +3,7 @@ import Card from './Card';
 import styles from 'styles/SuggestRestaurants.module.scss';
 import data from './test.json';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import MapModal from 'components/common/MapModal';
 
 
 const prodState = {
@@ -13,6 +14,7 @@ const prodState = {
 	filters: [],
 	loading: true,
 	savedRestaurants: [],
+	renderMapModal: false,
 }
 
 const devState = {
@@ -126,9 +128,7 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	render() {
-		let i = -1;
-		const stackedCards = this.state.restaurants.map(r => {
-			i++;
+		const stackedCards = this.state.restaurants.map((r, i) => {
 			return (
 				<CSSTransition
 					key={r.id}
@@ -147,39 +147,48 @@ class SuggestRestaurants extends React.Component {
 						nextRestaurant={this.nextRestaurant}
 						addCategory={this.addCategory}
 						addFilter={this.addFilter}
+						showOnMap={() => this.setState({renderMapModal: true})}
 					/>
 				</CSSTransition>
 			);
 		});
 
 		return (
-			<div className={styles.suggestRestaurants}>
-				{!this.state.loading && 
-					<TransitionGroup className={styles.cardStack}>
-						{stackedCards}
-					</TransitionGroup>
-				}
-				<div className={styles.historyBtns}>
-					{this.state.history.length > 0 &&
-						<button 
-							className={styles.undoBtn} 
-							onClick={this.undo}
-							title="Undo"
-						>
-							<i className="fas fa-undo fa-lg"></i>
-						</button>
+			<React.Fragment>
+				<div className={styles.suggestRestaurants}>
+					{!this.state.loading && 
+						<TransitionGroup className={styles.cardStack}>
+							{stackedCards}
+						</TransitionGroup>
 					}
-					{this.state.savedRestaurants.length > 0 &&
-						<button 
-							className={styles.savedRestaurantsBtn} 
-							title="Saved Restaurants"
-							onClick={this.bringBackSavedRestaurants}
-						>
-							Bring back saved restaurants
-						</button>
-					}
+					<div className={styles.historyBtns}>
+						{this.state.history.length > 0 &&
+							<button 
+								className={styles.undoBtn} 
+								onClick={this.undo}
+								title="Undo"
+							>
+								<i className="fas fa-undo fa-lg"></i>
+							</button>
+						}
+						{this.state.savedRestaurants.length > 0 &&
+							<button 
+								className={styles.savedRestaurantsBtn} 
+								title="Saved Restaurants"
+								onClick={this.bringBackSavedRestaurants}
+							>
+								Bring back saved restaurants
+							</button>
+						}
+					</div>
 				</div>
-			</div>
+
+				<MapModal 
+					render={this.state.renderMapModal}
+					restaurant={this.state.restaurants[0]}
+					onClose={() => this.setState({renderMapModal: false})}
+				/>
+			</React.Fragment>
 		);
 	}
 }
