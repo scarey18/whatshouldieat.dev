@@ -1,12 +1,12 @@
 import React from 'react';
+import styles from 'styles/FlexibleImg.module.scss';
 
 
 class FlexibleImg extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			style: {width: '10px'},
-			render: false,
+			className: styles.hidden,
 		}
 	}
 
@@ -37,23 +37,17 @@ class FlexibleImg extends React.Component {
 		const imgRect = this.img.getBoundingClientRect();
 		const widthRatio = parentRect.width / imgRect.width;
 		const heightRatio = parentRect.height / imgRect.height;
+		const className = widthRatio < heightRatio ? styles.landscape : styles.portrait;
 
-		const style = widthRatio < heightRatio ?
-			{width: '100%'} :
-			{height: '100%'};
-
-		this.setState({style, render: true});
+		this.setState({className});
 	};
 
 	render() {
-		const visibility = this.state.render ? 'visible' : 'hidden';
-		const style = {...this.state.style, visibility};
-
 		return (
 			<img 
 				src={this.props.src}
 				alt={this.props.alt}
-				style={style}
+				className={this.state.className}
 				onLoad={this.startTimeout}
 				ref={ref => this.img = ref}
 			></img>

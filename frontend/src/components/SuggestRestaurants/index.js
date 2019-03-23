@@ -38,8 +38,8 @@ class SuggestRestaurants extends React.Component {
 	// Stops scrollbar flickering on card transitions
 	stopOverflow = () => {
 		const body = document.querySelector('body');
-		body.style.overflow = 'hidden';
-		this.overflowTimeout = setTimeout(() => body.style.overflow = 'auto', 400);
+		body.style.overflowY = 'hidden';
+		this.overflowTimeout = setTimeout(() => body.style.overflowY = 'auto', 400);
 	};
 
 	componentDidMount() {
