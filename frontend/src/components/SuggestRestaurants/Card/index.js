@@ -2,7 +2,6 @@ import React from 'react';
 import styles from 'styles/Card.module.scss';
 import FilterBtn from './FilterBtn';
 import ActionBtn from './ActionBtn';
-import FlexibleImg from 'components/common/FlexibleImg';
 
 
 class Card extends React.Component {
@@ -64,10 +63,10 @@ class Card extends React.Component {
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									<FlexibleImg
+									<img 
 										src={this.props.restaurant.image_url}
 										alt={this.props.restaurant.name}
-									/>
+									></img>
 								</a>
 							</div>
 						}
@@ -75,6 +74,7 @@ class Card extends React.Component {
 					{/* Restaurant info and Yelp rating/logo */}
 						<div className={infoClassList.join(' ')}>
 							<h1>{this.props.restaurant.name}</h1>
+
 							<div className={styles.yelpInfo}>
 								<a 
 									className={styles.reviewInfo}
@@ -116,6 +116,22 @@ class Card extends React.Component {
 										/>
 									);
 								})}
+							</div>
+
+							<div className={styles.addressInfo}>
+								<div className={styles.fullAddress}>
+									<p>{this.props.restaurant.location.address1}</p>
+									{this.props.restaurant.location.address2 &&
+										<p>{this.props.restaurant.location.address2}</p>}
+									{this.props.restaurant.location.address3 &&
+										<p>{this.props.restaurant.location.address3}</p>}
+									<p>
+										{`${this.props.restaurant.location.city}, 
+											${this.props.restaurant.location.state} 
+											${this.props.restaurant.location.zip_code}`}
+									</p>
+								</div>
+								<a>Show on Map</a>
 							</div>
 						</div>
 					</div>

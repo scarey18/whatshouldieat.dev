@@ -8,11 +8,16 @@ html, body, #root {
 body {
 	font-family: $primary-font;
 	font-size: 16px;
+	color: $black;
 	@media (max-width: 700px) {
 		font-size: 12px;
 	}
 	background-color: $lighter-yellow;
 	overflow-x: hidden;
+}
+
+p {
+	cursor: text;
 }
 
 a {

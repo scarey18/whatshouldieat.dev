@@ -14,14 +14,6 @@
 	transition: all 0.3s linear;
 }
 
-// .transformOffscreen {
-// 	transform: translate(-100vw) rotate(-90deg);
-// }
-
-// .retrievedFromHistory {
-// 	@include flyInAnimation(0.3s);
-// }
-
 .stackedCard {
 	height: 100%;
 	background-color: $white;
@@ -55,6 +47,12 @@
 
 	a {
 		margin: 0 auto auto auto;
+
+		img {
+			display: block;
+			max-height: 100%;
+			max-width: 100%;
+		}
 	}
 }
 
@@ -63,8 +61,6 @@
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start;
-	align-items: flex-start;
 
 	h1 {
 		margin: 0 0 5px 0;
@@ -102,7 +98,30 @@
 	@extend %flex-center;
 	justify-content: flex-start;
 	flex-wrap: wrap;
-	width: 100%;
+}
+
+.addressInfo {
+	display: flex;
+	align-items: center;
+	margin-top: 10px;
+
+	.fullAddress {
+		margin-right: 15px;
+
+		p {
+			margin: 0;
+		}
+	}
+
+	a {
+		font-size: 0.9rem;
+		color: $link;
+		cursor: pointer;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
 }
 
 .actionBtns {
