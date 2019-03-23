@@ -140,9 +140,20 @@ class Card extends React.Component {
 
 				{/* Bottom action buttons */}
 					<div className={styles.actionBtns}>
-						<ActionBtn id={0} action={() => this.props.nextRestaurant(false)}/>
-						<ActionBtn id={1} action={() => this.props.nextRestaurant(true)}/>
-						<ActionBtn id={2} />
+						<ActionBtn 
+							id={0} 
+							action={() => this.props.nextRestaurant(false)}
+							isMobile={this.props.isMobile}
+						/>
+						<ActionBtn 
+							id={1} 
+							action={() => this.props.nextRestaurant(true)}
+							isMobile={this.props.isMobile}
+						/>
+						<ActionBtn 
+							id={2}
+							isMobile={this.props.isMobile}
+						/>
 					</div>
 				</React.Fragment>}
 			</div>

@@ -7,7 +7,8 @@
 	background-color: $white;
 	border-radius: 20px;
 	box-shadow: 0 0 30px $shadow;
-	z-index: 90;
+	position: relative;
+	z-index: 50;
 	@extend %flex-center-column;
 	justify-content: space-between;
 	padding: 40px 15px;
@@ -25,7 +26,7 @@
 		&:nth-child(#{$i}) {
 			bottom: #{($i - 1) * 8}px;
 			width: #{102% - ($i * 2)};
-			z-index: #{90 - $i};
+			z-index: #{50 - $i};
 			opacity: #{1.1 - ($i / 10)};
 		}
 	}
@@ -68,8 +69,13 @@
 }
 
 .isMobile {
-	margin-left: 0;
-	align-items: center;
+	margin-left: 10%;
+	align-items: flex-start;
+
+	h1 {
+		@extend %flex-center;
+		width: 80%;
+	}
 }
 
 .yelpInfo {
@@ -127,8 +133,11 @@
 .actionBtns {
 	height: 20%;
 	width: 100%;
+	max-width: 600px;
 	padding: 0 10px;
 	margin-top: 10px;
-	@extend %flex-center;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 	@include fadeInAnimation(0.5s);
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from 'styles/App.module.scss';
 import Header from './Header';
 import Main from './Main';
 
@@ -67,7 +66,7 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div className={styles.app}>
+			<div>
 				<Header 
 					isMobile={this.state.isMobile} 
 					location={this.state.userLocation}

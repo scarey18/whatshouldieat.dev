@@ -4,11 +4,13 @@
 .actionBtn {
 	@extend %raisedBtn;
 	height: 5rem;
-	padding: 0 20px;
+	min-width: 5rem;
+	padding: 20px;
 	color: $white;
 	border-radius: 50px;
 	margin: 0 10px;
-	z-index: 50;
+	z-index: 51;
+	text-align: center;
 }
 
 .reject {
@@ -22,4 +24,9 @@
 
 .accept {
 	@include colorize($green);
+}
+
+.isMobile {
+	height: 3.5rem;
+	min-width: 3.5rem;
 }

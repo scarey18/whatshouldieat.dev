@@ -46,12 +46,18 @@ class FilterBtn extends React.Component {
 	};
 
 	handleClick = event => {
-		if (event.target !== this.ref && this.state.expanded) {
+		if (event.target !== this.btn && this.state.expanded) {
 			this.setState({expanded: false});
 		}
 	};
 
 	onClick = () => {
+		const expandedLeftEdge = this.expandedContent.getBoundingClientRect().left;
+		if (expandedLeftEdge < 0) {
+			const btnLeftEdge = this.btn.getBoundingClientRect().left;
+			this.expandedContent.style.left = `-${btnLeftEdge}px`;
+		}
+
 		this.setState(prevState => ({
 			expanded: !prevState.expanded,
 		}));
@@ -66,10 +72,13 @@ class FilterBtn extends React.Component {
 		if (this.state.expanded) {
 			classList.push(styles.focused);
 		}
+
 		const borderStyle = {
 			width: (this.state.hover || this.state.expanded ? "100%" : 0),
 		};
+
 		const expandedStyle = {height: (this.state.expanded ? "6rem" : 0)};
+
 		const filterOptionStyle = {
 			visibility: (this.state.showFilterText ? 'visible' : 'hidden'),
 		}
@@ -80,7 +89,7 @@ class FilterBtn extends React.Component {
 				onClick={this.onClick}
 				onMouseEnter={this.onMouseEnter}
 				onMouseLeave={this.onMouseLeave}
-				ref={ref => this.ref = ref}
+				ref={ref => this.btn = ref}
 				title="Click to filter"
 			>
 				{this.props.category.title || this.props.category}
@@ -89,7 +98,11 @@ class FilterBtn extends React.Component {
 				<div className={styles.border} style={borderStyle}></div>
 
 			{/* Filter options */}
-				<div className={styles.expanded} style={expandedStyle}>
+				<div 
+					className={styles.expanded} 
+					style={expandedStyle}
+					ref={ref => this.expandedContent = ref}
+				>
 					<div 
 						className={`${styles.filterOption} ${styles.firstOption}`}
 						style={filterOptionStyle}
