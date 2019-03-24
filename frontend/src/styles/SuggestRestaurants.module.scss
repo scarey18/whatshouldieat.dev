@@ -9,16 +9,15 @@
 
 .loadingSection {
 	@extend %flex-center-column;
-	height: 90vh;
+	height: 70vh;
 	width: 100vw;
-	position: absolute;
-	top: 0;
+	color: $purple;
 
 	.loadingRingContainer {
 		@extend %flex-center;
 		height: 200px;
 		width: 200px;
-		color: $purple;
+		color: inherit;
 	}
 }
 
@@ -28,6 +27,17 @@
 	height: 60vh;
 	width: 100%;
 	margin-top: 5rem;
+}
+
+.messageSection {
+	@extend %flex-center;
+	height: 70vh;
+	width: 70vw;
+	color: $purple;
+
+	h2 {
+		text-align: center;
+	}
 }
 
 .historyBtns {

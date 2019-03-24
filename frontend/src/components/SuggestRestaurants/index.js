@@ -217,6 +217,8 @@ class SuggestRestaurants extends React.Component {
 		return (
 			<React.Fragment>
 				<div className={styles.suggestRestaurants}>
+
+				{/* Loading ring while fetching restaurants */}
 					{this.state.loading &&
 						<div className={styles.loadingSection}>
 							<div className={styles.loadingRingContainer}>
@@ -225,7 +227,9 @@ class SuggestRestaurants extends React.Component {
 							<h2>Retrieving restaurants...</h2>
 						</div>
 					}
-					{!this.state.loading && 
+
+				{/* Card stack with restaurants */}
+					{!this.state.loading && this.state.restaurants.length > 0 &&
 						<TransitionGroup className={styles.cardStack}>
 							{stackedCards}
 						</TransitionGroup>
@@ -250,6 +254,12 @@ class SuggestRestaurants extends React.Component {
 							</button>
 						}
 					</div>
+				{/* Message if no restaurants found */}
+					{!this.state.loading && this.state.restaurants.length === 0 &&
+						<div className={styles.messageSection}>
+							<h2>We couldn't find any more restaurants for this search area. Try widening your search.</h2>
+						</div>
+					}
 				</div>
 
 				<MapModal 
