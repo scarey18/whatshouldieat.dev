@@ -10,6 +10,14 @@ class Card extends React.Component {
 		super(props);
 		this.state = {
 			renderContent: props.renderContent,
+			isBeingDragged: false,
+		}
+	}
+
+	componentDidMount() {
+		if (this.props.renderContent) {
+			this.card.addEventListener('mousedown', this.handleTouchStart);
+			this.card.addEventListener('touchstart', this.handleTouchStart);
 		}
 	}
 
@@ -20,14 +28,60 @@ class Card extends React.Component {
 				() => this.setState({renderContent: true}), 
 				300
 			);
+			this.card.addEventListener('mousedown', this.handleTouchStart);
+			this.card.addEventListener('touchstart', this.handleTouchStart);
 		} else if (!this.props.renderContent && this.state.renderContent) {
 			this.setState({renderContent: false});
+			this.card.removeEventListener('mousedown', this.handleTouchStart);
+			this.card.removeEventListener('touchstart', this.handleTouchStart);
 		}
 	}
 
 	componentWillUnmount() {
+		this.rotationRatio = null;
 		clearTimeout(this.transitionTimeout);
+		this.card.removeEventListener('mousedown', this.handleMouseDown);
+		window.removeEventListener('mouseup', this.handleMouseUp);
+		this.card.removeEventListener('touchstart', this.handleTouchStart);
+		window.removeEventListener('touchend', this.handleTouchEnd);
+		window.removeEventListener('mousemove', this.moveCard);
+		window.removeEventListener('touchmove', this.moveCard);
 	}
+
+	handleTouchStart = e => {
+		const event = e.targetTouches ? e.targetTouches[0] : e;
+		this.initialTouchX = event.screenX;
+		this.initialTouchY = event.screenY;
+		window.addEventListener('mousemove', this.moveCard);
+		window.addEventListener('touchmove', this.moveCard);
+		window.addEventListener('mouseup', this.handleTouchEnd);
+		window.addEventListener('touchend', this.handleTouchEnd);
+	};
+
+	handleTouchEnd = () => {
+		window.removeEventListener('mousemove', this.moveCard);
+		window.removeEventListener('touchmove', this.moveCard);
+		window.removeEventListener('mouseup', this.handleTouchEnd);
+		window.removeEventListener('touchend', this.handleTouchEnd);
+		if (this.card) {
+			this.card.style.transform = null;
+			this.card.style.transition = null;
+		}
+		if (this.rotationRatio <= -0.15) {
+			this.props.nextRestaurant(false);
+		}
+	};
+
+	moveCard = e => {
+		const event = e.touches ? e.touches[0] : e;
+		const differenceX = event.screenX - this.initialTouchX;
+		const differenceY = event.screenY - this.initialTouchY;
+		const maxRotation = 60;
+		const rotation = maxRotation / (window.innerWidth / differenceX);
+		this.rotationRatio = rotation / maxRotation;
+		this.card.style.transition = 'none';
+		this.card.style.transform = `translate(${differenceX}px, ${differenceY}px) rotate(${rotation}deg)`;
+	};
 
 	getRatingImgPath = () => {
 		const prefix = this.props.isMobile ? 'small' : 'regular';
@@ -46,7 +100,10 @@ class Card extends React.Component {
 		const categories = [this.props.restaurant.price].concat(this.props.restaurant.categories);
 
 		return (
-			<div className={cardClassList.join(' ')}>
+			<div 
+				className={cardClassList.join(' ')} 
+				ref={ref => this.card = ref}
+			>
 			{this.state.renderContent &&
 				<React.Fragment>
 					<div className={styles.content}>
@@ -110,7 +167,7 @@ class Card extends React.Component {
 											category={category}
 											addCategory={() => this.props.addCategory(filterValue)}
 											addFilter={() => this.props.addFilter(filterValue)}
-											key={category.alias}
+											key={filterValue}
 										/>
 									);
 								})}
