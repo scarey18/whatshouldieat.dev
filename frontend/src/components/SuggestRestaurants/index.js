@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from './Card';
 import styles from 'styles/SuggestRestaurants.module.scss';
-import data from './test.json';
+import testData from './test.json';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import MapModal from 'components/common/MapModal';
 
@@ -19,7 +19,7 @@ const prodState = {
 
 const devState = {
 	...prodState,
-	restaurants: data.businesses,
+	restaurants: testData.businesses,
 	loading: false,
 }
 
@@ -27,7 +27,7 @@ const devState = {
 class SuggestRestaurants extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = devState;
+		this.state = prodState;
 	}
 
 	setState = (...args) => {
@@ -43,14 +43,14 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	componentDidMount() {
-		// this.getRestaurants();
+		this.getRestaurants();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		// if (this.props.location !== prevProps.location) {
-		// 	this.setState({loading: true});
-		// 	this.getRestaurants();
-		// }
+		if (this.props.location !== prevProps.location) {
+			this.setState({loading: true});
+			this.getRestaurants();
+		}
 	}
 
 	componentWillUnmount() {
@@ -107,7 +107,10 @@ class SuggestRestaurants extends React.Component {
 			const restaurantCategories = r.categories.map(c => c.alias);
 			for (const filter of filters) {
 				const isPrice = filter.includes('$');
-				if (isPrice && filter.length > 1 && r.price.length >= filter.length) {
+				if (isPrice && 
+						filter.length > 1 && 
+						r.price &&
+						r.price.length >= filter.length) {
 					return false;
 				} else if (!isPrice && restaurantCategories.includes(filter)) {
 					return false;

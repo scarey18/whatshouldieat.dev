@@ -102,7 +102,9 @@ class Card extends React.Component {
 			cardClassList.push(styles.stackedCard);
 		}
 
-		const categories = [this.props.restaurant.price].concat(this.props.restaurant.categories);
+		const categories = this.props.restaurant.price ? 
+			[this.props.restaurant.price].concat(this.props.restaurant.categories) :
+			this.props.restaurant.categories;
 
 		return (
 			<div 
