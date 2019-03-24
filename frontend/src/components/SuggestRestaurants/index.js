@@ -200,7 +200,8 @@ class SuggestRestaurants extends React.Component {
 					}}
 				>
 					<Card
-						renderContent={i === 0}
+						renderContent={i <= 1}
+						isStacked={i > 0}
 						restaurant={r}
 						isMobile={this.props.isMobile}
 						nextRestaurant={this.nextRestaurant}

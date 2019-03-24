@@ -6,13 +6,15 @@
 	width: 100%;
 	background-color: $white;
 	border-radius: 20px;
-	box-shadow: 0 0 30px $shadow;
-	position: relative;
+	box-shadow: 0 0 10px $gray;
+	position: absolute;
 	z-index: 50;
 	@extend %flex-center-column;
 	justify-content: space-between;
 	padding: 40px 15px;
-	transition: all 0.3s linear;
+	bottom: 0;
+	transition: all 0.4s linear;
+	transition-property: width, transform, z-index, bottom;
 
 	@media (max-width: 650px) {
 		padding: 10px;
@@ -20,12 +22,6 @@
 }
 
 .stackedCard {
-	height: 100%;
-	background-color: $white;
-	border-radius: 20px;
-	box-shadow: 0 0 10px $gray;
-	position: absolute;
-
 	@for $i from 2 through 100 {
 		&:nth-child(#{$i}) {
 			bottom: #{($i - 1) * 8}px;

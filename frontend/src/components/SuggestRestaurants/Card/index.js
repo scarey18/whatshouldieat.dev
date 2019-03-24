@@ -6,13 +6,6 @@ import FlexibleImg from 'components/common/FlexibleImg';
 
 
 class Card extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			renderContent: props.renderContent,
-		}
-	}
-
 	componentDidMount() {
 		if (this.props.renderContent) {
 			this.card.addEventListener('mousedown', this.handleTouchStart);
@@ -21,16 +14,10 @@ class Card extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		// Wait for animation before rendering new restaurant
-		if (this.props.renderContent && !this.state.renderContent) {
-			this.transitionTimeout = setTimeout(
-				() => this.setState({renderContent: true}), 
-				300
-			);
+		if (this.props.renderContent && !prevProps.renderContent) {
 			this.card.addEventListener('mousedown', this.handleTouchStart);
 			this.card.addEventListener('touchstart', this.handleTouchStart);
-		} else if (!this.props.renderContent && this.state.renderContent) {
-			this.setState({renderContent: false});
+		} else if (!this.props.renderContent && prevProps.renderContent) {
 			this.card.removeEventListener('mousedown', this.handleTouchStart);
 			this.card.removeEventListener('touchstart', this.handleTouchStart);
 		}
@@ -58,7 +45,7 @@ class Card extends React.Component {
 	};
 
 	handleTouchEnd = () => {
-		if (!this.state.renderContent) {
+		if (!this.props.renderContent) {
 			return;
 		}
 		window.removeEventListener('mousemove', this.moveCard);
@@ -74,7 +61,7 @@ class Card extends React.Component {
 	};
 
 	moveCard = e => {
-		if (!this.state.renderContent) {
+		if (!this.props.renderContent) {
 			return;
 		}
 		const event = e.touches ? e.touches[0] : e;
@@ -98,7 +85,7 @@ class Card extends React.Component {
 
 	render() {
 		const cardClassList = [styles.card];
-		if (!this.state.renderContent) {
+		if (this.props.isStacked) {
 			cardClassList.push(styles.stackedCard);
 		}
 
@@ -111,7 +98,7 @@ class Card extends React.Component {
 				className={cardClassList.join(' ')} 
 				ref={ref => this.card = ref}
 			>
-			{this.state.renderContent &&
+			{this.props.renderContent &&
 				<React.Fragment>
 					<div className={styles.content}>
 
