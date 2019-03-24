@@ -10,7 +10,6 @@ class Card extends React.Component {
 		super(props);
 		this.state = {
 			renderContent: props.renderContent,
-			isBeingDragged: false,
 		}
 	}
 
@@ -59,20 +58,24 @@ class Card extends React.Component {
 	};
 
 	handleTouchEnd = () => {
+		if (!this.state.renderContent) {
+			return;
+		}
 		window.removeEventListener('mousemove', this.moveCard);
 		window.removeEventListener('touchmove', this.moveCard);
 		window.removeEventListener('mouseup', this.handleTouchEnd);
 		window.removeEventListener('touchend', this.handleTouchEnd);
-		if (this.card) {
-			this.card.style.transform = null;
-			this.card.style.transition = null;
-		}
+		this.card.style.transform = null;
+		this.card.style.transition = null;
 		if (this.rotationRatio <= -0.15) {
 			this.props.nextRestaurant(false);
 		}
 	};
 
 	moveCard = e => {
+		if (!this.state.renderContent) {
+			return;
+		}
 		const event = e.touches ? e.touches[0] : e;
 		const differenceX = event.screenX - this.initialTouchX;
 		const differenceY = event.screenY - this.initialTouchY;
