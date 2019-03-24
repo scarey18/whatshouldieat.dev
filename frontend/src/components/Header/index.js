@@ -12,6 +12,7 @@ class Header extends React.Component {
 			// SearchBar states kept here to keep state when Header expands/contracts.
 			searchBarValue: props.location || '',
 			searchBarSuggestions: [],
+			focusedSuggestion: null,
 			searchBarInputFocused: false,
 		}
 	}
@@ -43,6 +44,7 @@ class Header extends React.Component {
 				searchBarValue: this.props.location, 
 				expanded: false,
 				searchBarInputFocused: false,
+				focusedSuggestion: null,
 			});
 		}
 	};
@@ -76,6 +78,7 @@ class Header extends React.Component {
 							inputFocused={this.state.searchBarInputFocused}
 							updateState={state => this.setState(state)}
 							setLocation={value => this.props.setLocation(value)}
+							focusedSuggestion={this.state.focusedSuggestion}
 						/>
 					}
 					<p>TODO: Links</p>
@@ -94,6 +97,7 @@ class Header extends React.Component {
 								inputFocused={this.state.searchBarInputFocused}
 								updateState={state => this.setState(state)}
 								setLocation={value => this.props.setLocation(value)}
+								focusedSuggestion={this.state.focusedSuggestion}
 							/>
 						</div>
 						<img src={sadPlate} alt="Sad, empty plate :("></img>

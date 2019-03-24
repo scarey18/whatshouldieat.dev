@@ -23,6 +23,7 @@ class FilterBtn extends React.Component {
 
 	componentDidMount() {
 		window.addEventListener('click', this.handleClick);
+		this.adjustEdges();
 	}
 
 	componentWillUnmount() {
@@ -52,6 +53,13 @@ class FilterBtn extends React.Component {
 	};
 
 	onClick = () => {
+		this.adjustEdges();
+		this.setState(prevState => ({
+			expanded: !prevState.expanded,
+		}));
+	};
+
+	adjustEdges = () => {
 		const expandedLeftEdge = this.expandedContent.getBoundingClientRect().left;
 		if (expandedLeftEdge < 0) {
 			const btnLeftEdge = this.btn.getBoundingClientRect().left;
@@ -64,10 +72,6 @@ class FilterBtn extends React.Component {
 			const difference = window.screen.width - btnRightEdge;
 			this.expandedContent.style.right = `-${difference}px`;
 		}
-
-		this.setState(prevState => ({
-			expanded: !prevState.expanded,
-		}));
 	};
 
 	onMouseEnter = () => this.setState({hover: true});
