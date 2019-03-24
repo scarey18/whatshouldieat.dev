@@ -67,6 +67,7 @@ class Card extends React.Component {
 		window.removeEventListener('touchend', this.handleTouchEnd);
 		this.card.style.transform = null;
 		this.card.style.transition = null;
+		document.querySelector('body').style.overflowY = null;
 		if (this.rotationRatio <= -0.15) {
 			this.props.nextRestaurant(false);
 		}
@@ -82,6 +83,7 @@ class Card extends React.Component {
 		const maxRotation = 60;
 		const rotation = maxRotation / (window.innerWidth / differenceX);
 		this.rotationRatio = rotation / maxRotation;
+		document.querySelector('body').style.overflowY = 'hidden';
 		this.card.style.transition = 'none';
 		this.card.style.transform = `translate(${differenceX}px, ${differenceY}px) rotate(${rotation}deg)`;
 	};

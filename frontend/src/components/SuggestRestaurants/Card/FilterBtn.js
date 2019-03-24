@@ -59,11 +59,9 @@ class FilterBtn extends React.Component {
 		}
 
 		const expandedRightEdge = this.expandedContent.getBoundingClientRect().right;
-		if (expandedRightEdge > window.innerWidth) {
-			console.log(true);
+		if (expandedRightEdge > window.screen.width) {
 			const btnRightEdge = this.btn.getBoundingClientRect().right;
-			const difference = window.innerWidth - btnRightEdge;
-			console.log(difference);
+			const difference = window.screen.width - btnRightEdge;
 			this.expandedContent.style.right = `-${difference}px`;
 		}
 
