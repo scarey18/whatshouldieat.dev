@@ -79,6 +79,6 @@ STATICFILES_DIRS = [
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': 'var/tmp/wsie_cache',
+        'LOCATION': '/var/tmp/wsie_cache',
     }
 }

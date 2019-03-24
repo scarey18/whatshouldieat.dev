@@ -48,8 +48,11 @@ class SuggestRestaurants extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.location !== prevProps.location) {
-			this.setState({loading: true});
+			this.setState(prodState);
 			this.getRestaurants();
+		} else if (this.state.restaurants.length <= 12 &&
+			prevState.restaurants.length > 12) {
+			this.getRestaurants(this.state.offset + 40);
 		}
 	}
 
@@ -57,18 +60,53 @@ class SuggestRestaurants extends React.Component {
 		clearTimeout(this.overflowTimeout);
 	}
 
-	getRestaurants = async () => {
-		const params = [
-			'location='+this.props.location,
-			'offset='+this.state.offset,
-		];
-		const resp = await fetch('/api/restaurants?'+params.join('&'));
+	getRestaurants = async (offsetParam) => {
+		const offset = offsetParam || 0;
+		const params = this.getParams(offset);
+		const resp = await fetch('/api/restaurants?'+params);
 		const data = await resp.json();
-		this.setState({restaurants: data.businesses, loading: false});
+		let restaurants = this.state.restaurants.concat(data.businesses);
+		if (this.state.filters.length > 0) {
+			restaurants = this.eliminateThroughFilters(this.state.filters, restaurants);
+		}
+		this.setState({restaurants, loading: false, offset});
+	};
+
+	getParams = offset => {
+		const paramObj = {
+			'location': this.props.location,
+			'offset': offset,
+			'categories': 'restaurants',
+			'price': '',
+		}
+		this.state.filters.forEach(filter => {
+			if (filter.includes('$')) {
+				const prices = {
+					'$$': '1',
+					'$$$': '1,2',
+					'$$$$': '1,2,3'
+				}
+				paramObj['price'] = prices[filter];
+			}
+		});
+		this.state.categories.forEach(category => {
+			if (category.includes('$')) {
+				paramObj['price'] = String(category.length);
+			} else {
+				paramObj['categories'] = category;
+			}
+		});
+		let params = [];
+		for (let [param, value] of Object.entries(paramObj)) {
+			if (value !== '') {
+				params.push(param + '=' + value);
+			}
+		}
+		return params.join('&');
 	};
 
 	nextRestaurant = saveRestaurant => {
-		const history = this.state.history.slice().concat([this.state]);
+		const history = this.state.history.concat([this.state]);
 		const restaurants = this.state.restaurants.slice(1);
 		const savedRestaurants = this.state.savedRestaurants.slice();
 		if (saveRestaurant) {
@@ -86,24 +124,24 @@ class SuggestRestaurants extends React.Component {
 		const categories = this.state.categories.slice();
 		if (!categories.includes(category)) {
 			categories.push(category);
-			const restaurants = this.eliminateThroughCategories(categories);
-			const history = this.state.history.slice().concat([this.state]);
+			const restaurants = this.eliminateThroughCategories(categories, this.state.restaurants);
+			const history = this.state.history.concat([this.state]);
 			this.setState({categories, restaurants, history});
 		}
 	};
 
 	addFilter = filter => {
 		const filters = this.state.filters.slice();
-		if (!filters.includes(filter)) {
+		if (!filters.includes(filter) && filter.length > 1) {
 			filters.push(filter);
-			const restaurants = this.eliminateThroughFilters(filters);
-			const history = this.state.history.slice().concat([this.state]);
+			const restaurants = this.eliminateThroughFilters(filters, this.state.restaurants);
+			const history = this.state.history.concat([this.state]);
 			this.setState({filters, restaurants, history});
 		}
 	};
 
-	eliminateThroughFilters = filters => {
-		return this.state.restaurants.slice().filter(r => {
+	eliminateThroughFilters = (filters, restaurants) => {
+		return restaurants.filter(r => {
 			const restaurantCategories = r.categories.map(c => c.alias);
 			for (const filter of filters) {
 				const isPrice = filter.includes('$');
@@ -120,12 +158,14 @@ class SuggestRestaurants extends React.Component {
 		});
 	};
 
-	eliminateThroughCategories = categories => {
-		return this.state.restaurants.slice().filter(r => {
+	eliminateThroughCategories = (categories, restaurants) => {
+		return restaurants.filter(r => {
 			const restaurantCategories = r.categories.map(c => c.alias);
 			for (const category of categories) {
 				const isPrice = category.includes('$');
-				if (isPrice && r.price.length !== category.length) {
+				if (isPrice && 
+						r.price &&
+						r.price.length !== category.length) {
 					return false;
 				} else if (!isPrice && !restaurantCategories.includes(category)) {
 					return false;
@@ -138,7 +178,7 @@ class SuggestRestaurants extends React.Component {
 	bringBackSavedRestaurants = () => {
 		const savedRestaurants = this.state.savedRestaurants.slice();
 		const restaurants = this.state.restaurants.slice();
-		const history = this.state.history.slice().concat([this.state]);
+		const history = this.state.history.concat([this.state]);
 		this.setState({
 			restaurants: savedRestaurants.concat(restaurants),
 			savedRestaurants: [],

@@ -26,7 +26,7 @@
 	box-shadow: 0 0 10px $gray;
 	position: absolute;
 
-	@for $i from 2 through 50 {
+	@for $i from 2 through 100 {
 		&:nth-child(#{$i}) {
 			bottom: #{($i - 1) * 8}px;
 			width: #{102% - ($i * 2)};
