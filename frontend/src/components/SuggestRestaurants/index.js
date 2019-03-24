@@ -4,6 +4,7 @@ import styles from 'styles/SuggestRestaurants.module.scss';
 import testData from './test.json';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import MapModal from 'components/common/MapModal';
+import LoadingRing from 'components/common/LoadingRing';
 
 
 const prodState = {
@@ -216,6 +217,14 @@ class SuggestRestaurants extends React.Component {
 		return (
 			<React.Fragment>
 				<div className={styles.suggestRestaurants}>
+					{this.state.loading &&
+						<div className={styles.loadingSection}>
+							<div className={styles.loadingRingContainer}>
+								<LoadingRing />
+							</div>
+							<h2>Retrieving restaurants...</h2>
+						</div>
+					}
 					{!this.state.loading && 
 						<TransitionGroup className={styles.cardStack}>
 							{stackedCards}

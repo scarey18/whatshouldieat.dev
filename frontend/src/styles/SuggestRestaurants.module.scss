@@ -7,6 +7,21 @@
 	width: 100%;
 }
 
+.loadingSection {
+	@extend %flex-center-column;
+	height: 90vh;
+	width: 100vw;
+	position: absolute;
+	top: 0;
+
+	.loadingRingContainer {
+		@extend %flex-center;
+		height: 200px;
+		width: 200px;
+		color: $purple;
+	}
+}
+
 .cardStack {
 	@extend %flex-center;
 	position: relative;
