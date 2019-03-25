@@ -166,6 +166,7 @@ class Card extends React.Component {
 									return (
 										<FilterBtn
 											category={category}
+											restaurantSelected={this.props.restaurantSelected}
 											addCategory={() => this.props.addCategory(filterValue)}
 											addFilter={() => this.props.addFilter(filterValue)}
 											key={filterValue}
@@ -174,7 +175,7 @@ class Card extends React.Component {
 								})}
 							</div>
 
-						{/* Address info and show on map link */}
+						{/* Address info and "Show on Map" link */}
 							<div className={styles.addressInfo}>
 								<div className={styles.fullAddress}>
 									<p>{this.props.restaurant.location.address1}</p>
@@ -196,11 +197,13 @@ class Card extends React.Component {
 					</div>
 
 				{/* Bottom action buttons */}
-					<div className={styles.actionBtns}>
-						<ActionBtn id={0} action={() => this.props.nextRestaurant(false)} />
-						<ActionBtn id={1} action={() => this.props.nextRestaurant(true)} />
-						<ActionBtn id={2} action={this.props.selectRestaurant} />
-					</div>
+					{!this.props.restaurantSelected &&
+						<div className={styles.actionBtns}>
+							<ActionBtn id={0} action={() => this.props.nextRestaurant(false)} />
+							<ActionBtn id={1} action={() => this.props.nextRestaurant(true)} />
+							<ActionBtn id={2} action={this.props.selectRestaurant} />
+						</div>
+					}
 				</React.Fragment>}
 			</div>
 		);

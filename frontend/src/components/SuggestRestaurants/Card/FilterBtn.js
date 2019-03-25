@@ -83,6 +83,9 @@ class FilterBtn extends React.Component {
 		if (this.state.expanded) {
 			classList.push(styles.focused);
 		}
+		if (this.props.restaurantSelected) {
+			classList.push(styles.disabled);
+		}
 
 		const borderStyle = {
 			width: (this.state.hover || this.state.expanded ? "100%" : 0),
@@ -97,11 +100,11 @@ class FilterBtn extends React.Component {
 		return (
 			<div
 				className={classList.join(' ')}
-				onClick={this.onClick}
-				onMouseEnter={this.onMouseEnter}
-				onMouseLeave={this.onMouseLeave}
+				onClick={this.props.restaurantSelected ? null : this.onClick}
+				onMouseEnter={this.props.restaurantSelected ? null : this.onMouseEnter}
+				onMouseLeave={this.props.restaurantSelected ? null : this.onMouseLeave}
 				ref={ref => this.btn = ref}
-				title="Click to filter"
+				title={this.props.restaurantSelected ? "" : "Click to filter"}
 			>
 				{this.props.category.title || this.props.category}
 

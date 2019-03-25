@@ -8,9 +8,14 @@
 	height: 2rem;
 	margin: 0 7px 7px 0;
 	padding: 10px;
-	border-radius: 2px;
+	border-radius: 5px;
 	position: relative;
 	transition: all 0.3s ease-in-out;
+}
+
+.disabled {
+	box-shadow: none;
+	cursor: default;
 }
 
 .focused {
