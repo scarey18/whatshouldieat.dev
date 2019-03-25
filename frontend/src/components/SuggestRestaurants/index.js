@@ -1,13 +1,13 @@
 import React from 'react';
 import Card from './Card';
 import styles from 'styles/SuggestRestaurants.module.scss';
-import testData from './test.json';
+import * as utils from './utils';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import MapModal from 'components/common/MapModal';
 import LoadingRing from 'components/common/LoadingRing';
 
 
-const prodState = {
+const initialState = {
 	restaurants: [],
 	offset: 0,
 	history: [],
@@ -18,29 +18,16 @@ const prodState = {
 	renderMapModal: false,
 }
 
-const devState = {
-	...prodState,
-	restaurants: testData.businesses,
-	loading: false,
-}
-
 
 class SuggestRestaurants extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = prodState;
+		this.state = initialState;
 	}
 
 	setState = (...args) => {
 		super.setState(...args);
-		this.stopOverflow();
-	};
-
-	// Stops scrollbar flickering on card transitions
-	stopOverflow = () => {
-		const body = document.querySelector('body');
-		body.style.overflowY = 'hidden';
-		this.overflowTimeout = setTimeout(() => body.style.overflowY = 'auto', 400);
+		utils.stopOverflow(this);
 	};
 
 	componentDidMount() {
@@ -49,7 +36,7 @@ class SuggestRestaurants extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.location !== prevProps.location) {
-			this.setState(prodState);
+			this.setState(initialState);
 			this.getRestaurants();
 		} else if (this.state.restaurants.length <= 12 &&
 			prevState.restaurants.length > 12) {
@@ -63,47 +50,14 @@ class SuggestRestaurants extends React.Component {
 
 	getRestaurants = async (offsetParam) => {
 		const offset = offsetParam || 0;
-		const params = this.getParams(offset);
+		const params = utils.getParams(this, offset);
 		const resp = await fetch('/api/restaurants?'+params);
 		const data = await resp.json();
 		let restaurants = this.state.restaurants.concat(data.businesses);
 		if (this.state.filters.length > 0) {
-			restaurants = this.eliminateThroughFilters(this.state.filters, restaurants);
+			restaurants = utils.eliminateThroughFilters(this.state.filters, restaurants);
 		}
 		this.setState({restaurants, loading: false, offset});
-	};
-
-	getParams = offset => {
-		const paramObj = {
-			'location': this.props.location,
-			'offset': offset,
-			'categories': 'restaurants',
-			'price': '',
-		}
-		this.state.filters.forEach(filter => {
-			if (filter.includes('$')) {
-				const prices = {
-					'$$': '1',
-					'$$$': '1,2',
-					'$$$$': '1,2,3'
-				}
-				paramObj['price'] = prices[filter];
-			}
-		});
-		this.state.categories.forEach(category => {
-			if (category.includes('$')) {
-				paramObj['price'] = String(category.length);
-			} else {
-				paramObj['categories'] = category;
-			}
-		});
-		let params = [];
-		for (let [param, value] of Object.entries(paramObj)) {
-			if (value !== '') {
-				params.push(param + '=' + value);
-			}
-		}
-		return params.join('&');
 	};
 
 	nextRestaurant = saveRestaurant => {
@@ -125,7 +79,7 @@ class SuggestRestaurants extends React.Component {
 		const categories = this.state.categories.slice();
 		if (!categories.includes(category)) {
 			categories.push(category);
-			const restaurants = this.eliminateThroughCategories(categories, this.state.restaurants);
+			const restaurants = utils.eliminateThroughCategories(categories, this.state.restaurants);
 			const history = this.state.history.concat([this.state]);
 			this.setState({categories, restaurants, history});
 		}
@@ -135,45 +89,10 @@ class SuggestRestaurants extends React.Component {
 		const filters = this.state.filters.slice();
 		if (!filters.includes(filter) && filter.length > 1) {
 			filters.push(filter);
-			const restaurants = this.eliminateThroughFilters(filters, this.state.restaurants);
+			const restaurants = utils.eliminateThroughFilters(filters, this.state.restaurants);
 			const history = this.state.history.concat([this.state]);
 			this.setState({filters, restaurants, history});
 		}
-	};
-
-	eliminateThroughFilters = (filters, restaurants) => {
-		return restaurants.filter(r => {
-			const restaurantCategories = r.categories.map(c => c.alias);
-			for (const filter of filters) {
-				const isPrice = filter.includes('$');
-				if (isPrice && 
-						filter.length > 1 && 
-						r.price &&
-						r.price.length >= filter.length) {
-					return false;
-				} else if (!isPrice && restaurantCategories.includes(filter)) {
-					return false;
-				}
-			}
-			return true;
-		});
-	};
-
-	eliminateThroughCategories = (categories, restaurants) => {
-		return restaurants.filter(r => {
-			const restaurantCategories = r.categories.map(c => c.alias);
-			for (const category of categories) {
-				const isPrice = category.includes('$');
-				if (isPrice && 
-						r.price &&
-						r.price.length !== category.length) {
-					return false;
-				} else if (!isPrice && !restaurantCategories.includes(category)) {
-					return false;
-				}
-			}
-			return true;
-		});
 	};
 
 	bringBackSavedRestaurants = () => {
@@ -254,6 +173,7 @@ class SuggestRestaurants extends React.Component {
 							</button>
 						}
 					</div>
+					
 				{/* Message if no restaurants found */}
 					{!this.state.loading && this.state.restaurants.length === 0 &&
 						<div className={styles.messageSection}>

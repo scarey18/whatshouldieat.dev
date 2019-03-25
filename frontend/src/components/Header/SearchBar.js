@@ -96,7 +96,7 @@ class SearchBar extends React.Component {
 	btnClick = event => {
 		event.preventDefault();
 		clearTimeout(this.timeout);
-		if (this.props.suggestions.length > 0) {
+		if (this.props.suggestions.length > 0 && this.props.inputFocused) {
 			const i = this.props.focusedSuggestion || 0;
 			const value = this.props.suggestions[i];
 			this.props.setLocation(value);

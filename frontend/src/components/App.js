@@ -74,7 +74,7 @@ class App extends React.Component {
 					goHome={this.goHome}
 				/>
 				<Main 
-					location={this.state.userLocation} 
+					location={this.state.userLocation}
 					isMobile={this.state.isMobile}
 				/>
 			</div>
