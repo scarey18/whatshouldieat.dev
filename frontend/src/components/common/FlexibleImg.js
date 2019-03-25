@@ -10,16 +10,18 @@ class FlexibleImg extends React.Component {
 		}
 	}
 
-	componentDidMount() {
-		window.addEventListener('resize', this.styleImg);
-	}
-
 	componentWillUnmount() {
 		clearTimeout(this.timeout);
-		window.removeEventListener('resize', this.styleImg);
+		this.parent.removeEventListener('resize', this.styleImg);
 	}
 
-	startTimeout = () => {
+	onLoad = () => {
+		this.parent = this.img.parentElement;
+		for (let i = 0; i < this.props.parentDepth - 1; i++) {
+			this.parent = this.parent.parentElement;
+		}
+		this.parent.addEventListener('resize', this.styleImg);
+
 		if (this.props.delay) {
 			this.timeout = setTimeout(this.styleImg, this.props.delay);
 		} else {
@@ -28,18 +30,14 @@ class FlexibleImg extends React.Component {
 	};
 
 	styleImg = () => {
-		let parent = this.img.parentElement;
-		for (let i = 0; i < this.props.parentDepth - 1; i++) {
-			parent = parent.parentElement;
-		}
-
-		const parentRect = parent.getBoundingClientRect();
+		const parentRect = this.parent.getBoundingClientRect();
 		const imgRect = this.img.getBoundingClientRect();
 		const widthRatio = parentRect.width / imgRect.width;
 		const heightRatio = parentRect.height / imgRect.height;
 		const className = widthRatio < heightRatio ? styles.landscape : styles.portrait;
-
-		this.setState({className});
+		if (className !== this.state.className) {
+			this.setState({className});
+		}
 	};
 
 	render() {
@@ -48,7 +46,7 @@ class FlexibleImg extends React.Component {
 				src={this.props.src}
 				alt={this.props.alt}
 				className={this.state.className}
-				onLoad={this.startTimeout}
+				onLoad={this.onLoad}
 				ref={ref => this.img = ref}
 			></img>
 		)
