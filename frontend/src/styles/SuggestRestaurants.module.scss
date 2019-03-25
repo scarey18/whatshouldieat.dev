@@ -27,12 +27,39 @@
 	position: relative;
 	height: 60vh;
 	width: 100%;
-	margin-top: 5rem;
+	animation: slideDown 0.3s forwards;
+}
+
+@keyframes slideDown {
+	from {
+		height: 80vh;
+		width: 100vw;
+		margin-top: 0;
+	}
+	to {
+		height: 60vh;
+		width: 100%;
+		margin-top: 5rem;
+	}
 }
 
 .selectedCardContainer {
 	@extend %flex-center;
 	position: relative;
+	animation: selectCard 0.3s forwards;
+}
+
+@keyframes selectCard {
+	from {
+		height: 60vh;
+		width: 100%;
+		margin-top: 5rem;
+	}
+	to {
+		height: 80vh;
+		width: 100vw;
+		margin-top: none;
+	}
 }
 
 .messageSection {
