@@ -14,10 +14,15 @@ class Card extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.renderContent && !prevProps.renderContent) {
+		if (this.props.renderContent && 
+					(!prevProps.renderContent || 
+						!this.props.restaurantSelected && prevProps.restaurantSelected
+					)
+				) {
 			this.card.addEventListener('mousedown', this.handleTouchStart);
 			this.card.addEventListener('touchstart', this.handleTouchStart);
-		} else if (!this.props.renderContent && prevProps.renderContent) {
+		} else if (!this.props.renderContent && prevProps.renderContent ||
+								this.props.restaurantSelected && !prevProps.restaurantSelected) {
 			this.card.removeEventListener('mousedown', this.handleTouchStart);
 			this.card.removeEventListener('touchstart', this.handleTouchStart);
 		}
@@ -87,6 +92,8 @@ class Card extends React.Component {
 		const cardClassList = [styles.card];
 		if (this.props.isStacked) {
 			cardClassList.push(styles.stackedCard);
+		} else if (this.props.restaurantSelected) {
+			cardClassList.push(styles.selectedCard);
 		}
 
 		const categories = this.props.restaurant.price ? 
@@ -167,6 +174,7 @@ class Card extends React.Component {
 								})}
 							</div>
 
+						{/* Address info and show on map link */}
 							<div className={styles.addressInfo}>
 								<div className={styles.fullAddress}>
 									<p>{this.props.restaurant.location.address1}</p>
@@ -191,7 +199,7 @@ class Card extends React.Component {
 					<div className={styles.actionBtns}>
 						<ActionBtn id={0} action={() => this.props.nextRestaurant(false)} />
 						<ActionBtn id={1} action={() => this.props.nextRestaurant(true)} />
-						<ActionBtn id={2} />
+						<ActionBtn id={2} action={this.props.selectRestaurant} />
 					</div>
 				</React.Fragment>}
 			</div>

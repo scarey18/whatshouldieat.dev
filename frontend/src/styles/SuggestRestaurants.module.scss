@@ -4,6 +4,7 @@
 .suggestRestaurants {
 	@extend %flex-center-column;
 	@extend %container;
+	height: 100%;
 	width: 100%;
 }
 
@@ -27,6 +28,11 @@
 	height: 60vh;
 	width: 100%;
 	margin-top: 5rem;
+}
+
+.selectedCardContainer {
+	@extend %flex-center;
+	position: relative;
 }
 
 .messageSection {

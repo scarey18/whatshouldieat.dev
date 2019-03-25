@@ -21,6 +21,15 @@
 	}
 }
 
+.selectedCard {
+	position: relative;
+	border-radius: 0;
+	box-shadow: none;
+	height: 80vh;
+	width: 100vw;
+	transition-property: height, width;
+}
+
 .stackedCard {
 	@for $i from 2 through 100 {
 		&:nth-child(#{$i}) {

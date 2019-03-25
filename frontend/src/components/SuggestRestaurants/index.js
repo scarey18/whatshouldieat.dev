@@ -16,6 +16,7 @@ const initialState = {
 	loading: true,
 	savedRestaurants: [],
 	renderMapModal: false,
+	restaurantSelected: false,
 }
 
 
@@ -106,6 +107,11 @@ class SuggestRestaurants extends React.Component {
 		});
 	};
 
+	selectRestaurant = () => {
+		const history = this.state.history.concat([this.state]);
+		this.setState({restaurantSelected: true, history});
+	}
+
 	render() {
 		const stackedCards = this.state.restaurants.map((r, i) => {
 			return (
@@ -128,10 +134,15 @@ class SuggestRestaurants extends React.Component {
 						addCategory={this.addCategory}
 						addFilter={this.addFilter}
 						showOnMap={() => this.setState({renderMapModal: true})}
+						selectRestaurant={this.selectRestaurant}
+						restaurantSelected={this.state.restaurantSelected}
 					/>
 				</CSSTransition>
 			);
 		});
+
+		const stackClass = !this.state.restaurantSelected ?
+			styles.cardStack : styles.selectedCardContainer;
 
 		return (
 			<React.Fragment>
@@ -147,12 +158,29 @@ class SuggestRestaurants extends React.Component {
 						</div>
 					}
 
-				{/* Card stack with restaurants */}
-					{!this.state.loading && this.state.restaurants.length > 0 &&
-						<TransitionGroup className={styles.cardStack}>
-							{stackedCards}
+				{/* Card stack with restaurants 
+						(or single card if restaurant was selected) */}
+					{this.state.restaurants.length > 0 &&
+						<TransitionGroup className={stackClass}>
+							{!this.state.restaurantSelected ? 
+								stackedCards :
+								<CSSTransition
+									key={this.state.restaurants[0].id}
+								>
+									<Card
+										renderContent={true}
+										isStacked={false}
+										restaurant={this.state.restaurants[0]}
+										isMobile={this.props.isMobile}
+										showOnMap={() => this.setState({renderMapModal: true})}
+										restaurantSelected={this.state.restaurantSelected}
+									/>
+								</CSSTransition>
+							}
 						</TransitionGroup>
 					}
+
+				{/* Undo buttons */}
 					<div className={styles.historyBtns}>
 						{this.state.history.length > 0 &&
 							<button 
@@ -164,6 +192,7 @@ class SuggestRestaurants extends React.Component {
 							</button>
 						}
 						{this.state.savedRestaurants.length > 0 &&
+							!this.state.restaurantSelected &&
 							<button 
 								className={styles.savedRestaurantsBtn} 
 								title="Saved Restaurants"
@@ -173,7 +202,7 @@ class SuggestRestaurants extends React.Component {
 							</button>
 						}
 					</div>
-					
+
 				{/* Message if no restaurants found */}
 					{!this.state.loading && this.state.restaurants.length === 0 &&
 						<div className={styles.messageSection}>
