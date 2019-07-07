@@ -137,15 +137,22 @@
 	}
 }
 
-.transactions {
-	display: flex;
-	align-items: center;
+.contactInfo {
+	@include fadeInAnimation(2s);
+	margin-top: 15px;
 
-	p {
-		margin-right: 1.5rem;
+	h2 {
+		font-size: 2rem;
+		width: 15rem;
+		max-width: 90%;
+		color: $green;
+		border-bottom: 2px solid $green;
+	}
 
-		i {
-			color: $green;
+	a {
+		color: $link;
+		&:hover {
+			text-decoration: underline;
 		}
 	}
 }

@@ -13,12 +13,13 @@ class FlexibleImg extends React.Component {
 	componentDidUpdate(prevProps) {
 		const triggersLength = this.props.restyleTriggers ? 
 			this.props.restyleTriggers.length : 0;
+			
 		for (let i = 0; i < triggersLength; i++) {
 			const triggerBool = this.props.restyleTriggers[i][0];
 			if (triggerBool !== prevProps.restyleTriggers[i][0]) {
 				const timer = this.props.restyleTriggers[i][1];
 				this.setState({className: styles.hidden});
-				this.resizeTimeout = setTimeout(this.styleImg, timer);
+				this.restyleTimeout = setTimeout(this.styleImg, timer);
 				break;
 			}
 		}
@@ -26,7 +27,7 @@ class FlexibleImg extends React.Component {
 
 	componentWillUnmount() {
 		clearTimeout(this.initialTimeout);
-		clearTimeout(this.resizeTimeout);
+		clearTimeout(this.restyleTimeout);
 		window.removeEventListener('resize', this.styleImg);
 	}
 

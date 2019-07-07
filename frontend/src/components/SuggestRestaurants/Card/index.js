@@ -100,12 +100,6 @@ class Card extends React.Component {
 			[this.props.restaurant.price].concat(this.props.restaurant.categories) :
 			this.props.restaurant.categories;
 
-		const transactionHash = {
-			'pickup': 'Pickup',
-			'delivery': 'Delivery',
-			'restaurant_reservation': 'Reservation',
-		}
-
 		return (
 			<div 
 				className={cardClassList.join(' ')} 
@@ -194,15 +188,20 @@ class Card extends React.Component {
 								</a>
 							</div>
 
-						{/* Available transactions */}
-							{this.props.restaurant.transactions.length > 0 &&
-								<div className={styles.transactions}>
-									{this.props.restaurant.transactions.map(t => (
-										<p>
-											{transactionHash[t] + ': '}
-											<i className="fas fa-check"></i>
-										</p>
-									))}
+						{/* Contact info shown when restaurant is selected */}
+							{this.props.restaurantSelected && 
+								<div className={styles.contactInfo}>
+									<h2>Contact</h2>
+									{this.props.restaurant.display_phone &&
+										<p>Phone: {this.props.restaurant.display_phone}</p>
+									}
+									<p>
+										Find more info on&nbsp;
+										<a href={this.props.restaurant.url} target="_blank">
+											the {this.props.restaurant.name} Yelp page
+										</a>
+										.
+									</p>
 								</div>
 							}
 
