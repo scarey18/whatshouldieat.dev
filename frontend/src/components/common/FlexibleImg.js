@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from 'styles/FlexibleImg.module.scss';
-import elementResizeDetectorMaker from 'element-resize-detector';
 
 
 class FlexibleImg extends React.Component {
@@ -9,15 +8,26 @@ class FlexibleImg extends React.Component {
 		this.state = {
 			className: styles.hidden,
 		}
-		if (!window.erd) {
-			window.erd = elementResizeDetectorMaker({strategy: 'scroll'});
+	}
+
+	componentDidUpdate(prevProps) {
+		const triggersLength = this.props.restyleTriggers ? 
+			this.props.restyleTriggers.length : 0;
+		for (let i = 0; i < triggersLength; i++) {
+			const triggerBool = this.props.restyleTriggers[i][0];
+			if (triggerBool !== prevProps.restyleTriggers[i][0]) {
+				const timer = this.props.restyleTriggers[i][1];
+				this.setState({className: styles.hidden});
+				this.resizeTimeout = setTimeout(this.styleImg, timer);
+				break;
+			}
 		}
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.initialTimeout);
+		clearTimeout(this.resizeTimeout);
 		window.removeEventListener('resize', this.styleImg);
-		window.erd.removeListener(this.parent, this.styleImg);
 	}
 
 	onLoad = () => {
@@ -33,7 +43,6 @@ class FlexibleImg extends React.Component {
 		}
 
 		window.addEventListener('resize', this.styleImg);
-		window.erd.listenTo(this.parent, this.styleImg);
 	};
 
 	styleImg = () => {

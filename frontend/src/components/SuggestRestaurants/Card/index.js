@@ -128,6 +128,7 @@ class Card extends React.Component {
 										alt={this.props.restaurant.name}
 										parentDepth={2}
 										delay={500}
+										restyleTriggers={[[this.props.restaurantSelected, 200]]}
 									/>
 								</a>
 							</div>
