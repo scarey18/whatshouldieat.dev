@@ -113,33 +113,31 @@ class SuggestRestaurants extends React.Component {
 	}
 
 	render() {
-		const stackedCards = this.state.restaurants.map((r, i) => {
-			return (
-				<CSSTransition
-					key={r.id}
-					timeout={300}
-					classNames={{
-						enter: styles.cardEnter,
-						enterActive: styles.cardEnterActive,
-						exit: styles.cardExit,
-						exitActive: styles.cardExitActive,
-					}}
-				>
-					<Card
-						renderContent={i <= 1}
-						isStacked={i > 0}
-						restaurant={r}
-						isMobile={this.props.isMobile}
-						nextRestaurant={this.nextRestaurant}
-						addCategory={this.addCategory}
-						addFilter={this.addFilter}
-						showOnMap={() => this.setState({renderMapModal: true})}
-						selectRestaurant={this.selectRestaurant}
-						restaurantSelected={this.state.restaurantSelected}
-					/>
-				</CSSTransition>
-			);
-		});
+		const stackedCards = this.state.restaurants.map((r, i) => (
+			<CSSTransition
+				key={r.id}
+				timeout={300}
+				classNames={{
+					enter: styles.cardEnter,
+					enterActive: styles.cardEnterActive,
+					exit: styles.cardExit,
+					exitActive: styles.cardExitActive,
+				}}
+			>
+				<Card
+					renderContent={i <= 1}
+					isStacked={i > 0}
+					restaurant={r}
+					isMobile={this.props.isMobile}
+					nextRestaurant={this.nextRestaurant}
+					addCategory={this.addCategory}
+					addFilter={this.addFilter}
+					showOnMap={() => this.setState({renderMapModal: true})}
+					selectRestaurant={this.selectRestaurant}
+					restaurantSelected={this.state.restaurantSelected}
+				/>
+			</CSSTransition>
+		));
 
 		const stackClass = !this.state.restaurantSelected ?
 			styles.cardStack : styles.selectedCardContainer;
@@ -162,21 +160,7 @@ class SuggestRestaurants extends React.Component {
 						(or single card if restaurant was selected) */}
 					{this.state.restaurants.length > 0 &&
 						<TransitionGroup className={stackClass}>
-							{!this.state.restaurantSelected ? 
-								stackedCards :
-								<CSSTransition
-									key={this.state.restaurants[0].id}
-								>
-									<Card
-										renderContent={true}
-										isStacked={false}
-										restaurant={this.state.restaurants[0]}
-										isMobile={this.props.isMobile}
-										showOnMap={() => this.setState({renderMapModal: true})}
-										restaurantSelected={this.state.restaurantSelected}
-									/>
-								</CSSTransition>
-							}
+							{stackedCards}
 						</TransitionGroup>
 					}
 

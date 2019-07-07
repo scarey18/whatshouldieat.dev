@@ -21,13 +21,6 @@
 	}
 }
 
-.selectedCard {
-	position: relative;
-	border-radius: 0;
-	box-shadow: none;
-	transition: none;
-}
-
 .stackedCard {
 	@for $i from 2 through 100 {
 		&:nth-child(#{$i}) {
@@ -140,6 +133,19 @@
 
 		&:hover {
 			text-decoration: underline;
+		}
+	}
+}
+
+.transactions {
+	display: flex;
+	align-items: center;
+
+	p {
+		margin-right: 1.5rem;
+
+		i {
+			color: $green;
 		}
 	}
 }

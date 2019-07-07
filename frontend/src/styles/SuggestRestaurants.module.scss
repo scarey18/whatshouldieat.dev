@@ -27,13 +27,13 @@
 	position: relative;
 	height: 60vh;
 	width: 100%;
-	animation: slideDown 0.3s forwards;
+	animation: slideDown linear 0.2s forwards;
 }
 
 @keyframes slideDown {
 	from {
 		height: 80vh;
-		width: 100vw;
+		width: 95vw;
 		margin-top: 0;
 	}
 	to {
@@ -46,7 +46,7 @@
 .selectedCardContainer {
 	@extend %flex-center;
 	position: relative;
-	animation: selectCard 0.3s forwards;
+	animation: selectCard linear 0.2s forwards;
 }
 
 @keyframes selectCard {
@@ -57,7 +57,7 @@
 	}
 	to {
 		height: 80vh;
-		width: 100vw;
+		width: 95vw;
 		margin-top: none;
 	}
 }
@@ -99,7 +99,6 @@
 
 .cardEnterActive {
 	transform: translate(0) rotate(0);
-	transition: all 0.3s linear;
 }
 
 .cardExit {

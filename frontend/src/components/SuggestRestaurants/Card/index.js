@@ -100,6 +100,12 @@ class Card extends React.Component {
 			[this.props.restaurant.price].concat(this.props.restaurant.categories) :
 			this.props.restaurant.categories;
 
+		const transactionHash = {
+			'pickup': 'Pickup',
+			'delivery': 'Delivery',
+			'restaurant_reservation': 'Reservation',
+		}
+
 		return (
 			<div 
 				className={cardClassList.join(' ')} 
@@ -121,7 +127,7 @@ class Card extends React.Component {
 										src={this.props.restaurant.image_url}
 										alt={this.props.restaurant.name}
 										parentDepth={2}
-										delay={315}
+										delay={500}
 									/>
 								</a>
 							</div>
@@ -178,23 +184,30 @@ class Card extends React.Component {
 						{/* Address info and "Show on Map" link */}
 							<div className={styles.addressInfo}>
 								<div className={styles.fullAddress}>
-									<p>{this.props.restaurant.location.address1}</p>
-									{this.props.restaurant.location.address2 &&
-										<p>{this.props.restaurant.location.address2}</p>}
-									{this.props.restaurant.location.address3 &&
-										<p>{this.props.restaurant.location.address3}</p>}
-									<p>
-										{`${this.props.restaurant.location.city}, 
-											${this.props.restaurant.location.state} 
-											${this.props.restaurant.location.zip_code}`}
-									</p>
+									{this.props.restaurant.location.display_address.map(str => (
+										 <p>{str}</p>
+									))}
 								</div>
 								<a onClick={this.props.showOnMap}>
 									Show on Map
 								</a>
 							</div>
+
+						{/* Available transactions */}
+							{this.props.restaurant.transactions.length > 0 &&
+								<div className={styles.transactions}>
+									{this.props.restaurant.transactions.map(t => (
+										<p>
+											{transactionHash[t] + ': '}
+											<i className="fas fa-check"></i>
+										</p>
+									))}
+								</div>
+							}
+
 						</div>
 					</div>
+
 
 				{/* Bottom action buttons */}
 					{!this.props.restaurantSelected &&
