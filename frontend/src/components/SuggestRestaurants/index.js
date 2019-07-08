@@ -4,7 +4,9 @@ import styles from 'styles/SuggestRestaurants.module.scss';
 import * as utils from './utils';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import MapModal from 'components/common/MapModal';
+import Sidebar from 'components/common/Sidebar';
 import LoadingRing from 'components/common/LoadingRing';
+import CategoryList from './CategoryList';
 
 
 const initialState = {
@@ -58,7 +60,10 @@ class SuggestRestaurants extends React.Component {
 		if (this.state.filters.length > 0) {
 			restaurants = utils.eliminateThroughFilters(this.state.filters, restaurants);
 		}
-		this.setState({restaurants, loading: false, offset});
+		const seenCategories = utils.addNewCategories(
+			this.state.seenCategories, data.businesses
+		);
+		this.setState({restaurants, loading: false, offset, seenCategories});
 	};
 
 	nextRestaurant = saveRestaurant => {
@@ -119,7 +124,7 @@ class SuggestRestaurants extends React.Component {
 	selectRestaurant = () => {
 		const history = this.state.history.concat([this.state]);
 		this.setState({restaurantSelected: true, history});
-	}
+	};
 
 	render() {
 		const stackedCards = this.state.restaurants.map((r, i) => (
@@ -212,6 +217,15 @@ class SuggestRestaurants extends React.Component {
 					restaurant={this.state.restaurants[0]}
 					onClose={() => this.setState({renderMapModal: false})}
 				/>
+
+			{/* Sidebar with category selection */}
+				{!this.state.restaurantSelected &&
+					<Sidebar>
+						<CategoryList 
+							categories={this.state.seenCategories}
+						/>
+					</Sidebar>
+				}
 			</React.Fragment>
 		);
 	}

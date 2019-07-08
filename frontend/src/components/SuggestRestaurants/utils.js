@@ -68,4 +68,20 @@ function eliminateThroughPrice(price, restaurants) {
 }
 
 
-export { stopOverflow, getParams, eliminateThroughFilters, eliminateThroughCategories, eliminateThroughPrice };
+function addNewCategories(seenCategories, restaurants) {
+	const categories = seenCategories.slice();
+	const aliases = categories.map(c => c.alias);
+	let categoryAdded = false;
+	for (const r of restaurants) {
+		for (const c of r.categories) {
+			if (!aliases.includes(c.alias)) {
+				aliases.push(c.alias);
+				categories.push(c);
+			}
+		}
+	}
+	return categories;
+}
+
+
+export { stopOverflow, getParams, eliminateThroughFilters, eliminateThroughCategories, eliminateThroughPrice, addNewCategories };
