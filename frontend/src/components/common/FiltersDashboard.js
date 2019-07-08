@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from 'styles/FiltersDashboard.module.scss';
+import PriceSelection from './PriceSelection';
 
 
 class FiltersDashboard extends React.Component {
@@ -9,6 +10,7 @@ class FiltersDashboard extends React.Component {
 			display: 'current filters',
 			selectedCategories: [],
 			selectedFilters: [],
+			selectedPrice: props.price,
 		}
 	}
 
@@ -31,10 +33,15 @@ class FiltersDashboard extends React.Component {
 
 		return (
 			<React.Fragment>
+				<h2>Maximum price:</h2>
+				<PriceSelection 
+					price={this.props.price} 
+					onPriceChange={this.props.changePrice}
+				/>
 				<h2>Don't show me:</h2>
 				{filters}
 				<h2>Only show me:</h2>
-				{categories}
+				{categories}				
 			</React.Fragment>
 		);
 	};

@@ -13,10 +13,10 @@ def restaurants(request):
 			'categories': request.GET['categories'],
 			'limit': 50,
 			'offset': request.GET['offset'],
-			'sort_by': 'distance',
+			'sort_by': 'best_match',
 			'open_now': True,
 		}
-		if request.GET.get('price', '') != '':
+		if request.GET.get('price', None):
 			params['price'] = request.GET['price']
 		api_key = os.environ['YELP_API_KEY']
 		response = requests.get(

@@ -132,6 +132,7 @@ class SuggestRestaurants extends React.Component {
 			<CSSTransition
 				key={r.id}
 				timeout={300}
+				unmountOnExit
 				classNames={{
 					enter: styles.cardEnter,
 					enterActive: styles.cardEnterActive,
@@ -225,6 +226,8 @@ class SuggestRestaurants extends React.Component {
 						<FiltersDashboard 
 							categories={this.state.categories}
 							filters={this.state.filters}
+							price={this.state.price}
+							changePrice={this.changePrice}
 						/>
 					</Sidebar>
 				}
