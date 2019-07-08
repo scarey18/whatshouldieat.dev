@@ -6,7 +6,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import MapModal from 'components/common/MapModal';
 import Sidebar from 'components/common/Sidebar';
 import LoadingRing from 'components/common/LoadingRing';
-import CategoryList from './CategoryList';
+import FiltersDashboard from 'components/common/FiltersDashboard';
 
 
 const initialState = {
@@ -20,6 +20,7 @@ const initialState = {
 	renderMapModal: false,
 	restaurantSelected: false,
 	price: 4,
+	seenCategories: [],
 }
 
 
@@ -127,7 +128,7 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	render() {
-		const stackedCards = this.state.restaurants.map((r, i) => (
+		const stackedCards = this.state.restaurants.slice(0, 11).map((r, i) => (
 			<CSSTransition
 				key={r.id}
 				timeout={300}
@@ -221,9 +222,7 @@ class SuggestRestaurants extends React.Component {
 			{/* Sidebar with category selection */}
 				{!this.state.restaurantSelected &&
 					<Sidebar>
-						<CategoryList 
-							categories={this.state.seenCategories}
-						/>
+						<FiltersDashboard />
 					</Sidebar>
 				}
 			</React.Fragment>

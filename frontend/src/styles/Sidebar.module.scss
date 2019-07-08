@@ -11,7 +11,7 @@
 	width: 1.5rem;
 	z-index: 995;
 	border-radius: 10px 0 0 10px;
-	transition: width 0.2s linear;
+	transition: width 0.35s ease-in-out;
 	box-shadow: -8px 0px 5px -4px #8a7d5f;
 	display: flex;
 
@@ -31,42 +31,13 @@
 	}
 
 	.content {
+		@include fadeInAnimation(0.2s);
 		flex-grow: 1;
+		display: none;
 	}
 }
 
 .expanded {
-	width: 10rem;
-	animation: bounceIn 0.4s ease-in;
-}
-
-@keyframes bounceIn {
-	from,
-  60%,
-  75%,
-  90%,
-  to {
-    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-
-  0% {
-    width: 1.5rem;
-  }
-
-  60% {
-    width: calc(10rem + 20px);
-  }
-
-  75% {
-    width: calc(10rem - 10px);
-  }
-
-  90% {
-    width: calc(10rem + 5px);
-  }
-
-  to {
-    width: 10rem;
-  }
+	width: 20rem;
+	max-width: 100vw;
 }
