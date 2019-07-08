@@ -37,8 +37,7 @@ class SuggestRestaurants extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.location !== prevProps.location) {
-			this.setState(initialState);
-			this.getRestaurants();
+			this.setState(initialState, this.getRestaurants);
 		} else if (this.state.restaurants.length <= 12 &&
 			prevState.restaurants.length > 12) {
 			this.getRestaurants(this.state.offset + 40);
