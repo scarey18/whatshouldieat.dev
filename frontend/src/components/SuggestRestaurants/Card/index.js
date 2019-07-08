@@ -96,10 +96,6 @@ class Card extends React.Component {
 			cardClassList.push(styles.selectedCard);
 		}
 
-		const categories = this.props.restaurant.price ? 
-			[this.props.restaurant.price].concat(this.props.restaurant.categories) :
-			this.props.restaurant.categories;
-
 		return (
 			<div 
 				className={cardClassList.join(' ')} 
@@ -160,17 +156,25 @@ class Card extends React.Component {
 								</a>
 							</div>
 
-						{/* Category buttons */}
+						{/* Filter buttons */}
 							<div className={styles.filterBtns}>
-								{categories.map(category => {
-									const filterValue = category.alias || category;
+								{this.props.restaurant.price &&
+									<FilterBtn
+										category={this.props.restaurant.price}
+										restaurantSelected={this.props.restaurantSelected}
+										changePrice={this.props.changePrice}
+										key={0}
+									/>
+								}
+
+								{this.props.restaurant.categories.map(category => {
 									return (
 										<FilterBtn
 											category={category}
 											restaurantSelected={this.props.restaurantSelected}
-											addCategory={() => this.props.addCategory(filterValue)}
-											addFilter={() => this.props.addFilter(filterValue)}
-											key={filterValue}
+											addCategory={() => this.props.addCategory(category.alias)}
+											addFilter={() => this.props.addFilter(category.alias)}
+											key={category.alias}
 										/>
 									);
 								})}

@@ -11,7 +11,7 @@ def restaurants(request):
 		params = {
 			'location': request.GET['location'],
 			'categories': request.GET['categories'],
-			'limit': 40,
+			'limit': 50,
 			'offset': request.GET['offset'],
 			'sort_by': 'distance',
 			'open_now': True,

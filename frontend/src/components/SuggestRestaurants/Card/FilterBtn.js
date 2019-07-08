@@ -18,7 +18,7 @@ class FilterBtn extends React.Component {
 
 		this.secondFilterOption = this.props.category.title ?
 			"Only show me " + this.props.category.title : 
-			"Only show me restaurants around this price";
+			"Only show me restaurants this price or cheaper";
 	}
 
 	componentDidMount() {
@@ -97,6 +97,8 @@ class FilterBtn extends React.Component {
 			visibility: (this.state.showFilterText ? 'visible' : 'hidden'),
 		}
 
+		const price = this.props.category.title ? null : this.props.category.length;
+
 		return (
 			<div
 				className={classList.join(' ')}
@@ -120,14 +122,16 @@ class FilterBtn extends React.Component {
 					<div 
 						className={`${styles.filterOption} ${styles.firstOption}`}
 						style={filterOptionStyle}
-						onClick={this.props.addFilter}
+						onClick={price ? () => this.props.changePrice(price - 1) : 
+							this.props.addFilter}
 					>
 						{this.firstFilterOption}
 					</div>
 					<div 
 						className={styles.filterOption}
 						style={filterOptionStyle}
-						onClick={this.props.addCategory}
+						onClick={price ? () => this.props.changePrice(price) : 
+							this.props.addCategory}
 					>
 						{this.secondFilterOption}
 					</div>

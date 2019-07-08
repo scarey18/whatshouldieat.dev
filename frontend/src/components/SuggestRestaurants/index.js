@@ -17,6 +17,7 @@ const initialState = {
 	savedRestaurants: [],
 	renderMapModal: false,
 	restaurantSelected: false,
+	price: 4,
 }
 
 
@@ -40,7 +41,7 @@ class SuggestRestaurants extends React.Component {
 			this.setState(initialState, this.getRestaurants);
 		} else if (this.state.restaurants.length <= 12 &&
 			prevState.restaurants.length > 12) {
-			this.getRestaurants(this.state.offset + 40);
+			this.getRestaurants(this.state.offset + 50);
 		}
 	}
 
@@ -95,6 +96,15 @@ class SuggestRestaurants extends React.Component {
 		}
 	};
 
+	changePrice = price => {
+		if (price < 1 || price === this.state.price) {
+			return;
+		}
+		const restaurants = utils.eliminateThroughPrice(price, this.state.restaurants);
+		const history = this.state.history.concat([this.state]);
+		this.setState({restaurants, price, history});
+	};
+
 	bringBackSavedRestaurants = () => {
 		const savedRestaurants = this.state.savedRestaurants.slice();
 		const restaurants = this.state.restaurants.slice();
@@ -131,6 +141,7 @@ class SuggestRestaurants extends React.Component {
 					nextRestaurant={this.nextRestaurant}
 					addCategory={this.addCategory}
 					addFilter={this.addFilter}
+					changePrice={this.changePrice}
 					showOnMap={() => this.setState({renderMapModal: true})}
 					selectRestaurant={this.selectRestaurant}
 					restaurantSelected={this.state.restaurantSelected}

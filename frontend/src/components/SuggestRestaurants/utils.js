@@ -13,24 +13,19 @@ function getParams(comp, offset) {
 		'categories': 'restaurants',
 		'price': '',
 	}
-	comp.state.filters.forEach(filter => {
-		if (filter.includes('$')) {
-			const prices = {
-				'$$': '1',
-				'$$$': '1,2',
-				'$$$$': '1,2,3'
-			}
-			paramObj['price'] = prices[filter];
-		}
-	});
 	comp.state.categories.forEach(category => {
-		if (category.includes('$')) {
-			paramObj['price'] = String(category.length);
-		} else {
-			paramObj['categories'] = category;
-		}
+		paramObj['categories'] = category;
 	});
-	let params = [];
+
+	if (comp.state.price < 4) {
+		const priceList = [];
+		for (let i = 1; i <= comp.state.price; i++) {
+			priceList.push(i);
+		}
+		paramObj['price'] = priceList.join(',');
+	}
+
+	const params = [];
 	for (let [param, value] of Object.entries(paramObj)) {
 		if (value !== '') {
 			params.push(param + '=' + value);
@@ -44,13 +39,7 @@ function eliminateThroughFilters(filters, restaurants) {
 	return restaurants.filter(r => {
 		const restaurantCategories = r.categories.map(c => c.alias);
 		for (const filter of filters) {
-			const isPrice = filter.includes('$');
-			if (isPrice && 
-					filter.length > 1 && 
-					r.price &&
-					r.price.length >= filter.length) {
-				return false;
-			} else if (!isPrice && restaurantCategories.includes(filter)) {
+			if (restaurantCategories.includes(filter)) {
 				return false;
 			}
 		}
@@ -63,12 +52,7 @@ function eliminateThroughCategories(categories, restaurants) {
 	return restaurants.filter(r => {
 		const restaurantCategories = r.categories.map(c => c.alias);
 		for (const category of categories) {
-			const isPrice = category.includes('$');
-			if (isPrice && 
-					r.price &&
-					r.price.length !== category.length) {
-				return false;
-			} else if (!isPrice && !restaurantCategories.includes(category)) {
+			if (!restaurantCategories.includes(category)) {
 				return false;
 			}
 		}
@@ -77,4 +61,11 @@ function eliminateThroughCategories(categories, restaurants) {
 }
 
 
-export { stopOverflow, getParams, eliminateThroughFilters, eliminateThroughCategories };
+function eliminateThroughPrice(price, restaurants) {
+	return restaurants.filter(r => {
+		return !r.price || r.price.length <= price;
+	});
+}
+
+
+export { stopOverflow, getParams, eliminateThroughFilters, eliminateThroughCategories, eliminateThroughPrice };
