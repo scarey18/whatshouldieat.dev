@@ -82,11 +82,20 @@
 	button {
 		@extend %raisedBtn;
 		@include colorize($purple);
-		@include fadeInAnimation(1s);
+		animation: flashYellow 0.8s linear;
 		border-radius: 50px;
 		padding: 1rem;
 		color: $white;
 		margin: 0 5px;
+	}
+}
+
+@keyframes flashYellow {
+	from {
+		background-color: $yellow;
+	}
+	to {
+		background-color: $purple;
 	}
 }
 

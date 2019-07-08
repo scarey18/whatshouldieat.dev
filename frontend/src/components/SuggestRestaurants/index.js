@@ -181,6 +181,7 @@ class SuggestRestaurants extends React.Component {
 								className={styles.undoBtn} 
 								onClick={this.undo}
 								title="Undo"
+								key={this.state.history.length}
 							>
 								<i className="fas fa-undo fa-lg"></i>
 							</button>
@@ -191,6 +192,7 @@ class SuggestRestaurants extends React.Component {
 								className={styles.savedRestaurantsBtn} 
 								title="Saved Restaurants"
 								onClick={this.bringBackSavedRestaurants}
+								key={this.state.savedRestaurants.length}
 							>
 								Bring back saved restaurants
 							</button>
