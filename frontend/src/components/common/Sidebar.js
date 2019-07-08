@@ -10,6 +10,7 @@ class Sidebar extends React.Component {
 
 	componentDidMount() {
 		window.addEventListener('click', this.handleWindowClick);
+		this.container.addEventListener('transitionend', this.handleTransitionEnd);
 	}
 
 	componentWillUnmount() {
@@ -18,10 +19,8 @@ class Sidebar extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.state.expanded && !prevState.expanded) {
-			this.container.addEventListener('transitionend', this.handleTransitionEnd);
-		} else if (!this.state.expanded && prevState.expanded) {
-			this.contentDiv.style.display = 'none';
+		if (!this.state.expanded && prevState.expanded) {
+			this.contentDiv.style.display = null;
 		}
 	}
 
@@ -54,10 +53,7 @@ class Sidebar extends React.Component {
 				<div className={styles.tab} onClick={this.handleTabClick}>
 					<i className={'fas ' + fasClass + ' fa-lg'}></i>
 				</div>
-				<div 
-					className={styles.content}
-					ref={ref => this.contentDiv = ref}
-				>
+				<div className={styles.content} ref={ref => this.contentDiv = ref}>
 					{this.props.children}
 				</div>
 			</div>

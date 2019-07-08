@@ -12,6 +12,33 @@ class FiltersDashboard extends React.Component {
 		}
 	}
 
+	getCurrentFilterList = () => {
+		const filters = this.props.filters.length === 0 ? 
+			<p>You haven't made any exclusions yet.</p> :
+			<ul>
+				{this.props.filters.map(f => (
+					<li>{f.title}</li>
+				))}
+			</ul>;
+
+		const categories = this.props.categories.length === 0 ?
+			<p>You haven't made any inclusions yet.</p> :
+			<ul>
+				{this.props.categories.map(c => (
+					<li>{c.title}</li>
+				))}
+			</ul>;
+
+		return (
+			<React.Fragment>
+				<h2>Don't show me:</h2>
+				{filters}
+				<h2>Only show me:</h2>
+				{categories}
+			</React.Fragment>
+		);
+	};
+
 	render() {
 		const currentFiltersClassList = [styles.tab];
 		const addInclusionClassList = [styles.tab];
@@ -26,6 +53,8 @@ class FiltersDashboard extends React.Component {
 
 		return (
 			<div className={styles.dashboardContainer}>
+
+			{/* Tabs at top that select what content is shown */}
 				<div className={styles.tabs}>
 					<div 
 						className={currentFiltersClassList.join(' ')}
@@ -50,7 +79,8 @@ class FiltersDashboard extends React.Component {
 				</div>
 
 				<div className={styles.content}>
-
+					{this.state.display === 'current filters' &&
+						this.getCurrentFilterList()}
 				</div>
 
 				<div className={styles.footer}>

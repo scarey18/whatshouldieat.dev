@@ -84,7 +84,7 @@ class SuggestRestaurants extends React.Component {
 
 	addCategory = category => {
 		const categories = this.state.categories.slice();
-		if (!categories.includes(category)) {
+		if (!utils.isIncluded(categories, category)) {
 			categories.push(category);
 			const restaurants = utils.eliminateThroughCategories(categories, this.state.restaurants);
 			const history = this.state.history.concat([this.state]);
@@ -94,7 +94,7 @@ class SuggestRestaurants extends React.Component {
 
 	addFilter = filter => {
 		const filters = this.state.filters.slice();
-		if (!filters.includes(filter) && filter.length > 1) {
+		if (!utils.isIncluded(filters, filter)) {
 			filters.push(filter);
 			const restaurants = utils.eliminateThroughFilters(filters, this.state.restaurants);
 			const history = this.state.history.concat([this.state]);
@@ -222,7 +222,10 @@ class SuggestRestaurants extends React.Component {
 			{/* Sidebar with category selection */}
 				{!this.state.restaurantSelected &&
 					<Sidebar>
-						<FiltersDashboard />
+						<FiltersDashboard 
+							categories={this.state.categories}
+							filters={this.state.filters}
+						/>
 					</Sidebar>
 				}
 			</React.Fragment>

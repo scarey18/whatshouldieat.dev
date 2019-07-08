@@ -43,4 +43,19 @@
 			}
 		}
 	}
+
+	.content {
+		width: 100%;
+
+		* {
+			@include fadeInAnimation(0.5s);
+		}
+
+		h2 {
+			margin-top: 2.5rem;
+			width: 90%;
+			border-bottom: 1px solid $white;
+			font-weight: normal;
+		}
+	}
 }

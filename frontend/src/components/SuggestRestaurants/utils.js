@@ -14,7 +14,7 @@ function getParams(comp, offset) {
 		'price': '',
 	}
 	comp.state.categories.forEach(category => {
-		paramObj['categories'] = category;
+		paramObj['categories'] = category.alias;
 	});
 
 	if (comp.state.price < 4) {
@@ -37,9 +37,8 @@ function getParams(comp, offset) {
 
 function eliminateThroughFilters(filters, restaurants) {
 	return restaurants.filter(r => {
-		const restaurantCategories = r.categories.map(c => c.alias);
 		for (const filter of filters) {
-			if (restaurantCategories.includes(filter)) {
+			if (isIncluded(r.categories, filter)) {
 				return false;
 			}
 		}
@@ -50,9 +49,8 @@ function eliminateThroughFilters(filters, restaurants) {
 
 function eliminateThroughCategories(categories, restaurants) {
 	return restaurants.filter(r => {
-		const restaurantCategories = r.categories.map(c => c.alias);
 		for (const category of categories) {
-			if (!restaurantCategories.includes(category)) {
+			if (!isIncluded(r.categories, category)) {
 				return false;
 			}
 		}
@@ -83,5 +81,18 @@ function addNewCategories(seenCategories, restaurants) {
 	return categories;
 }
 
+function isIncluded(list, item) {
+	for (const c of list) {
+		if (c.alias === item.alias) {
+			return true;
+		}
+	}
+	return false;
+};
 
-export { stopOverflow, getParams, eliminateThroughFilters, eliminateThroughCategories, eliminateThroughPrice, addNewCategories };
+
+export { 
+	stopOverflow, getParams, eliminateThroughFilters, 
+	eliminateThroughCategories, eliminateThroughPrice, 
+	addNewCategories, isIncluded 
+};

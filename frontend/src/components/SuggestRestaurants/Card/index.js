@@ -172,8 +172,8 @@ class Card extends React.Component {
 										<FilterBtn
 											category={category}
 											restaurantSelected={this.props.restaurantSelected}
-											addCategory={() => this.props.addCategory(category.alias)}
-											addFilter={() => this.props.addFilter(category.alias)}
+											addCategory={() => this.props.addCategory(category)}
+											addFilter={() => this.props.addFilter(category)}
 											key={category.alias}
 										/>
 									);
