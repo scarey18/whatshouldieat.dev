@@ -4,28 +4,20 @@ import { biSort } from './miscFunctions';
 class CategoryList extends Array {
 	contains(item) {
 		for (const c of this) {
-			if (c.alias === item.alias) {
-				return true;
-			}
+			if (c.alias === item.alias) return true;
 		}
-		return false;
 	}
 
 	hasCommon(items) {
 		for (const item of items) {
-			if (this.contains(item)) {
-				return true;
-			}
+			if (this.contains(item)) return true;
 		}
-		return false;
 	}
 
 	isEqualTo(items) {
 		if (this.length !== items.length) return false;
 		for (const item of items) {
-			if (!this.contains(item)) {
-				return false;
-			}
+			if (!this.contains(item)) return false;
 		}
 		return true;
 	}
@@ -56,12 +48,12 @@ class CategoryList extends Array {
 
 
 class Categories extends CategoryList {
-	discard(restaurants) {
-		return biSort(r => this.hasCommon(r.categories), restaurants);
-	}
-
 	hasCommon(items) {
 		return this.length === 0 || super.hasCommon(items);
+	}
+	
+	discard(restaurants) {
+		return biSort(r => this.hasCommon(r.categories), restaurants);
 	}
 }
 

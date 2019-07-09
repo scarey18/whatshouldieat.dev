@@ -9,4 +9,16 @@ function biSort(callback, items) {
 }
 
 
-export { biSort }
+function isDescendant(parent, node) {
+	switch (node) {
+		case parent || null:
+			return true;
+		case document.querySelector('body'):
+			return false;
+		default:
+			return isDescendant(parent, node.parentNode);
+	}
+}
+
+
+export { biSort, isDescendant }

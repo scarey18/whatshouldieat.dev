@@ -1,16 +1,21 @@
 import React from 'react';
 import styles from 'styles/Sidebar.module.scss';
+import { isDescendant } from 'commonUtils/miscFunctions';
 
 
 class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {expanded: false};
+		this.mql = window.matchMedia('(min-width: 1840px)');
+		this.state = {expanded: this.mql.matches}
 	}
 
 	componentDidMount() {
 		window.addEventListener('click', this.handleWindowClick);
 		this.container.addEventListener('transitionend', this.handleTransitionEnd);
+		if (!this.state.expanded) {
+			this.contentDiv.style.display = 'none';
+		}
 	}
 
 	componentWillUnmount() {
@@ -20,11 +25,12 @@ class Sidebar extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (!this.state.expanded && prevState.expanded) {
-			this.contentDiv.style.display = null;
+			this.contentDiv.style.display = 'none';
 		}
 	}
 
 	handleWindowClick = e => {
+		if (this.mql.matches) return;
 		if (this.state.expanded && !isDescendant(this.container, e.target)) {
 			this.setState({expanded: false});
 		}
@@ -36,7 +42,7 @@ class Sidebar extends React.Component {
 
 	handleTransitionEnd = e => {
 		if (e.target === this.container && this.state.expanded) {
-			this.contentDiv.style.display = 'block';
+			this.contentDiv.style.display = null;
 		}
 	};
 
@@ -58,20 +64,6 @@ class Sidebar extends React.Component {
 				</div>
 			</div>
 		)
-	}
-}
-
-
-function isDescendant(parent, node) {
-	switch (node) {
-		case parent:
-			return true;
-		case document.querySelector('body'):
-			return false;
-		case null:
-			return true;
-		default:
-			return isDescendant(parent, node.parentNode);
 	}
 }
 
