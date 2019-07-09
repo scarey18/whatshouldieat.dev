@@ -10,14 +10,17 @@ def restaurants(request):
 	if data is None:
 		params = {
 			'location': request.GET['location'],
-			'categories': 'restaurants',
+			'categories': request.GET.get('categories', 'restaurants'),
 			'limit': 50,
-			'offset': request.GET['offset'],
-			'sort_by': 'best_match',
 			'open_now': True,
 		}
-		if request.GET.get('price', None):
-			params['price'] = request.GET['price']
+		priceParam = request.GET.get('price', None)
+		if priceParam:
+			params['price'] = priceParam
+		offsetParam = request.GET.get('offset', None)
+		if offsetParam:
+			params['offset'] = offsetParam
+		offsetParam = request.GET.get
 		api_key = os.environ['YELP_API_KEY']
 		response = requests.get(
 			'https://api.yelp.com/v3/businesses/search', 

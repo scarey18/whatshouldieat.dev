@@ -1,3 +1,6 @@
+import { biSort } from './miscFunctions';
+
+
 class CategoryList extends Array {
 	contains(item) {
 		for (const c of this) {
@@ -17,6 +20,16 @@ class CategoryList extends Array {
 		return false;
 	}
 
+	isEqualTo(items) {
+		if (this.length !== items.length) return false;
+		for (const item of items) {
+			if (!this.contains(item)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	add(items) {
 		if (!Array.isArray(items)) {
 			items = [items];
@@ -33,55 +46,39 @@ class CategoryList extends Array {
 	}
 
 	toggle(item) {
-		const removed = this.remove(item);
-		return removed ? removed : this.concat([item]);
+		return this.remove(item) || this.concat([item]);
+	}
+
+	get sortedAliases() {
+		return this.map(c => c.alias).sort();
 	}
 }
 
 
 class Categories extends CategoryList {
 	discard(restaurants) {
-		const discarded = [];
-		const kept = [];
-		restaurants.forEach(r => {
-			if (this.hasCommon(r.categories)) {
-				kept.push(r);
-			} else {
-				discarded.push(r);
-			}
-		});
-		return [kept, discarded];
+		return biSort(r => this.hasCommon(r.categories), restaurants);
+	}
+
+	hasCommon(items) {
+		return this.length === 0 || super.hasCommon(items);
 	}
 }
 
 
 class Filters extends CategoryList {
 	discard(restaurants) {
-		const discarded = [];
-		const kept = [];
-		restaurants.forEach(r => {
-			if (this.hasCommon(r.categories)) {
-				discarded.push(r);
-			} else {
-				kept.push(r);
-			}
-		});
-		return [kept, discarded];
+		return biSort(r => !this.hasCommon(r.categories), restaurants);
 	}
 }
 
 
 class SeenCategories extends CategoryList {
 	addUnseen(restaurants) {
-		const newCategories = [];
-		restaurants.forEach(r => {
-			r.categories.forEach(c => {
-				if (!this.contains(c)) {
-					newCategories.push(c);
-				}
-			});
-		});
-		return this.concat(newCategories);
+		const reducerCallback = (categoryList, restaurant) => categoryList.concat(
+			restaurant.categories.filter(c => !categoryList.contains(c))
+		);
+		return restaurants.reduce(reducerCallback, this);
 	}
 }
 

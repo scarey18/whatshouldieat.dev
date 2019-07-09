@@ -12,7 +12,6 @@ import { Categories, Filters, SeenCategories } from 'commonUtils/CategoryClasses
 
 const initialState = {
 	restaurants: [],
-	offset: 0,
 	history: [],
 	categories: new Categories(),
 	filters: new Filters(),
@@ -22,7 +21,6 @@ const initialState = {
 	restaurantSelected: false,
 	price: 4,
 	seenCategories: new SeenCategories(),
-	discarded: [],
 }
 
 
@@ -30,6 +28,9 @@ class SuggestRestaurants extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = initialState;
+		this.requestsLog = [];
+		this.discarded = [];
+		this.allSeenRestaurants = [];
 	}
 
 	setState = (...args) => {
@@ -43,10 +44,11 @@ class SuggestRestaurants extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.location !== prevProps.location) {
+			this.requestsLog = [];
 			this.setState(initialState, this.getRestaurants);
-		} else if (this.state.restaurants.length <= 12 &&
-			prevState.restaurants.length > 12) {
-			this.getRestaurants(this.state.offset + 50);
+		} else if (this.state.restaurants.length !== prevState.restaurants.length &&
+			this.state.restaurants.length <= 12) {
+			this.getRestaurants();
 		}
 	}
 
@@ -54,30 +56,30 @@ class SuggestRestaurants extends React.Component {
 		clearTimeout(this.overflowTimeout);
 	}
 
-	getRestaurants = async (offsetParam) => {
-		const offset = offsetParam || 0;
-		const params = utils.getParams(this, offset);
-		const resp = await fetch('/api/restaurants?'+params);
-		const data = await resp.json();
-		let restaurants = data.businesses;
-		let discarded = this.state.discarded;
-		let newlyDiscarded;
+	getRestaurants = async () => {
+		const request = utils.getOrCreateRequest(this);
+		if (request.canFetchMore) {
+			const resp = await fetch(request.url);
+			const data = await resp.json();
 
-		if (this.state.categories.length > 0) {
-			[restaurants, newlyDiscarded] = this.state.categories.discard(restaurants);
-			discarded = discarded.concat(newlyDiscarded);
-		}
+			request.resultsLog.push(data.businesses.length);
+			let restaurants = utils.discardDuplicates(
+				this.allSeenRestaurants, data.businesses
+			);
+			this.allSeenRestaurants = this.allSeenRestaurants.concat(restaurants);
+			let newlyDiscarded;
 
-		if (this.state.filters.length > 0) {
-			[restaurants, newlyDiscarded] = this.state.filters.discard(restaurants);
-			discarded = discarded.concat(newlyDiscarded);
-		}
+			if (this.state.filters.length > 0) {
+				[restaurants, newlyDiscarded] = this.state.filters.discard(restaurants);
+				this.discarded = this.discarded.concat(newlyDiscarded);
+			};
 
-		const seenCategories = this.state.seenCategories.addUnseen(restaurants);
-		this.setState({
-			restaurants: this.state.restaurants.concat(restaurants), 
-			loading: false, offset, seenCategories, discarded
-		});
+			const seenCategories = this.state.seenCategories.addUnseen(restaurants);
+			this.setState({
+				restaurants: this.state.restaurants.concat(restaurants), 
+				loading: false, seenCategories
+			});
+		}	
 	};
 
 	nextRestaurant = saveRestaurant => {
@@ -100,29 +102,32 @@ class SuggestRestaurants extends React.Component {
 		const [restaurants, newlyDiscarded] = categories.discard(
 			this.state.restaurants
 		);
-		const discarded = this.state.discarded.concat(newlyDiscarded);
+		this.discarded = this.discarded.concat(newlyDiscarded);
 		const history = this.state.history.concat([this.state]);
-		this.setState({categories, restaurants, history, discarded});
+		this.setState({categories, restaurants, history});
 	};
 
 	addFilter = newFilters => {
 		const filters = this.state.filters.add(newFilters);
 		const [restaurants, newlyDiscarded] = filters.discard(this.state.restaurants);
-		const discarded = this.state.discarded.concat(newlyDiscarded);
+		this.discarded = this.discarded.concat(newlyDiscarded);
 		const history = this.state.history.concat([this.state]);
-		this.setState({filters, restaurants, history, discarded});
+		this.setState({filters, restaurants, history});
 	};
 
 	changePrice = price => {
-		if (price < 1 || price === this.state.price) {
-			return;
+		if (price < 1 || price === this.state.price) return;
+		let retrieved = [];
+		if (price > this.state.price) {
+			[retrieved, this.discarded] = utils.retrieveDiscarded(this, {price});
 		}
-		const [restaurants, newlyDiscarded] = utils.discardThroughPrice(
+		let [restaurants, newlyDiscarded] = utils.discardThroughPrice(
 			price, this.state.restaurants
 		);
-		const discarded = this.state.discarded.concat(newlyDiscarded);
+		restaurants = retrieved.concat(restaurants);
+		this.discarded = this.discarded.concat(newlyDiscarded);
 		const history = this.state.history.concat([this.state]);
-		this.setState({restaurants, price, history, discarded});
+		this.setState({restaurants, price, history});
 	};
 
 	bringBackSavedRestaurants = () => {
@@ -141,14 +146,20 @@ class SuggestRestaurants extends React.Component {
 
 	removeCategory = category => {
 		const categories = this.state.categories.remove(category);
+		let retrieved = [];
+		[retrieved, this.discarded] = utils.retrieveDiscarded(this, {categories});
+		const restaurants = retrieved.concat(this.state.restaurants);
 		const history = this.state.history.concat([this.state]);
-		this.setState({categories, history});
+		this.setState({categories, history, restaurants});
 	};
 
 	removeFilter = filter => {
 		const filters = this.state.filters.remove(filter);
+		let retrieved = [];
+		[retrieved, this.discarded] = utils.retrieveDiscarded(this, {filters});
+		const restaurants = retrieved.concat(this.state.restaurants);
 		const history = this.state.history.concat([this.state]);
-		this.setState({filters, history});
+		this.setState({filters, history, restaurants});
 	};
 
 	render() {
