@@ -61,7 +61,7 @@ class SuggestRestaurants extends React.Component {
 		if (this.state.filters.length > 0) {
 			restaurants = utils.eliminateThroughFilters(this.state.filters, restaurants);
 		}
-		const seenCategories = utils.addNewCategories(
+		const seenCategories = utils.addNewSeenCategories(
 			this.state.seenCategories, data.businesses
 		);
 		this.setState({restaurants, loading: false, offset, seenCategories});
@@ -82,24 +82,22 @@ class SuggestRestaurants extends React.Component {
 		this.setState(historyState);
 	};
 
-	addCategory = category => {
-		const categories = this.state.categories.slice();
-		if (!utils.isIncluded(categories, category)) {
-			categories.push(category);
-			const restaurants = utils.eliminateThroughCategories(categories, this.state.restaurants);
-			const history = this.state.history.concat([this.state]);
-			this.setState({categories, restaurants, history});
-		}
+	addCategory = newCategories => {
+		const categories = utils.addItems(this.state.categories, newCategories);
+		const restaurants = utils.eliminateThroughCategories(
+			categories, this.state.restaurants
+		);
+		const history = this.state.history.concat([this.state]);
+		this.setState({categories, restaurants, history});
 	};
 
-	addFilter = filter => {
-		const filters = this.state.filters.slice();
-		if (!utils.isIncluded(filters, filter)) {
-			filters.push(filter);
-			const restaurants = utils.eliminateThroughFilters(filters, this.state.restaurants);
-			const history = this.state.history.concat([this.state]);
-			this.setState({filters, restaurants, history});
-		}
+	addFilter = newFilters => {
+		const filters = utils.addItems(this.state.filters, newFilters);
+		const restaurants = utils.eliminateThroughFilters(
+			filters, this.state.restaurants
+		);
+		const history = this.state.history.concat([this.state]);
+		this.setState({filters, restaurants, history});
 	};
 
 	changePrice = price => {
@@ -125,6 +123,18 @@ class SuggestRestaurants extends React.Component {
 	selectRestaurant = () => {
 		const history = this.state.history.concat([this.state]);
 		this.setState({restaurantSelected: true, history});
+	};
+
+	removeCategory = category => {
+		const categories = utils.removeItem(this.state.categories, category);
+		const history = this.state.history.concat([this.state]);
+		this.setState({categories, history});
+	};
+
+	removeFilter = filter => {
+		const filters = utils.removeItem(this.state.filters, filter);
+		const history = this.state.history.concat([this.state]);
+		this.setState({filters, history});
 	};
 
 	render() {
@@ -226,8 +236,13 @@ class SuggestRestaurants extends React.Component {
 						<FiltersDashboard 
 							categories={this.state.categories}
 							filters={this.state.filters}
+							seenCategories={this.state.seenCategories}
 							price={this.state.price}
 							changePrice={this.changePrice}
+							removeFilter={this.removeFilter}
+							removeCategory={this.removeCategory}
+							addCategory={this.addCategory}
+							addFilter={this.addFilter}
 						/>
 					</Sidebar>
 				}

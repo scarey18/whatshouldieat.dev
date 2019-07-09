@@ -1,6 +1,9 @@
 import React from 'react';
 import styles from 'styles/FiltersDashboard.module.scss';
 import PriceSelection from './PriceSelection';
+import ActiveItemList from './ActiveItemList';
+import AddItemsList from './AddItemsList';
+import categoryIsIncluded from 'commonUtils/categoryIsIncluded';
 
 
 class FiltersDashboard extends React.Component {
@@ -15,22 +18,6 @@ class FiltersDashboard extends React.Component {
 	}
 
 	getCurrentFilterList = () => {
-		const filters = this.props.filters.length === 0 ? 
-			<p>You haven't made any exclusions yet.</p> :
-			<ul>
-				{this.props.filters.map(f => (
-					<li>{f.title}</li>
-				))}
-			</ul>;
-
-		const categories = this.props.categories.length === 0 ?
-			<p>You haven't made any inclusions yet.</p> :
-			<ul>
-				{this.props.categories.map(c => (
-					<li>{c.title}</li>
-				))}
-			</ul>;
-
 		return (
 			<React.Fragment>
 				<h2>Maximum price:</h2>
@@ -39,10 +26,31 @@ class FiltersDashboard extends React.Component {
 					onPriceChange={this.props.changePrice}
 				/>
 				<h2>Don't show me:</h2>
-				{filters}
+				<ActiveItemList
+					list={this.props.filters}
+					emptyListText="You haven't made any exclusions yet."
+					handleDeleteItem={this.props.removeFilter}
+				/>
 				<h2>Only show me:</h2>
-				{categories}				
+				<ActiveItemList
+					list={this.props.categories}
+					emptyListText="You haven't made any inclusions yet."
+					handleDeleteItem={this.props.removeCategory}
+				/>			
 			</React.Fragment>
+		);
+	};
+
+	getAddItemsList = (list, selectedList) => {
+		const items = this.props.seenCategories.filter(c => {
+			return !categoryIsIncluded(list, c)
+		});
+
+		return (
+			<AddItemsList 
+				items={items} 
+				selectedItems={selectedList}
+			/>
 		);
 	};
 
@@ -51,12 +59,34 @@ class FiltersDashboard extends React.Component {
 		const addInclusionClassList = [styles.tab];
 		const addExclusionClassList = [styles.tab];
 
-		const activeTabMap = {
-			'current filters': currentFiltersClassList,
-			'add inclusion': addInclusionClassList,
-			'add exclusion': addExclusionClassList
+		let activeTabClassList;
+		let displayContent;
+
+		switch (this.state.display) {
+			case 'current filters':
+				activeTabClassList = currentFiltersClassList;
+				displayContent = this.getCurrentFilterList();
+				break;
+
+			case 'add inclusion':
+				activeTabClassList = addInclusionClassList;
+				displayContent = this.getAddItemsList(
+					this.props.categories, this.state.selectedCategories
+				);
+				break;
+
+			case 'add exclusion':
+				activeTabClassList = addExclusionClassList;
+				displayContent = this.getAddItemsList(
+					this.props.filters, this.state.selectedFilters
+				);
+				break;
+
+			default:
+				break;
 		}
-		activeTabMap[this.state.display].push(styles.activeTab);
+
+		activeTabClassList.push(styles.activeTab);
 
 		return (
 			<div className={styles.dashboardContainer}>
@@ -85,14 +115,7 @@ class FiltersDashboard extends React.Component {
 					</div>
 				</div>
 
-				<div className={styles.content}>
-					{this.state.display === 'current filters' &&
-						this.getCurrentFilterList()}
-				</div>
-
-				<div className={styles.footer}>
-
-				</div>
+				<div className={styles.content}>{displayContent}</div>
 			</div>
 		);
 	}

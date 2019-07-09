@@ -66,8 +66,10 @@ function isDescendant(parent, node) {
 	switch (node) {
 		case parent:
 			return true;
-		case null:
+		case document.querySelector('body'):
 			return false;
+		case null:
+			return true;
 		default:
 			return isDescendant(parent, node.parentNode);
 	}

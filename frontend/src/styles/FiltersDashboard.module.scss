@@ -35,7 +35,6 @@
 		.addTabs {
 			@extend %flex-center;
 			margin-top: 4px;
-			justify-content: center;
 			width: 100%;
 
 			.tab {
@@ -53,7 +52,7 @@
 		}
 
 		h2 {
-			margin-top: 2.5rem;
+			margin: 2.5rem 0 5px 0;
 			width: 90%;
 			border-bottom: 1px solid $white;
 			font-weight: normal;

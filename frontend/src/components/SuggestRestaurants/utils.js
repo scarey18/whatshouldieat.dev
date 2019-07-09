@@ -1,3 +1,6 @@
+import categoryIsIncluded from 'commonUtils/categoryIsIncluded';
+
+
 // Stops scrollbar flickering on card transitions
 function stopOverflow(comp) {
 	const body = document.querySelector('body');
@@ -38,7 +41,7 @@ function getParams(comp, offset) {
 function eliminateThroughFilters(filters, restaurants) {
 	return restaurants.filter(r => {
 		for (const filter of filters) {
-			if (isIncluded(r.categories, filter)) {
+			if (categoryIsIncluded(r.categories, filter)) {
 				return false;
 			}
 		}
@@ -50,7 +53,7 @@ function eliminateThroughFilters(filters, restaurants) {
 function eliminateThroughCategories(categories, restaurants) {
 	return restaurants.filter(r => {
 		for (const category of categories) {
-			if (!isIncluded(r.categories, category)) {
+			if (!categoryIsIncluded(r.categories, category)) {
 				return false;
 			}
 		}
@@ -60,39 +63,42 @@ function eliminateThroughCategories(categories, restaurants) {
 
 
 function eliminateThroughPrice(price, restaurants) {
-	return restaurants.filter(r => {
-		return !r.price || r.price.length <= price;
+	return restaurants.filter(r => !r.price || r.price.length <= price);
+}
+
+
+function addNewSeenCategories(seenCategories, restaurants) {
+	restaurants.forEach(r => {
+		seenCategories = seenCategories.concat(
+			r.categories.filter(c => !categoryIsIncluded(seenCategories, c))
+		);
 	});
+	return seenCategories;
 }
 
 
-function addNewCategories(seenCategories, restaurants) {
-	const categories = seenCategories.slice();
-	const aliases = categories.map(c => c.alias);
-	let categoryAdded = false;
-	for (const r of restaurants) {
-		for (const c of r.categories) {
-			if (!aliases.includes(c.alias)) {
-				aliases.push(c.alias);
-				categories.push(c);
-			}
+function removeItem(list, item) {
+	let index;
+	for (let i = 0; i < list.length; i++) {
+		if (list[i].alias === item.alias) {
+			index = i;
+			break;
 		}
 	}
-	return categories;
+	return list.slice(0, index).concat(list.slice(index + 1));
 }
 
-function isIncluded(list, item) {
-	for (const c of list) {
-		if (c.alias === item.alias) {
-			return true;
-		}
+
+function addItems(list, items) {
+	if (!Array.isArray(items)) {
+		items = [items];
 	}
-	return false;
-};
+	return list.concat(items.filter(item => !categoryIsIncluded(list, item)));
+}
 
 
 export { 
 	stopOverflow, getParams, eliminateThroughFilters, 
 	eliminateThroughCategories, eliminateThroughPrice, 
-	addNewCategories, isIncluded 
-};
+	addNewSeenCategories, removeItem, addItems
+}
