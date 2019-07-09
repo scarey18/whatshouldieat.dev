@@ -45,6 +45,8 @@ class SuggestRestaurants extends React.Component {
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.location !== prevProps.location) {
 			this.requestsLog = [];
+			this.discarded = [];
+			this.allSeenRestaurants = [];
 			this.setState(initialState, this.getRestaurants);
 		} else if (this.state.restaurants.length !== prevState.restaurants.length &&
 			this.state.restaurants.length <= 12) {
@@ -67,9 +69,9 @@ class SuggestRestaurants extends React.Component {
 				this.allSeenRestaurants, data.businesses
 			);
 			this.allSeenRestaurants = this.allSeenRestaurants.concat(restaurants);
-			let newlyDiscarded;
 
 			if (this.state.filters.length > 0) {
+				let newlyDiscarded;
 				[restaurants, newlyDiscarded] = this.state.filters.discard(restaurants);
 				this.discarded = this.discarded.concat(newlyDiscarded);
 			};
@@ -77,7 +79,8 @@ class SuggestRestaurants extends React.Component {
 			const seenCategories = this.state.seenCategories.addUnseen(restaurants);
 			this.setState({
 				restaurants: this.state.restaurants.concat(restaurants), 
-				loading: false, seenCategories
+				loading: false, 
+				seenCategories
 			});
 		}	
 	};
@@ -124,7 +127,9 @@ class SuggestRestaurants extends React.Component {
 		let [restaurants, newlyDiscarded] = utils.discardThroughPrice(
 			price, this.state.restaurants
 		);
-		restaurants = retrieved.concat(restaurants);
+		restaurants = utils.sortInOrder(
+			this.allSeenRestaurants, this.state.restaurants.concat(restaurants)
+		);
 		this.discarded = this.discarded.concat(newlyDiscarded);
 		const history = this.state.history.concat([this.state]);
 		this.setState({restaurants, price, history});
@@ -148,7 +153,9 @@ class SuggestRestaurants extends React.Component {
 		const categories = this.state.categories.remove(category);
 		let retrieved = [];
 		[retrieved, this.discarded] = utils.retrieveDiscarded(this, {categories});
-		const restaurants = retrieved.concat(this.state.restaurants);
+		const restaurants = utils.sortInOrder(
+			this.allSeenRestaurants, this.state.restaurants.concat(retrieved)
+		);
 		const history = this.state.history.concat([this.state]);
 		this.setState({categories, history, restaurants});
 	};
@@ -157,7 +164,9 @@ class SuggestRestaurants extends React.Component {
 		const filters = this.state.filters.remove(filter);
 		let retrieved = [];
 		[retrieved, this.discarded] = utils.retrieveDiscarded(this, {filters});
-		const restaurants = retrieved.concat(this.state.restaurants);
+		const restaurants = utils.sortInOrder(
+			this.allSeenRestaurants, this.state.restaurants.concat(retrieved)
+		);
 		const history = this.state.history.concat([this.state]);
 		this.setState({filters, history, restaurants});
 	};

@@ -64,10 +64,10 @@ function getOrCreateRequest(component) {
 
 
 // Stops scrollbar flickering on card transitions
-function stopOverflow(comp) {
+function stopOverflow(component) {
 	const body = document.querySelector('body');
 	body.style.overflowY = 'hidden';
-	comp.overflowTimeout = setTimeout(() => body.style.overflowY = 'auto', 400);
+	component.overflowTimeout = setTimeout(() => body.style.overflowY = 'auto', 400);
 }
 
 
@@ -77,12 +77,14 @@ function discardThroughPrice(price, restaurants) {
 
 
 function discardDuplicates(seenRestaurants, restaurants) {
-	return restaurants.filter(restaurant => {
-		for (const r of seenRestaurants) {
-			if (r.alias === restaurant.alias) return false;
-		}
-		return true;
-	});
+	return restaurants.filter(r => !restaurantIsIncluded(seenRestaurants, r));
+}
+
+
+function restaurantIsIncluded(list, restaurant) {
+	for (const r of list) {
+		if (r.id === restaurant.id) return true;
+	}
 }
 
 
@@ -100,7 +102,12 @@ function retrieveDiscarded(component, params) {
 }
 
 
+function sortInOrder(orderedList, unorderedList) {
+	return orderedList.filter(r => restaurantIsIncluded(unorderedList, r));
+}
+
+
 export { 
 	getOrCreateRequest, stopOverflow, discardThroughPrice, 
-	discardDuplicates, retrieveDiscarded
+	discardDuplicates, retrieveDiscarded, sortInOrder
 }

@@ -20,7 +20,6 @@ def restaurants(request):
 		offsetParam = request.GET.get('offset', None)
 		if offsetParam:
 			params['offset'] = offsetParam
-		offsetParam = request.GET.get
 		api_key = os.environ['YELP_API_KEY']
 		response = requests.get(
 			'https://api.yelp.com/v3/businesses/search', 
