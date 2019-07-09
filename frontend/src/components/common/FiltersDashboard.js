@@ -48,26 +48,32 @@ class FiltersDashboard extends React.Component {
 
 		let toggleSelection;
 		let applyChanges;
+		let headerText;
 		switch (selectedList) {
 			case this.state.selectedCategories:
 				toggleSelection = this.toggleCategory;
 				applyChanges = this.addCategories;
+				headerText = 'Only show me:'
 				break;
 			case this.state.selectedFilters:
 				toggleSelection = this.toggleFilter;
 				applyChanges = this.addFilters;
+				headerText = "Dont' show me:"
 				break;
 			default:
 				break;
 		}
 
 		return (
-			<AddItemsList 
-				items={items} 
-				selectedItems={selectedList}
-				toggleSelection={toggleSelection}
-				applyChanges={applyChanges}
-			/>
+			<React.Fragment>
+				<h2>{headerText}</h2>
+				<AddItemsList 
+					items={items} 
+					selectedItems={selectedList}
+					toggleSelection={toggleSelection}
+					applyChanges={applyChanges}
+				/>
+			</React.Fragment>
 		);
 	};
 

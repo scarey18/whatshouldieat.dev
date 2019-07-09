@@ -30,8 +30,9 @@ class Sidebar extends React.Component {
 	}
 
 	handleWindowClick = e => {
-		if (this.mql.matches) return;
-		if (this.state.expanded && !isDescendant(this.container, e.target)) {
+		if (this.mql.matches || !this.state.expanded) {
+			return;
+		} else if (!isDescendant(this.container, e.target)) {
 			this.setState({expanded: false});
 		}
 	};
