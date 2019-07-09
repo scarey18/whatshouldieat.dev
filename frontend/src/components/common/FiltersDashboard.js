@@ -3,7 +3,7 @@ import styles from 'styles/FiltersDashboard.module.scss';
 import PriceSelection from './PriceSelection';
 import ActiveItemList from './ActiveItemList';
 import AddItemsList from './AddItemsList';
-import categoryIsIncluded from 'commonUtils/categoryIsIncluded';
+import { categoryIsIncluded, toggleItem } from 'commonUtils/categoryFunctions';
 
 
 class FiltersDashboard extends React.Component {
@@ -46,12 +46,49 @@ class FiltersDashboard extends React.Component {
 			return !categoryIsIncluded(list, c)
 		});
 
+		let toggleSelection;
+		let applyChanges;
+		switch (selectedList) {
+			case this.state.selectedCategories:
+				toggleSelection = this.toggleCategory;
+				applyChanges = this.addCategories;
+				break;
+			case this.state.selectedFilters:
+				toggleSelection = this.toggleFilter;
+				applyChanges = this.addFilters;
+				break;
+			default:
+				break;
+		}
+
 		return (
 			<AddItemsList 
 				items={items} 
 				selectedItems={selectedList}
+				toggleSelection={toggleSelection}
+				applyChanges={applyChanges}
 			/>
 		);
+	};
+
+	addCategories = () => {
+		this.props.addCategory(this.state.selectedCategories);
+		this.setState({selectedCategories: [], display: 'current filters'});
+	};
+
+	addFilters = () => {
+		this.props.addFilter(this.state.selectedFilters);
+		this.setState({selectedFilters: [], display: 'current filters'});
+	};
+
+	toggleCategory = category => {
+		const selectedCategories = toggleItem(this.state.selectedCategories, category);
+		this.setState({selectedCategories});
+	};
+
+	toggleFilter = filter => {
+		const selectedFilters = toggleItem(this.state.selectedFilters, filter);
+		this.setState({selectedFilters});
 	};
 
 	render() {

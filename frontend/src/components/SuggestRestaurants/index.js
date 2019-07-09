@@ -7,6 +7,7 @@ import MapModal from 'components/common/MapModal';
 import Sidebar from 'components/common/Sidebar';
 import LoadingRing from 'components/common/LoadingRing';
 import FiltersDashboard from 'components/common/FiltersDashboard';
+import { addItems, toggleItem } from 'commonUtils/categoryFunctions';
 
 
 const initialState = {
@@ -83,7 +84,7 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	addCategory = newCategories => {
-		const categories = utils.addItems(this.state.categories, newCategories);
+		const categories = addItems(this.state.categories, newCategories);
 		const restaurants = utils.eliminateThroughCategories(
 			categories, this.state.restaurants
 		);
@@ -92,7 +93,7 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	addFilter = newFilters => {
-		const filters = utils.addItems(this.state.filters, newFilters);
+		const filters = addItems(this.state.filters, newFilters);
 		const restaurants = utils.eliminateThroughFilters(
 			filters, this.state.restaurants
 		);
@@ -126,13 +127,13 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	removeCategory = category => {
-		const categories = utils.removeItem(this.state.categories, category);
+		const categories = toggleItem(this.state.categories, category);
 		const history = this.state.history.concat([this.state]);
 		this.setState({categories, history});
 	};
 
 	removeFilter = filter => {
-		const filters = utils.removeItem(this.state.filters, filter);
+		const filters = toggleItem(this.state.filters, filter);
 		const history = this.state.history.concat([this.state]);
 		this.setState({filters, history});
 	};

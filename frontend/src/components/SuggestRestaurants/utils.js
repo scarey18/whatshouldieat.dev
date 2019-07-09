@@ -1,4 +1,4 @@
-import categoryIsIncluded from 'commonUtils/categoryIsIncluded';
+import { categoryIsIncluded } from 'commonUtils/categoryFunctions';
 
 
 // Stops scrollbar flickering on card transitions
@@ -52,12 +52,13 @@ function eliminateThroughFilters(filters, restaurants) {
 
 function eliminateThroughCategories(categories, restaurants) {
 	return restaurants.filter(r => {
+		let containsCategory = false;
 		for (const category of categories) {
-			if (!categoryIsIncluded(r.categories, category)) {
-				return false;
+			if (categoryIsIncluded(r.categories, category)) {
+				containsCategory = true;
 			}
 		}
-		return true;
+		return containsCategory;
 	});
 }
 
@@ -77,28 +78,8 @@ function addNewSeenCategories(seenCategories, restaurants) {
 }
 
 
-function removeItem(list, item) {
-	let index;
-	for (let i = 0; i < list.length; i++) {
-		if (list[i].alias === item.alias) {
-			index = i;
-			break;
-		}
-	}
-	return list.slice(0, index).concat(list.slice(index + 1));
-}
-
-
-function addItems(list, items) {
-	if (!Array.isArray(items)) {
-		items = [items];
-	}
-	return list.concat(items.filter(item => !categoryIsIncluded(list, item)));
-}
-
-
 export { 
 	stopOverflow, getParams, eliminateThroughFilters, 
 	eliminateThroughCategories, eliminateThroughPrice, 
-	addNewSeenCategories, removeItem, addItems
+	addNewSeenCategories
 }

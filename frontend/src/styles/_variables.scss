@@ -15,6 +15,30 @@ $primary-font: 'Arimo', sans-serif;
 $header-height: 5rem;
 
 
+@mixin fadeInAnimation($duration) {
+	animation-name: fadeIn;
+	animation-duration: $duration;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+
+@mixin colorize($color) {
+	background-color: $color;
+
+	&:hover {
+		background-color: darken($color, 5%);
+	}
+}
+
+
 %container {
 	width: 100%;
 	max-width: 1200px;
@@ -42,26 +66,21 @@ $header-height: 5rem;
 	}
 }
 
+%flatBtn {
+	@extend %flex-center;
+	@include colorize($green);
+	cursor: pointer;
+	color: $white;
+	border-radius: 10px;
+	padding: 5px;
+	transition: all 0.3s ease-in-out;
 
-@mixin fadeInAnimation($duration) {
-	animation-name: fadeIn;
-	animation-duration: $duration;
-}
+	&:disabled {
+		cursor: default;
+		opacity: 0.5;
 
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-
-
-@mixin colorize($color) {
-	background-color: $color;
-
-	&:hover {
-		background-color: darken($color, 5%);
+		&:hover {
+			background-color: $green;
+		}
 	}
 }

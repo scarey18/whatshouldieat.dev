@@ -44,8 +44,11 @@
 	}
 
 	.content {
+		display: flex;
+		flex-direction: column;
 		flex-grow: 1;
-		margin: 0 10px;
+		margin: 0 10px 10px 10px;
+		overflow-y: auto;
 
 		* {
 			@include fadeInAnimation(0.5s);

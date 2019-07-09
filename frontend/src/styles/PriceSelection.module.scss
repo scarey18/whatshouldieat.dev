@@ -5,26 +5,11 @@
 	width: 100%;
 	height: 2rem;
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
 
 	button {
-		@extend %flex-center;
-		@include colorize($green);
-		cursor: pointer;
-		color: $white;
-		border-radius: 10px;
-		padding: 5px;
-		transition: all 0.3s ease-in-out;
-
-		&:disabled {
-			cursor: default;
-			opacity: 0.5;
-
-			&:hover {
-				background-color: $green;
-			}
-		}
+		@extend %flatBtn;
+		margin-left: 2rem;
 	}
 
 	.priceSign {
@@ -38,24 +23,4 @@
 	.activePricePoint {
 		color: $white;
 	}
-}
-
-// React Transition Group classes
-
-.btnEnter {
-	height: 0;
-}
-
-.btnEnterActive {
-	transition: height 300ms;
-	height: 1rem;
-}
-
-.btnExit {
-	height: 1rem;
-}
-
-.btnExitActive {
-	transition: height 300ms;
-	height: 0;
 }
