@@ -7,21 +7,22 @@ import MapModal from 'components/common/MapModal';
 import Sidebar from 'components/common/Sidebar';
 import LoadingRing from 'components/common/LoadingRing';
 import FiltersDashboard from 'components/common/FiltersDashboard';
-import { addItems, toggleItem } from 'commonUtils/categoryFunctions';
+import { Categories, Filters, SeenCategories } from 'commonUtils/CategoryClasses';
 
 
 const initialState = {
 	restaurants: [],
 	offset: 0,
 	history: [],
-	categories: [],
-	filters: [],
+	categories: new Categories(),
+	filters: new Filters(),
 	loading: true,
 	savedRestaurants: [],
 	renderMapModal: false,
 	restaurantSelected: false,
 	price: 4,
-	seenCategories: [],
+	seenCategories: new SeenCategories(),
+	discarded: [],
 }
 
 
@@ -58,14 +59,25 @@ class SuggestRestaurants extends React.Component {
 		const params = utils.getParams(this, offset);
 		const resp = await fetch('/api/restaurants?'+params);
 		const data = await resp.json();
-		let restaurants = this.state.restaurants.concat(data.businesses);
-		if (this.state.filters.length > 0) {
-			restaurants = utils.eliminateThroughFilters(this.state.filters, restaurants);
+		let restaurants = data.businesses;
+		let discarded = this.state.discarded;
+		let newlyDiscarded;
+
+		if (this.state.categories.length > 0) {
+			[restaurants, newlyDiscarded] = this.state.categories.discard(restaurants);
+			discarded = discarded.concat(newlyDiscarded);
 		}
-		const seenCategories = utils.addNewSeenCategories(
-			this.state.seenCategories, data.businesses
-		);
-		this.setState({restaurants, loading: false, offset, seenCategories});
+
+		if (this.state.filters.length > 0) {
+			[restaurants, newlyDiscarded] = this.state.filters.discard(restaurants);
+			discarded = discarded.concat(newlyDiscarded);
+		}
+
+		const seenCategories = this.state.seenCategories.addUnseen(restaurants);
+		this.setState({
+			restaurants: this.state.restaurants.concat(restaurants), 
+			loading: false, offset, seenCategories, discarded
+		});
 	};
 
 	nextRestaurant = saveRestaurant => {
@@ -84,38 +96,39 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	addCategory = newCategories => {
-		const categories = addItems(this.state.categories, newCategories);
-		const restaurants = utils.eliminateThroughCategories(
-			categories, this.state.restaurants
+		const categories = this.state.categories.add(newCategories);
+		const [restaurants, newlyDiscarded] = categories.discard(
+			this.state.restaurants
 		);
+		const discarded = this.state.discarded.concat(newlyDiscarded);
 		const history = this.state.history.concat([this.state]);
-		this.setState({categories, restaurants, history});
+		this.setState({categories, restaurants, history, discarded});
 	};
 
 	addFilter = newFilters => {
-		const filters = addItems(this.state.filters, newFilters);
-		const restaurants = utils.eliminateThroughFilters(
-			filters, this.state.restaurants
-		);
+		const filters = this.state.filters.add(newFilters);
+		const [restaurants, newlyDiscarded] = filters.discard(this.state.restaurants);
+		const discarded = this.state.discarded.concat(newlyDiscarded);
 		const history = this.state.history.concat([this.state]);
-		this.setState({filters, restaurants, history});
+		this.setState({filters, restaurants, history, discarded});
 	};
 
 	changePrice = price => {
 		if (price < 1 || price === this.state.price) {
 			return;
 		}
-		const restaurants = utils.eliminateThroughPrice(price, this.state.restaurants);
+		const [restaurants, newlyDiscarded] = utils.discardThroughPrice(
+			price, this.state.restaurants
+		);
+		const discarded = this.state.discarded.concat(newlyDiscarded);
 		const history = this.state.history.concat([this.state]);
-		this.setState({restaurants, price, history});
+		this.setState({restaurants, price, history, discarded});
 	};
 
 	bringBackSavedRestaurants = () => {
-		const savedRestaurants = this.state.savedRestaurants.slice();
-		const restaurants = this.state.restaurants.slice();
 		const history = this.state.history.concat([this.state]);
 		this.setState({
-			restaurants: savedRestaurants.concat(restaurants),
+			restaurants: this.state.savedRestaurants.concat(this.state.restaurants),
 			savedRestaurants: [],
 			history,
 		});
@@ -127,13 +140,13 @@ class SuggestRestaurants extends React.Component {
 	};
 
 	removeCategory = category => {
-		const categories = toggleItem(this.state.categories, category);
+		const categories = this.state.categories.remove(category);
 		const history = this.state.history.concat([this.state]);
 		this.setState({categories, history});
 	};
 
 	removeFilter = filter => {
-		const filters = toggleItem(this.state.filters, filter);
+		const filters = this.state.filters.remove(filter);
 		const history = this.state.history.concat([this.state]);
 		this.setState({filters, history});
 	};
@@ -199,7 +212,6 @@ class SuggestRestaurants extends React.Component {
 								className={styles.undoBtn} 
 								onClick={this.undo}
 								title="Undo"
-								key={this.state.history.length}
 							>
 								<i className="fas fa-undo fa-lg"></i>
 							</button>
@@ -210,7 +222,6 @@ class SuggestRestaurants extends React.Component {
 								className={styles.savedRestaurantsBtn} 
 								title="Saved Restaurants"
 								onClick={this.bringBackSavedRestaurants}
-								key={this.state.savedRestaurants.length}
 							>
 								Bring back saved restaurants
 							</button>
@@ -220,7 +231,7 @@ class SuggestRestaurants extends React.Component {
 				{/* Message if no restaurants found */}
 					{!this.state.loading && this.state.restaurants.length === 0 &&
 						<div className={styles.messageSection}>
-							<h2>We couldn't find any more restaurants for this search area. Try widening your search.</h2>
+							<h2>We couldn't find any more restaurants for this search area. Try widening your search or using less filters.</h2>
 						</div>
 					}
 				</div>
@@ -244,6 +255,7 @@ class SuggestRestaurants extends React.Component {
 							removeCategory={this.removeCategory}
 							addCategory={this.addCategory}
 							addFilter={this.addFilter}
+							saveRestaurants={this.state.savedRestaurants}
 						/>
 					</Sidebar>
 				}

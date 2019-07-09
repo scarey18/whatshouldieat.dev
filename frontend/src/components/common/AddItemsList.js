@@ -1,12 +1,11 @@
 import React from 'react';
 import styles from 'styles/AddItemsList.module.scss';
-import { categoryIsIncluded } from 'commonUtils/categoryFunctions';
 
 
 function AddItemsList(props) {
 	const items = props.items.map(item => {
 		const bulletClassList = [styles.bullet];
-		if (categoryIsIncluded(props.selectedItems, item)) {
+		if (props.selectedItems.contains(item)) {
 			bulletClassList.push(styles.selected);
 		}
 		return (

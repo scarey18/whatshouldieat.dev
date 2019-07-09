@@ -3,7 +3,7 @@ import styles from 'styles/FiltersDashboard.module.scss';
 import PriceSelection from './PriceSelection';
 import ActiveItemList from './ActiveItemList';
 import AddItemsList from './AddItemsList';
-import { categoryIsIncluded, toggleItem } from 'commonUtils/categoryFunctions';
+import { CategoryList } from 'commonUtils/CategoryClasses';
 
 
 class FiltersDashboard extends React.Component {
@@ -11,8 +11,8 @@ class FiltersDashboard extends React.Component {
 		super(props);
 		this.state = {
 			display: 'current filters',
-			selectedCategories: [],
-			selectedFilters: [],
+			selectedCategories: new CategoryList(),
+			selectedFilters: new CategoryList(),
 			selectedPrice: props.price,
 		}
 	}
@@ -43,7 +43,7 @@ class FiltersDashboard extends React.Component {
 
 	getAddItemsList = (list, selectedList) => {
 		const items = this.props.seenCategories.filter(c => {
-			return !categoryIsIncluded(list, c)
+			return !list.contains(c);
 		});
 
 		let toggleSelection;
@@ -73,21 +73,25 @@ class FiltersDashboard extends React.Component {
 
 	addCategories = () => {
 		this.props.addCategory(this.state.selectedCategories);
-		this.setState({selectedCategories: [], display: 'current filters'});
+		this.setState({
+			selectedCategories: new CategoryList(), display: 'current filters'
+		});
 	};
 
 	addFilters = () => {
 		this.props.addFilter(this.state.selectedFilters);
-		this.setState({selectedFilters: [], display: 'current filters'});
+		this.setState({
+			selectedFilters: new CategoryList(), display: 'current filters'
+		});
 	};
 
 	toggleCategory = category => {
-		const selectedCategories = toggleItem(this.state.selectedCategories, category);
+		const selectedCategories = this.state.selectedCategories.toggle(category);
 		this.setState({selectedCategories});
 	};
 
 	toggleFilter = filter => {
-		const selectedFilters = toggleItem(this.state.selectedFilters, filter);
+		const selectedFilters = this.state.selectedFilters.toggle(filter);
 		this.setState({selectedFilters});
 	};
 
@@ -95,25 +99,23 @@ class FiltersDashboard extends React.Component {
 		const currentFiltersClassList = [styles.tab];
 		const addInclusionClassList = [styles.tab];
 		const addExclusionClassList = [styles.tab];
-
-		let activeTabClassList;
 		let displayContent;
 
 		switch (this.state.display) {
 			case 'current filters':
-				activeTabClassList = currentFiltersClassList;
+				currentFiltersClassList.push(styles.activeTab);
 				displayContent = this.getCurrentFilterList();
 				break;
 
 			case 'add inclusion':
-				activeTabClassList = addInclusionClassList;
+				addInclusionClassList.push(styles.activeTab);
 				displayContent = this.getAddItemsList(
 					this.props.categories, this.state.selectedCategories
 				);
 				break;
 
 			case 'add exclusion':
-				activeTabClassList = addExclusionClassList;
+				addExclusionClassList.push(styles.activeTab);
 				displayContent = this.getAddItemsList(
 					this.props.filters, this.state.selectedFilters
 				);
@@ -122,8 +124,6 @@ class FiltersDashboard extends React.Component {
 			default:
 				break;
 		}
-
-		activeTabClassList.push(styles.activeTab);
 
 		return (
 			<div className={styles.dashboardContainer}>
@@ -152,6 +152,7 @@ class FiltersDashboard extends React.Component {
 					</div>
 				</div>
 
+			{/* Content determined by selected tab */}
 				<div className={styles.content}>{displayContent}</div>
 			</div>
 		);

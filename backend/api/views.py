@@ -10,7 +10,7 @@ def restaurants(request):
 	if data is None:
 		params = {
 			'location': request.GET['location'],
-			'categories': request.GET['categories'],
+			'categories': 'restaurants',
 			'limit': 50,
 			'offset': request.GET['offset'],
 			'sort_by': 'best_match',
