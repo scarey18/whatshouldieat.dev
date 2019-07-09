@@ -128,7 +128,7 @@ class SuggestRestaurants extends React.Component {
 			price, this.state.restaurants
 		);
 		restaurants = utils.sortInOrder(
-			this.allSeenRestaurants, this.state.restaurants.concat(restaurants)
+			this.allSeenRestaurants, restaurants.concat(retrieved)
 		);
 		this.discarded = this.discarded.concat(newlyDiscarded);
 		const history = this.state.history.concat([this.state]);
