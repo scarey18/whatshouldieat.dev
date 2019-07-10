@@ -16,8 +16,7 @@ class Card extends React.Component {
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.renderContent && 
 					(!prevProps.renderContent || 
-						!this.props.restaurantSelected && prevProps.restaurantSelected
-					)
+					 !this.props.restaurantSelected && prevProps.restaurantSelected)
 				) {
 			this.card.addEventListener('mousedown', this.handleTouchStart);
 			this.card.addEventListener('touchstart', this.handleTouchStart);

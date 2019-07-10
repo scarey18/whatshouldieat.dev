@@ -2,7 +2,7 @@ import React from 'react';
 import styles from 'styles/SearchBar.module.scss';
 
 
-/* Trims 'USA' from fetched location autocomplete suggestions to avoid duplicates */
+// Trims 'USA' from fetched location autocomplete suggestions to avoid duplicates
 function trim(text) {
 	const splitString = text.split(', ');
 	const regex = /USA( \(.+\))?/;
@@ -74,12 +74,12 @@ class SearchBar extends React.Component {
 	  } else {
 	  	throw new Error("Unable to reach arcgis.com");
 	  }
-	  const suggestions =  data.suggestions.reduce((acc, suggestion) => {
+	  const suggestions =  data.suggestions.reduce((arr, suggestion) => {
 			const trimmed = trim(suggestion.text);
-			if (!acc.includes(trimmed)) {
-				acc.push(trimmed);
+			if (!arr.includes(trimmed)) {
+				arr.push(trimmed);
 			}
-			return acc;
+			return arr;
 		}, []);
 		this.props.updateState({searchBarSuggestions: suggestions});
 	};

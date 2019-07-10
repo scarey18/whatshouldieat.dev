@@ -67,7 +67,7 @@ class Header extends React.Component {
 		return (
 			<header className={classList.join(' ')}>
 
-				{/* Upper, permanent links */}
+				{/* Unexpanded or permanent content */}
 				<div className={styles.permanentContent}>
 					<img src={logo} onClick={this.props.goHome} alt="Site Logo"></img>
 					{!this.state.expanded &&
@@ -84,7 +84,7 @@ class Header extends React.Component {
 					}
 				</div>
 
-			{/* Home content */}
+			{/* Expanded content for home page */}
 				{this.state.expanded &&
 					(<div className={styles.expandedContent}>
 						<div className={styles.searchContainer}>

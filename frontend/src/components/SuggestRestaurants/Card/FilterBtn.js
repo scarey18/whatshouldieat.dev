@@ -59,6 +59,7 @@ class FilterBtn extends React.Component {
 		}));
 	};
 
+	// Adjust positioning of expanded content if it overflows offscreen
 	adjustEdges = () => {
 		const expandedRect = this.expandedContent.getBoundingClientRect();
 		const btnRect = this.btn.getBoundingClientRect();
@@ -99,13 +100,14 @@ class FilterBtn extends React.Component {
 		const price = this.props.category.title ? null : this.props.category.length;
 
 		return (
-			<div
+			<button
 				className={classList.join(' ')}
 				onClick={this.props.restaurantSelected ? null : this.onClick}
 				onMouseEnter={this.props.restaurantSelected ? null : this.onMouseEnter}
 				onMouseLeave={this.props.restaurantSelected ? null : this.onMouseLeave}
 				ref={ref => this.btn = ref}
 				title={this.props.restaurantSelected ? "" : "Click to filter"}
+				disabled={this.props.re}
 			>
 				{this.props.category.title || this.props.category}
 
@@ -118,24 +120,24 @@ class FilterBtn extends React.Component {
 					style={expandedStyle}
 					ref={ref => this.expandedContent = ref}
 				>
-					<div 
+					<button 
 						className={`${styles.filterOption} ${styles.firstOption}`}
 						style={filterOptionStyle}
 						onClick={price ? () => this.props.changePrice(price - 1) : 
 							this.props.addFilter}
 					>
 						{this.firstFilterOption}
-					</div>
-					<div 
+					</button>
+					<button 
 						className={styles.filterOption}
 						style={filterOptionStyle}
 						onClick={price ? () => this.props.changePrice(price) : 
 							this.props.addCategory}
 					>
 						{this.secondFilterOption}
-					</div>
+					</button>
 				</div>
-			</div>
+			</button>
 		);
 	}
 }
