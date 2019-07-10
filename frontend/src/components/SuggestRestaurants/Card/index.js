@@ -187,9 +187,9 @@ class Card extends React.Component {
 										 <p>{str}</p>
 									))}
 								</div>
-								<a onClick={this.props.showOnMap}>
+								<button onClick={this.props.showOnMap}>
 									Show on Map
-								</a>
+								</button>
 							</div>
 
 						{/* Contact info shown when restaurant is selected */}
@@ -201,7 +201,11 @@ class Card extends React.Component {
 									}
 									<p>
 										Find more info on&nbsp;
-										<a href={this.props.restaurant.url} target="_blank">
+										<a 
+											href={this.props.restaurant.url} 
+											target="_blank"
+											rel="noopener noreferrer"
+										>
 											the {this.props.restaurant.name} Yelp page
 										</a>
 										.

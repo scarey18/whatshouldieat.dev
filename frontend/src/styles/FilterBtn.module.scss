@@ -35,10 +35,11 @@
 .expanded {
 	position: absolute;
 	top: 100%;
+	max-width: 100vw;
 	background-color: $yellow;
 	border-radius: 15px;
 	transition: height 0.2s ease-in-out;
-	z-index: 99;
+	z-index: 996;
 	box-shadow: 0 4px 12px $shadow;
 }
 

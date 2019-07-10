@@ -50,7 +50,11 @@ class MapModal extends React.Component {
 				<div className={styles.loadingRingContainer}>
 					<LoadingRing />
 				</div>
-				<iframe src={this.getSrc()}></iframe>
+				<iframe 
+					src={this.getSrc()} 
+					title="Google Map centered on current restaurant"
+				>
+				</iframe>
 			</div>
 		);
 	}

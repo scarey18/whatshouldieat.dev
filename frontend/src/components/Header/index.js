@@ -65,7 +65,7 @@ class Header extends React.Component {
 		}
 
 		return (
-			<div className={classList.join(' ')}>
+			<header className={classList.join(' ')}>
 
 				{/* Upper, permanent links */}
 				<div className={styles.permanentContent}>
@@ -103,7 +103,7 @@ class Header extends React.Component {
 						<img src={sadPlate} alt="Sad, empty plate :("></img>
 					</div>)
 				}
-			</div>
+			</header>
 		);
 	}
 }

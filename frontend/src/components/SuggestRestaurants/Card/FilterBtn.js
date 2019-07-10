@@ -60,16 +60,15 @@ class FilterBtn extends React.Component {
 	};
 
 	adjustEdges = () => {
-		const expandedLeftEdge = this.expandedContent.getBoundingClientRect().left;
-		if (expandedLeftEdge < 0) {
-			const btnLeftEdge = this.btn.getBoundingClientRect().left;
-			this.expandedContent.style.left = `-${btnLeftEdge}px`;
-		}
-
-		const expandedRightEdge = this.expandedContent.getBoundingClientRect().right;
-		if (expandedRightEdge > window.screen.width) {
-			const btnRightEdge = this.btn.getBoundingClientRect().right;
-			const difference = window.screen.width - btnRightEdge;
+		const expandedRect = this.expandedContent.getBoundingClientRect();
+		const btnRect = this.btn.getBoundingClientRect();
+		if (expandedRect.width > window.screen.width) {
+			this.expandedContent.style.left = `-${btnRect.left}px`;
+			this.expandedContent.style.width = '100vw';
+		} else if (expandedRect.left < 0) {
+			this.expandedContent.style.left = `-${btnRect.left}px`;
+		} else if (expandedRect.right > window.screen.width) {
+			const difference = window.screen.width - btnRect.right;
 			this.expandedContent.style.right = `-${difference}px`;
 		}
 	};
