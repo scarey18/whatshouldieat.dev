@@ -51,9 +51,9 @@ class Header extends React.Component {
 	};
 
 	toggleExpand = () => {
-		if (window.scrollY <= 150 && !this.state.expanded) {
+		if (window.scrollY === 0 && !this.state.expanded) {
 			this.setState({expanded: true});
-		} else if (window.scrollY > 150 && this.state.expanded) {
+		} else if (window.scrollY > 0 && this.state.expanded) {
 			this.setState({expanded: false});
 		}
 	};
@@ -69,7 +69,7 @@ class Header extends React.Component {
 
 				{/* Unexpanded or permanent content */}
 				<div className={styles.permanentContent}>
-					<img src={logo} onClick={this.props.goHome} alt="Site Logo"></img>
+					<img src={logo} onClick={this.props.goHome} alt="Site Logo" title="Go to home page"></img>
 					{!this.state.expanded &&
 						<SearchBar
 							expanded={this.state.expanded}

@@ -85,8 +85,10 @@ class SearchBar extends React.Component {
 	};
 
 	onFocus = () => {
-		this.props.updateState({searchBarInputFocused: true});
-		this.input.setSelectionRange(0, this.input.value.length);
+		if (!this.props.inputFocused) {
+			this.props.updateState({searchBarInputFocused: true});
+			this.input.setSelectionRange(0, this.input.value.length);
+		}
 		/* Update suggestions if they get lost on a page change */
 		if (this.props.value.length >= 3 && 
 					this.props.suggestions.length === 0) {

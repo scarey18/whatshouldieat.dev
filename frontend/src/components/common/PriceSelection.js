@@ -41,6 +41,7 @@ class PriceSelection extends React.Component {
 					className={priceClassList.join(' ')}
 					onMouseEnter={() => this.handleMouseEnter(i)}
 					onClick={() => this.setState({selectedPrice: i})}
+					title={`Set maximum price to ${'$'.repeat(i)}`}
 				>$</span>
 			);
 		}
