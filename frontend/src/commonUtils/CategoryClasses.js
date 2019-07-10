@@ -1,7 +1,10 @@
+/* Used for Yelp category objects, which contain name and alias properties */
+
+
 import { biSort } from './miscFunctions';
 
 
-class CategoryList extends Array {
+export class CategoryList extends Array {
 	contains(item) {
 		for (const c of this) {
 			if (c.alias === item.alias) return true;
@@ -47,7 +50,7 @@ class CategoryList extends Array {
 }
 
 
-class Categories extends CategoryList {
+export class Categories extends CategoryList {
 	hasCommon(items) {
 		return this.length === 0 || super.hasCommon(items);
 	}
@@ -58,14 +61,14 @@ class Categories extends CategoryList {
 }
 
 
-class Filters extends CategoryList {
+export class Filters extends CategoryList {
 	discard(restaurants) {
 		return biSort(r => !this.hasCommon(r.categories), restaurants);
 	}
 }
 
 
-class SeenCategories extends CategoryList {
+export class SeenCategories extends CategoryList {
 	addUnseen(restaurants) {
 		const reducerCallback = (categoryList, restaurant) => categoryList.concat(
 			restaurant.categories.filter(c => !categoryList.contains(c))
@@ -73,6 +76,3 @@ class SeenCategories extends CategoryList {
 		return restaurants.reduce(reducerCallback, this);
 	}
 }
-
-
-export { CategoryList, Categories, Filters, SeenCategories }

@@ -2,6 +2,7 @@ import React from 'react';
 import styles from 'styles/SearchBar.module.scss';
 
 
+/* Trims 'USA' from fetched location autocomplete suggestions to avoid duplicates */
 function trim(text) {
 	const splitString = text.split(', ');
 	const regex = /USA( \(.+\))?/;
@@ -24,11 +25,11 @@ class SearchBar extends React.Component {
 	}
 
 	handleKeyDown = event => {
-		if (event.code === 'Enter' && this.props.suggestions.length > 0) {
+		if (event.key === 'Enter' && this.props.suggestions.length > 0) {
 			const i = this.props.focusedSuggestion || 0;
 			const value = this.props.suggestions[i];
 			this.props.setLocation(value);
-		} else if (event.code === 'ArrowDown' && this.props.suggestions.length > 0) {
+		} else if (event.key === 'ArrowDown' && this.props.suggestions.length > 0) {
 			event.preventDefault();
 			let i = this.props.focusedSuggestion;
 			if (i === null) {
@@ -37,17 +38,26 @@ class SearchBar extends React.Component {
 				i++;
 			}
 			this.props.updateState({focusedSuggestion: i});
-		} else if (event.code === 'ArrowUp' && this.props.suggestions.length > 0) {
+		} else if (event.key === 'ArrowUp' && this.props.suggestions.length > 0) {
+			event.preventDefault();
+			const i = this.props.focusedSuggestion ? this.props.focusedSuggestion - 1 : 0;
+			this.props.updateState({focusedSuggestion: i});
+		} else if (event.key === 'Escape') {
+			event.preventDefault();
+			this.input.blur();
+		} else if (event.key === 'Tab' && this.props.suggestions.length > 0) {
 			event.preventDefault();
 			let i = this.props.focusedSuggestion;
-			if (i !== null && i > 0) {
-				i--;
+			if (i === null) {
+				i = 0;
+			} else if (i < 4) {
+				i++;
 			}
 			this.props.updateState({focusedSuggestion: i});
 		}
 	};
 
-	handleChange = event => {
+	handleInputChange = event => {
 		const value = event.target.value;
 		this.props.updateState({searchBarValue: value});
 		if (value.length >= 3) {
@@ -62,7 +72,7 @@ class SearchBar extends React.Component {
 	  if (resp.ok) {
 	  	data = await resp.json();
 	  } else {
-	  	throw new Error("Server response not ok");
+	  	throw new Error("Unable to reach arcgis.com");
 	  }
 	  const suggestions =  data.suggestions.reduce((acc, suggestion) => {
 			const trimmed = trim(suggestion.text);
@@ -113,18 +123,20 @@ class SearchBar extends React.Component {
 		}
 
 		return (
-			<form 
+			<form
+				role='search' 
 				className={classList.join(' ')} 
 				autoComplete="off" 
 			>
 				<div className={styles.suggestionsContainer}>
 					<div className={styles.inputContainer}>
+						<label for="location">Enter your location:</label>
 						<input 
 							type="text" 
 							name="location"
 							value={this.props.value} 
 							placeholder="Enter your location"
-							onChange={this.handleChange}
+							onChange={this.handleInputChange}
 							onFocus={this.onFocus}
 							onBlur={this.onBlur}
 							ref={input => this.input = input}
@@ -155,7 +167,7 @@ class SearchBar extends React.Component {
 				</div>
 
 				{!this.props.isMobile && 
-					<button onClick={this.btnClick}>Find Me Food!</button>}
+					<button type='submit' onClick={this.btnClick}>Find Me Food!</button>}
 			</form>
 		);
 	}

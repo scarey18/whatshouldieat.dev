@@ -1,4 +1,6 @@
-function biSort(callback, items) {
+
+/* Sorts an array of items into two arrays based on given parameters */
+export function biSort(callback, items) {
 	const stackA = [];
 	const stackB = [];
 	items.forEach(item => {
@@ -9,7 +11,7 @@ function biSort(callback, items) {
 }
 
 
-function isDescendant(parent, node) {
+export function isDescendant(parent, node) {
 	switch (node) {
 		case parent || null:
 			return true;
@@ -19,6 +21,3 @@ function isDescendant(parent, node) {
 			return isDescendant(parent, node.parentNode);
 	}
 }
-
-
-export { biSort, isDescendant }
