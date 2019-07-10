@@ -42,9 +42,7 @@ class FiltersDashboard extends React.Component {
 	};
 
 	getAddItemsList = (list, selectedList) => {
-		const items = this.props.seenCategories.filter(c => {
-			return !list.contains(c);
-		});
+		const items = this.props.seenCategories.filter(c => !list.contains(c));
 
 		let toggleSelection;
 		let applyChanges;
@@ -58,7 +56,7 @@ class FiltersDashboard extends React.Component {
 			case this.state.selectedFilters:
 				toggleSelection = this.toggleFilter;
 				applyChanges = this.addFilters;
-				headerText = "Dont' show me:"
+				headerText = "Don't show me:"
 				break;
 			default:
 				break;

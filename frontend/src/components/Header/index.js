@@ -2,6 +2,7 @@ import React from 'react';
 import SearchBar from './SearchBar';
 import styles from 'styles/Header.module.scss';
 import sadPlate from 'assets/sad-plate.png';
+import logo from 'assets/wsie_logo.png';
 
 
 class Header extends React.Component {
@@ -68,7 +69,7 @@ class Header extends React.Component {
 
 				{/* Upper, permanent links */}
 				<div className={styles.permanentContent}>
-					<p onClick={this.props.goHome}>TODO: Logo</p>
+					<img src={logo} onClick={this.props.goHome} alt="Site Logo"></img>
 					{!this.state.expanded &&
 						<SearchBar
 							expanded={this.state.expanded}
@@ -81,7 +82,6 @@ class Header extends React.Component {
 							focusedSuggestion={this.state.focusedSuggestion}
 						/>
 					}
-					<p>TODO: Links</p>
 				</div>
 
 			{/* Home content */}

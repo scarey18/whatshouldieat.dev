@@ -3,7 +3,7 @@
 
 .searchBar {
 	height: 3rem;
-	width: 50%;
+	flex-grow: 1;
 	@extend %flex-center;
 	justify-content: space-between;
 	margin: 1rem 30px;

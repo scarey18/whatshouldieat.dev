@@ -16,7 +16,7 @@
 }
 
 .expanded {
-	height: 50vh;
+	height: 70vh;
 }
 
 .permanentContent {
@@ -24,6 +24,11 @@
 	@extend %flex-center;
 	height: $header-height;
 	justify-content: space-between;
+
+	img {
+		width: 4rem;
+		cursor: pointer;
+	}
 }
 
 .expandedContent {
