@@ -36,3 +36,11 @@ def restaurants(request):
 		data = response.text
 		cache.set(full_path, data, 60 * 15)
 	return HttpResponse(data, content_type="application/json")
+
+
+# def feedbackFormView(request):
+# 	sender = request.POST['sender']
+# 	subject = request.POST['subject']
+# 	message = request.POST['message']
+	
+# 	return HttpResponse(status=204)
