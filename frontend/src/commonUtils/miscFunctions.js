@@ -21,3 +21,11 @@ export function isDescendant(parent, node) {
 			return isDescendant(parent, node.parentNode);
 	}
 }
+
+
+export function getCookie(name) {
+	for (const str of document.cookie.split('; ')) {
+		const [key, value] = str.split('=');
+		if (key === name) return value;
+	}
+}

@@ -2,12 +2,14 @@ import React from 'react';
 import styles from 'styles/Home.module.scss';
 import githubLogo from 'assets/GitHub-Mark-64px.png';
 
+import FeedbackForm from './FeedbackForm';
+
 
 function Home(props) {
 	return (
 		<div className={styles.home}>
 			<div className={styles.underHeader}>
-
+				<FeedbackForm />
 			</div>
 
 			<div className={styles.description}>
