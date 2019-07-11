@@ -3,6 +3,8 @@ import os
 from django.http import HttpResponse
 from django.core.cache import cache
 
+from .forms import FeedbackPostForm
+
 
 def restaurants(request):
 	full_path = request.get_full_path()
@@ -38,9 +40,8 @@ def restaurants(request):
 	return HttpResponse(data, content_type="application/json")
 
 
-# def feedbackFormView(request):
-# 	sender = request.POST['sender']
-# 	subject = request.POST['subject']
-# 	message = request.POST['message']
-	
-# 	return HttpResponse(status=204)
+def feedbackFormView(request):
+	form = FeedbackPostForm(request.POST)
+	if form.is_valid():
+		form.save()
+	return HttpResponse(status=204)
