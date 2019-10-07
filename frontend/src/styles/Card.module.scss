@@ -50,6 +50,11 @@
 	a {
 		margin: 0 auto auto auto;
 	}
+
+	p {
+		@include raisedContainer($purple, $white);
+		margin-bottom: auto;
+	}
 }
 
 .info {

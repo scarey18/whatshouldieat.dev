@@ -39,6 +39,14 @@ $expanded-header-height: 70vh;
 	}
 }
 
+@mixin raisedContainer($background-color, $color) {
+	background-color: $background-color;
+	color: $color;
+	padding: 1rem;
+	border-radius: 10px;
+	box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.91);
+}
+
 
 %container {
 	width: 100%;

@@ -51,11 +51,12 @@ class App extends React.Component {
 
 	goHome = () => {
 		if (this.state.userLocation === null) {
-			return;
+			window.scroll({top: 0, left: 0, behavior: 'smooth'});
+		} else {
+			window.history.pushState({userLocation: null}, '', '/');
+			localStorage.removeItem('userLocation');
+			this.setState({userLocation: null});
 		}
-		window.history.pushState({userLocation: null}, '', '/');
-		localStorage.removeItem('userLocation');
-		this.setState({userLocation: null});
 	};
 
 	setLocation = value => {

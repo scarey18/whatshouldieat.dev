@@ -5,10 +5,23 @@ import FeedbackForm from './FeedbackForm';
 
 
 function Home(props) {
+
+	const scrollToForm = () => {
+		const fontSize = getComputedStyle(document.documentElement).fontSize;
+		const headerHeight = 5 * parseFloat(fontSize);
+		if (window.scrollY < headerHeight) {
+			window.scroll({
+				top: headerHeight,
+				left: 0,
+				behavior: 'smooth',
+			});
+		}
+	}
+
 	return (
 		<div className={styles.home}>
 			<div className={styles.underHeader}>
-				<FeedbackForm />
+				<FeedbackForm scrollToForm={scrollToForm}/>
 			</div>
 
 			<div className={styles.description}>

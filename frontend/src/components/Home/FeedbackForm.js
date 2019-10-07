@@ -3,7 +3,7 @@ import styles from 'styles/FeedbackForm.module.scss';
 import { getCookie } from 'commonUtils/miscFunctions';
 
 
-export default function FeedbackForm() {
+export default function FeedbackForm(props) {
 	const [formSubmitted, setFormSubmitted] = useState(false);
 	const [senderName, setSenderName] = useState('');
 	const [senderEmail, setSenderEmail] = useState('');
@@ -62,65 +62,57 @@ export default function FeedbackForm() {
 		setFormSubmitted(true);
 	}
 
-	const scrollToFeedback = () => {
-		const fontSize = getComputedStyle(document.documentElement).fontSize;
-		const headerHeight = 5 * parseFloat(fontSize);
-		if (window.scrollY < headerHeight) {
-			window.scroll({
-				top: headerHeight,
-				left: 0,
-				behavior: 'smooth',
-			});
-		}
-	}
-
 	return (
 		<div className={styles.formContainer}>
 			{formSubmitted &&
-				<p>Thank you for your feedback!</p>}
+				<p className={styles.formSubmittedMessage}>Thank you for your feedback!</p>}
 
 			{!formSubmitted &&
-				<form onSubmit={handleSubmit}>
-					<label>	
-						Your name:
-						{formErrors.senderName &&
-							<span className={styles.error}>{formErrors.senderName}</span>}
-						<input 
-							type="text" value={senderName} name="name"
-							onChange={e => setSenderName(e.target.value)}
-							placeholder="Jane Doe"
-							onFocus={scrollToFeedback}
-							maxlength="255"
-						/>
-					</label>
+				<React.Fragment>
+					<form onSubmit={handleSubmit}>
+						<h1>Contact</h1>
+						<p>Have questions, criticisms, or bug reports? We'd love to hear from you!</p>
+						<label>	
+							Your name:
+							{formErrors.senderName &&
+								<span className={styles.error}>{formErrors.senderName}</span>}
+							<input 
+								type="text" value={senderName} name="name"
+								onChange={e => setSenderName(e.target.value)}
+								placeholder="Jane Doe"
+								onFocus={props.scrollToForm}
+								maxlength="255"
+							/>
+						</label>
 
-					<label>
-						Your email (optional):
-						{formErrors.senderEmail &&
-							<span className={styles.error}>{formErrors.senderEmail}</span>}
-						<input 
-							type="text" value={senderEmail}  name="email"
-							onChange={e => setSenderEmail(e.target.value)}
-							placeholder="janedoe@email.com"
-							onFocus={scrollToFeedback}
-						/>
-					</label>
+						<label>
+							Your email (optional):
+							{formErrors.senderEmail &&
+								<span className={styles.error}>{formErrors.senderEmail}</span>}
+							<input 
+								type="text" value={senderEmail}  name="email"
+								onChange={e => setSenderEmail(e.target.value)}
+								placeholder="janedoe@email.com"
+								onFocus={props.scrollToForm}
+							/>
+						</label>
 
-					<label>
-						Your message:
-						{formErrors.text &&
-							<span className={styles.error}>{formErrors.text}</span>}
-						<textarea 
-							type="text" value={text} name="message" 
-							onChange={e => setText(e.target.value)}
-							placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..."
-							onFocus={scrollToFeedback}
-							maxlength="63206"
-						/>
-					</label>
+						<label>
+							Your message:
+							{formErrors.text &&
+								<span className={styles.error}>{formErrors.text}</span>}
+							<textarea 
+								type="text" value={text} name="message" 
+								onChange={e => setText(e.target.value)}
+								placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..."
+								onFocus={props.scrollToForm}
+								maxlength="63206"
+							/>
+						</label>
 
-					<button type="submit">Submit</button>
-				</form>
+						<button type="submit">Submit</button>
+					</form>
+				</React.Fragment>
 			}
 		</div>
 	)	

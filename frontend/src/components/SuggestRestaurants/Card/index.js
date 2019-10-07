@@ -107,19 +107,23 @@ class Card extends React.Component {
 					{/* Restaurant image */}
 						{!this.props.isMobile &&
 							<div className={styles.imgContainer}>
-								<a 
-									href={this.props.restaurant.image_url} 
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<FlexibleImg 
-										src={this.props.restaurant.image_url}
-										alt={this.props.restaurant.name}
-										parentDepth={2}
-										delay={500}
-										restyleTriggers={[[this.props.restaurantSelected, 200]]}
-									/>
-								</a>
+								{!this.props.restaurant.image_url ? 
+									<p>This restaurant has no uploaded pictures.</p>
+									:
+									<a 
+										href={this.props.restaurant.image_url} 
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<FlexibleImg 
+											src={this.props.restaurant.image_url}
+											alt={this.props.restaurant.name}
+											parentDepth={2}
+											delay={500}
+											restyleTriggers={[[this.props.restaurantSelected, 200]]}
+										/>
+									</a>
+								}
 							</div>
 						}
 
