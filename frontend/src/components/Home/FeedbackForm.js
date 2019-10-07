@@ -8,10 +8,34 @@ export default function FeedbackForm() {
 	const [senderName, setSenderName] = useState('');
 	const [senderEmail, setSenderEmail] = useState('');
 	const [text, setText] = useState('');
+	const [formErrors, setFormErrors] = useState({});
 
 	const handleSubmit = e => {
 		e.preventDefault();
+		const errors = checkForErrors();
+		if (Object.entries(errors).length > 0) setFormErrors(errors);
+		else submitForm();
+	}
 
+	const checkForErrors = () => {
+		const errors = {};
+		if (senderName === '') {
+			errors.senderName = '*This field is required.';
+		}
+
+		const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+		if (senderEmail.length > 0 && !emailRegex.test(senderEmail)) {
+			errors.senderEmail = '*Please enter a valid email address.'
+		}
+
+		if (text === '') {
+			errors.text = '*This field is required.';
+		}
+
+		return errors;
+	}
+
+	const submitForm = () => {
 		const csrftoken = getCookie('csrftoken');
 
 		const headers = {
@@ -21,9 +45,9 @@ export default function FeedbackForm() {
 		}
 
 		const body = JSON.stringify({
-			sender_name: senderName,
-			sender_email: senderEmail,
-			text,
+			'sender_name': senderName,
+			'sender_email': senderEmail,
+			'text': text,
 			'csrfmiddlewaretoken': csrftoken,
 		});
 
@@ -38,6 +62,18 @@ export default function FeedbackForm() {
 		setFormSubmitted(true);
 	}
 
+	const scrollToFeedback = () => {
+		const fontSize = getComputedStyle(document.documentElement).fontSize;
+		const headerHeight = 5 * parseFloat(fontSize);
+		if (window.scrollY < headerHeight) {
+			window.scroll({
+				top: headerHeight,
+				left: 0,
+				behavior: 'smooth',
+			});
+		}
+	}
+
 	return (
 		<div className={styles.formContainer}>
 			{formSubmitted &&
@@ -45,27 +81,41 @@ export default function FeedbackForm() {
 
 			{!formSubmitted &&
 				<form onSubmit={handleSubmit}>
-					<label for="sender_name">	
+					<label>	
 						Your name:
+						{formErrors.senderName &&
+							<span className={styles.error}>{formErrors.senderName}</span>}
 						<input 
-							type="text" value={senderName} name="sender_name"
+							type="text" value={senderName} name="name"
 							onChange={e => setSenderName(e.target.value)}
+							placeholder="Jane Doe"
+							onFocus={scrollToFeedback}
+							maxlength="255"
 						/>
 					</label>
 
-					<label for="sender_email">
+					<label>
 						Your email (optional):
+						{formErrors.senderEmail &&
+							<span className={styles.error}>{formErrors.senderEmail}</span>}
 						<input 
-							type="text" value={senderEmail}  name="sender_email"
+							type="text" value={senderEmail}  name="email"
 							onChange={e => setSenderEmail(e.target.value)}
+							placeholder="janedoe@email.com"
+							onFocus={scrollToFeedback}
 						/>
 					</label>
 
-					<label for="text">
+					<label>
 						Your message:
+						{formErrors.text &&
+							<span className={styles.error}>{formErrors.text}</span>}
 						<textarea 
-							type="text" value={text} name="text" 
+							type="text" value={text} name="message" 
 							onChange={e => setText(e.target.value)}
+							placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..."
+							onFocus={scrollToFeedback}
+							maxlength="63206"
 						/>
 					</label>
 

@@ -34,7 +34,7 @@ $expanded-header-height: 70vh;
 @mixin colorize($color) {
 	background-color: $color;
 
-	&:hover {
+	&:hover, &:focus {
 		background-color: darken($color, 5%);
 	}
 }

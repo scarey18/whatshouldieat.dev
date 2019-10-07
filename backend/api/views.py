@@ -1,5 +1,6 @@
 import requests
 import os
+import json
 from django.http import HttpResponse
 from django.core.cache import cache
 
@@ -41,7 +42,7 @@ def restaurants(request):
 
 
 def feedbackFormView(request):
-	form = FeedbackPostForm(request.POST)
+	form = FeedbackPostForm(json.loads(request.body))
 	if form.is_valid():
 		form.save()
 	return HttpResponse(status=204)

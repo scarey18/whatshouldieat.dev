@@ -8,6 +8,9 @@ class FeedbackPost(models.Model):
 	text = models.TextField()
 	sender_email = models.EmailField(blank=True)
 
+	def __str__(self):
+		return self.sender_name
+
 
 
 # POTENTIAL FUTURE ADDITIONS

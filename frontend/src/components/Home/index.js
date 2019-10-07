@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from 'styles/Home.module.scss';
 import githubLogo from 'assets/GitHub-Mark-64px.png';
-
 import FeedbackForm from './FeedbackForm';
 
 
