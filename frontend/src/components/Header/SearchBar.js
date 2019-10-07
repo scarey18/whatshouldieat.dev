@@ -132,7 +132,7 @@ class SearchBar extends React.Component {
 			>
 				<div className={styles.suggestionsContainer}>
 					<div className={styles.inputContainer}>
-						<label for="location">Enter your location:</label>
+						<label htmlFor="location">Enter your location:</label>
 						<input 
 							type="text" 
 							name="location"

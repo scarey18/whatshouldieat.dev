@@ -52,6 +52,15 @@ class FlexibleImg extends React.Component {
 		const widthRatio = parentRect.width / imgRect.width;
 		const heightRatio = parentRect.height / imgRect.height;
 		const className = widthRatio < heightRatio ? styles.landscape : styles.portrait;
+
+		if (this.props.fitParentToImg && className === styles.landscape) {
+			this.img.parentElement.style.height = 'auto';
+			this.img.parentElement.style.width = null;
+		} else if (this.props.fitParentToImg) {
+			this.img.parentElement.style.width = 'auto';
+			this.img.parentElement.style.height = null;
+		}
+
 		if (className !== this.state.className) {
 			this.setState({className});
 		}

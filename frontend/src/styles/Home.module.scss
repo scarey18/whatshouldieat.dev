@@ -33,8 +33,12 @@
 			color: transparentize($black, 0.15);
 		}
 
-		img {
+		a {
 			height: 90%;
+
+			img {
+				height: 100%;
+			}
 		}
 	}
 }

@@ -121,6 +121,7 @@ class Card extends React.Component {
 											parentDepth={2}
 											delay={500}
 											restyleTriggers={[[this.props.restaurantSelected, 200]]}
+											fitParentToImg={true}
 										/>
 									</a>
 								}

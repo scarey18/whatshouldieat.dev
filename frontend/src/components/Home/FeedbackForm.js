@@ -81,7 +81,7 @@ export default function FeedbackForm(props) {
 								onChange={e => setSenderName(e.target.value)}
 								placeholder="Jane Doe"
 								onFocus={props.scrollToForm}
-								maxlength="255"
+								maxLength="255"
 							/>
 						</label>
 
@@ -106,7 +106,7 @@ export default function FeedbackForm(props) {
 								onChange={e => setText(e.target.value)}
 								placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..."
 								onFocus={props.scrollToForm}
-								maxlength="63206"
+								maxLength="63206"
 							/>
 						</label>
 

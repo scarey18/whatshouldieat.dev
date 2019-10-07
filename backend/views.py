@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 
+# Streams content from the React development server
 @ensure_csrf_cookie
 def dev(request, upstream=f'http://{os.environ.get("HOST", "")}:9000'):
 	upstream_url = upstream + request.path
