@@ -105,6 +105,8 @@ class FilterBtn extends React.Component {
 				onClick={this.props.restaurantSelected ? null : this.onClick}
 				onMouseEnter={this.props.restaurantSelected ? null : this.onMouseEnter}
 				onMouseLeave={this.props.restaurantSelected ? null : this.onMouseLeave}
+				onFocus={this.props.restaurantSelected ? null : this.onMouseEnter}
+				onBlur={this.props.restaurantSelected ? null : this.onMouseLeave}	
 				ref={ref => this.btn = ref}
 				title={this.props.restaurantSelected ? "" : "Click to filter"}
 				disabled={this.props.re}

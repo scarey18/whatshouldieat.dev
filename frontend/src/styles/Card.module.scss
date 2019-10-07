@@ -139,7 +139,7 @@
 		color: $link;
 		cursor: pointer;
 
-		&:hover {
+		&:hover, &:focus {
 			text-decoration: underline;
 		}
 	}
