@@ -146,7 +146,7 @@
 }
 
 .contactInfo {
-	@include fadeInAnimation(2s);
+	@include fadeInAnimation(1.5s);
 	margin-top: 15px;
 
 	h2 {
