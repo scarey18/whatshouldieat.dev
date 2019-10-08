@@ -11,7 +11,7 @@
 .loadingSection {
 	@extend %flex-center-column;
 	height: 70vh;
-	width: 100vw;
+	width: 100%;
 	color: $purple;
 
 	.loadingRingContainer {
@@ -33,7 +33,7 @@
 @keyframes slideDown {
 	from {
 		height: 80vh;
-		width: 100vw;
+		width: 100%;
 		margin-top: 0;
 	}
 	to {
@@ -57,7 +57,7 @@
 	}
 	to {
 		height: 80vh;
-		width: 100vw;
+		width: 100%;
 		margin-top: none;
 	}
 }

@@ -14,6 +14,7 @@ $primary-font: 'Arimo', sans-serif;
 
 $header-height: 5rem;
 $expanded-header-height: 70vh;
+$small-screen-expanded-header-height: 95vh;
 
 
 @mixin fadeInAnimation($duration) {

@@ -63,14 +63,19 @@ class FilterBtn extends React.Component {
 	adjustEdges = () => {
 		const expandedRect = this.expandedContent.getBoundingClientRect();
 		const btnRect = this.btn.getBoundingClientRect();
+
 		if (expandedRect.width > window.screen.width) {
 			this.expandedContent.style.left = `-${btnRect.left}px`;
 			this.expandedContent.style.width = '100vw';
+			this.expandedContent.style.transform = 'none';
 		} else if (expandedRect.left < 0) {
 			this.expandedContent.style.left = `-${btnRect.left}px`;
+			this.expandedContent.style.transform = 'none';
 		} else if (expandedRect.right > window.screen.width) {
 			const difference = window.screen.width - btnRect.right;
+			this.expandedContent.style.left = 'unset';
 			this.expandedContent.style.right = `-${difference}px`;
+			this.expandedContent.style.transform = 'none';
 		}
 	};
 
@@ -89,9 +94,11 @@ class FilterBtn extends React.Component {
 
 		const borderStyle = {
 			width: (this.state.hover || this.state.expanded ? "100%" : 0),
-		};
+		}
 
-		const expandedStyle = {height: (this.state.expanded ? "6rem" : 0)};
+		const expandedStyle = {
+			height: (this.state.expanded ? '6rem' : 0),
+		}
 
 		const filterOptionStyle = {
 			visibility: (this.state.showFilterText ? 'visible' : 'hidden'),
@@ -100,23 +107,25 @@ class FilterBtn extends React.Component {
 		const price = this.props.category.title ? null : this.props.category.length;
 
 		return (
-			<button
-				className={classList.join(' ')}
-				onClick={this.props.restaurantSelected ? null : this.onClick}
-				onMouseEnter={this.props.restaurantSelected ? null : this.onMouseEnter}
-				onMouseLeave={this.props.restaurantSelected ? null : this.onMouseLeave}
-				onFocus={this.props.restaurantSelected ? null : this.onMouseEnter}
-				onBlur={this.props.restaurantSelected ? null : this.onMouseLeave}	
-				ref={ref => this.btn = ref}
-				title={this.props.restaurantSelected ? "" : "Click to filter"}
-				disabled={this.props.re}
-			>
-				{this.props.category.title || this.props.category}
+			<div className={styles.filterContainer}>
+				<button
+					className={classList.join(' ')}
+					onClick={this.props.restaurantSelected ? null : this.onClick}
+					onMouseEnter={this.props.restaurantSelected ? null : this.onMouseEnter}
+					onMouseLeave={this.props.restaurantSelected ? null : this.onMouseLeave}
+					onFocus={this.props.restaurantSelected ? null : this.onMouseEnter}
+					onBlur={this.props.restaurantSelected ? null : this.onMouseLeave}	
+					ref={ref => this.btn = ref}
+					title={this.props.restaurantSelected ? "" : "Click to filter"}
+					disabled={this.props.restaurantSelected}
+				>
+					{this.props.category.title || this.props.category}
 
-			{/* Absolute div to act as bottom border for css transition */}
-				<div className={styles.border} style={borderStyle}></div>
+				{/* Absolute div to act as bottom border for css transition */}
+					<div className={styles.border} style={borderStyle}></div>
+				</button>
 
-			{/* Filter options */}
+				{/* Filter options */}
 				<div 
 					className={styles.expanded} 
 					style={expandedStyle}
@@ -139,7 +148,7 @@ class FilterBtn extends React.Component {
 						{this.secondFilterOption}
 					</button>
 				</div>
-			</button>
+			</div>
 		);
 	}
 }

@@ -18,6 +18,8 @@
 	.tab {
 		width: 1.5rem;
 		height: 100%;
+		position: relative;
+		z-index: 995;
 		border-radius: inherit;
 		cursor: pointer;
 		display: flex;
@@ -38,5 +40,5 @@
 
 .expanded {
 	width: 25rem;
-	max-width: 100vw;
+	max-width: 100%;
 }

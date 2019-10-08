@@ -8,7 +8,7 @@
 	z-index: 990;
 	top: 0;
 	left: 0;
-	width: 100vw;
+	width: 100%;
 	height: $header-height;
 	background-color: $yellow;
 	box-shadow: 0 10px 6px -6px #8a7d5f;
@@ -17,6 +17,10 @@
 
 .expanded {
 	height: $expanded-header-height;
+
+	@media screen and (max-height: 875px) {
+		height: $small-screen-expanded-header-height;
+	}
 }
 
 .permanentContent {
@@ -26,7 +30,7 @@
 	justify-content: space-between;
 
 	img {
-		width: 4rem;
+		width: 3rem;
 		cursor: pointer;
 	}
 }
