@@ -2,9 +2,10 @@
 
 
 .suggestRestaurants {
-	@extend %flex-center-column;
 	@extend %container;
-	height: 100%;
+	display: flex;
+	flex-direction: column;
+	height: calc(100vh - #{$header-height});
 	width: 100%;
 }
 

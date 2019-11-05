@@ -11,9 +11,13 @@
 	width: 1.5rem;
 	z-index: 995;
 	border-radius: 10px 0 0 10px;
-	transition: width 0.35s ease-in-out;
+	transition: all 0.35s ease-in-out;
 	box-shadow: -8px 0px 5px -4px #8a7d5f;
 	display: flex;
+
+	@media screen and (max-width: 600px) {
+		height: 5rem;
+	}
 
 	.tab {
 		width: 1.5rem;
@@ -41,4 +45,5 @@
 .expanded {
 	width: 25rem;
 	max-width: 100%;
+	height: calc(100vh - #{$header-height});
 }

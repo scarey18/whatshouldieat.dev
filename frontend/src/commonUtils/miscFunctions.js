@@ -29,3 +29,16 @@ export function getCookie(name) {
 		if (key === name) return value;
 	}
 }
+
+
+export function scrollToForm() {
+		const fontSize = getComputedStyle(document.documentElement).fontSize;
+		const headerHeight = 5 * parseFloat(fontSize);
+		if (window.scrollY < headerHeight) {
+			window.scroll({
+				top: headerHeight,
+				left: 0,
+				behavior: 'smooth',
+			});
+		}
+	}

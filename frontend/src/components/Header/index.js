@@ -3,6 +3,7 @@ import SearchBar from './SearchBar';
 import styles from 'styles/Header.module.scss';
 import sadPlate from 'assets/sad-plate.png';
 import logo from 'assets/wsie_logo.png';
+import { scrollToForm } from 'commonUtils/miscFunctions';
 
 
 class Header extends React.Component {
@@ -20,13 +21,13 @@ class Header extends React.Component {
 
 	componentDidMount() {
 		if (this.props.location === null) {
-			window.addEventListener('scroll', this.toggleExpand);
+			document.addEventListener('scroll', this.toggleExpand);
 		}
 		this.initialState = this.state;
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('scroll', this.toggleExpand);
+		document.removeEventListener('scroll', this.toggleExpand);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -37,10 +38,10 @@ class Header extends React.Component {
 
 	handleLocationChange = () => {
 		if (this.props.location === null) {
-			window.addEventListener('scroll', this.toggleExpand);
+			document.addEventListener('scroll', this.toggleExpand);
 			this.setState(this.initialState);
 		} else {
-			window.removeEventListener('scroll', this.toggleExpand);
+			document.removeEventListener('scroll', this.toggleExpand);
 			this.setState({
 				searchBarValue: this.props.location, 
 				expanded: false,
@@ -87,20 +88,29 @@ class Header extends React.Component {
 			{/* Expanded content for home page */}
 				{this.state.expanded &&
 					(<div className={styles.expandedContent}>
-						<div className={styles.searchContainer}>
-							<h1>Hungry?</h1>
-							<SearchBar
-								expanded={this.state.expanded}
-								isMobile={this.props.isMobile}
-								value={this.state.searchBarValue}
-								suggestions={this.state.searchBarSuggestions}
-								inputFocused={this.state.searchBarInputFocused}
-								updateState={state => this.setState(state)}
-								setLocation={value => this.props.setLocation(value)}
-								focusedSuggestion={this.state.focusedSuggestion}
-							/>
+						<div className={styles.expandedMain}>
+							<div className={styles.searchContainer}>
+								<h1>Hungry?</h1>
+								<SearchBar
+									expanded={this.state.expanded}
+									isMobile={this.props.isMobile}
+									value={this.state.searchBarValue}
+									suggestions={this.state.searchBarSuggestions}
+									inputFocused={this.state.searchBarInputFocused}
+									updateState={state => this.setState(state)}
+									setLocation={value => this.props.setLocation(value)}
+									focusedSuggestion={this.state.focusedSuggestion}
+								/>
+							</div>
+							<img src={sadPlate} alt="Sad, empty plate :("></img>
 						</div>
-						<img src={sadPlate} alt="Sad, empty plate :("></img>
+						<button 
+							className={styles.scrollBtn} 
+							onClick={scrollToForm}
+							title="Collapse Header"
+						>
+							<i className="fas fa-chevron-down"></i>
+						</button>
 					</div>)
 				}
 			</header>

@@ -168,8 +168,14 @@ class SearchBar extends React.Component {
 						
 				</div>
 
-				{!this.props.isMobile && 
-					<button type='submit' onClick={this.btnClick}>Find Me Food!</button>}
+				{(!this.props.isMobile || this.props.expanded) && 
+					<button 
+						type='submit' 
+						onClick={this.btnClick}
+						title="Search location"
+					>
+						Find Me Food!
+					</button>}
 			</form>
 		);
 	}

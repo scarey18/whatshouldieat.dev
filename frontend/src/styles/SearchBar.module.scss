@@ -5,6 +5,7 @@
 	height: 3rem;
 	flex-grow: 1;
 	@extend %flex-center;
+	flex-wrap: wrap;
 	justify-content: space-between;
 	margin: 1rem 30px;
 	@include fadeInAnimation(1s);
@@ -22,7 +23,6 @@
 
 	button {
 		height: 100%;
-		width: 27%;
 		@include colorize($green);
 		color: $white;
 		border-radius: 5px;

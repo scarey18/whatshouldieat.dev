@@ -2,22 +2,10 @@ import React from 'react';
 import styles from 'styles/Home.module.scss';
 import githubLogo from 'assets/GitHub-Mark-64px.png';
 import FeedbackForm from './FeedbackForm';
+import { scrollToForm } from 'commonUtils/miscFunctions';
 
 
 function Home(props) {
-
-	const scrollToForm = () => {
-		const fontSize = getComputedStyle(document.documentElement).fontSize;
-		const headerHeight = 5 * parseFloat(fontSize);
-		if (window.scrollY < headerHeight) {
-			window.scroll({
-				top: headerHeight,
-				left: 0,
-				behavior: 'smooth',
-			});
-		}
-	}
-
 	return (
 		<div className={styles.home}>
 			<div className={styles.underHeader}>

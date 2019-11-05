@@ -1,8 +1,9 @@
 @import 'styles/variables';
 
 
-html {
-	margin-left: calc(100vw - 100%);
+html, body, #root {
+	width: 100%;
+	overflow-x: hidden;
 }
 
 body {
@@ -10,10 +11,7 @@ body {
 	font-size: 16px;
 	color: $black;
 	background-color: $lighter-yellow;
-	width: 100%;
-	max-width: 100%;
-	overflow-x: hidden;
-
+	
 	@media (max-width: 700px) {
 		font-size: 12px;
 	}

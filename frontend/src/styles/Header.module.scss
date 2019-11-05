@@ -19,7 +19,7 @@
 	height: $expanded-header-height;
 
 	@media screen and (max-height: 875px) {
-		height: $small-screen-expanded-header-height;
+		height: 100vh;
 	}
 }
 
@@ -37,31 +37,47 @@
 
 .expandedContent {
 	@extend %container;
-	@extend %flex-center;
+	@extend %flex-center-column;
 	flex-grow: 1;
 
-	img {
-		width: 40%;
-		@include fadeInAnimation(2s);
-	}
-}
+	.expandedMain {
+		@extend %flex-center;
+		flex-grow: 1;
+		width: 100%;
 
-.searchContainer {
-	width: 60%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+		.searchContainer {
+			width: 60%;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
 
-	h1 {
-		@include fadeInAnimation(2s);
-		font-size: 5rem;
-		background-color: $red;
-		color: $white;
-		padding: 0 10px 10px 10px;
-		margin: 0 auto 0 0;
+			h1 {
+				@include fadeInAnimation(2s);
+				font-size: 5rem;
+				background-color: $red;
+				color: $white;
+				padding: 0 10px 10px 10px;
+				margin: 0 auto 0 0;
 
-		@media screen and (max-width: 650px) {
-			font-size: 36px;
+				@media screen and (max-width: 650px) {
+					font-size: 36px;
+				}
+			}
 		}
+
+		img {
+			width: 40%;
+			@include fadeInAnimation(2s);
+		}
+	}
+
+	.scrollBtn {
+		@extend %raisedBtn;
+		height: 2.5rem;
+		width: 2.5rem;
+		margin-bottom: 5px;
+		background-color: $purple;
+		color: $white;
+		border-radius: 2.5rem;
 	}
 }

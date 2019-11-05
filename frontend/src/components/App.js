@@ -67,7 +67,7 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<React.Fragment>
 				<Header 
 					isMobile={this.state.isMobile} 
 					location={this.state.userLocation}
@@ -78,7 +78,7 @@ class App extends React.Component {
 					location={this.state.userLocation}
 					isMobile={this.state.isMobile}
 				/>
-			</div>
+			</React.Fragment>
 		);
 	}
 }

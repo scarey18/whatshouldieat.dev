@@ -6,20 +6,13 @@
 
 	.underHeader {
 		width: 100%;
-		height: calc(#{$expanded-header-height} - #{$header-height});
-
-		@media screen and (max-height: 875px) {
-			height: calc(#{$small-screen-expanded-header-height} - #{$header-height});
-		}
+		min-height: calc(#{$expanded-header-height} - #{$header-height});
 	}
 
 	.description {
 		@extend %flex-center;
 		width: 100%;
-
-		@media screen and (min-height: 876px) {
-			height: calc(100vh - #{$expanded-header-height});
-		}
+		min-height: calc(100vh - #{$expanded-header-height});
 
 		p {
 			@include raisedContainer($purple, $white);
