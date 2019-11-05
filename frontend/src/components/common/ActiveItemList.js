@@ -7,8 +7,8 @@ function ActiveItemList(props) {
 		props.list.length === 0 ? 
 			<p>{props.emptyListText}</p> :
 			<ul>
-				{props.list.map(item => (
-					<div className={styles.item}>
+				{props.list.map((item, i) => (
+					<div className={styles.item} key={i}>
 						<li>{item.title}</li>
 						<button onClick={() => props.handleDeleteItem(item)}>
 							Delete

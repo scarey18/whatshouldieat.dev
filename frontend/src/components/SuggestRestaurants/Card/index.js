@@ -188,7 +188,7 @@ class Card extends React.Component {
 							<div className={styles.addressInfo}>
 								<div className={styles.fullAddress}>
 									{this.props.restaurant.location.display_address.map(str => (
-										 <p>{str}</p>
+										 <p key={str}>{str}</p>
 									))}
 								</div>
 								<button onClick={this.props.showOnMap}>

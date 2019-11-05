@@ -13,12 +13,12 @@ export function biSort(callback, items) {
 
 export function isDescendant(parent, node) {
 	switch (node) {
-		case parent || null:
+		case parent:
 			return true;
 		case document.querySelector('body'):
 			return false;
 		default:
-			return isDescendant(parent, node.parentNode);
+			return node === null ? true : isDescendant(parent, node.parentNode);
 	}
 }
 

@@ -38,6 +38,7 @@ class PriceSelection extends React.Component {
 			}
 			pricePoints.push(
 				<span
+					key={i}
 					className={priceClassList.join(' ')}
 					onMouseEnter={() => this.handleMouseEnter(i)}
 					onClick={() => this.setState({selectedPrice: i})}
