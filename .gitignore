@@ -10,7 +10,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -57,7 +56,6 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3
-media/
 
 # Flask stuff:
 instance/
@@ -113,6 +111,8 @@ node_modules/
 
 # testing
 /coverage
+
+# production
 
 # misc
 .DS_Store
