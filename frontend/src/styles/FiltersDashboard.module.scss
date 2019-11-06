@@ -57,9 +57,27 @@
 
 		h2 {
 			margin: 2.5rem 0 5px 0;
+			padding: 5px 0;
 			width: 90%;
 			border-bottom: 1px solid $white;
 			font-weight: normal;
+		}
+
+		.addItemsHeader {
+			display: flex;
+			align-items: flex-end;
+			border-bottom: 1px solid $white;
+
+			h2 {
+				border: none;
+				width: auto;
+			}
+
+			button {
+				@extend %flatBtn;
+				height: 2rem;
+				margin: 0 0 5px 10px;
+			}
 		}
 	}
 }

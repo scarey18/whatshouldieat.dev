@@ -21,6 +21,10 @@
 	@media screen and (max-height: 875px) {
 		height: 100vh;
 	}
+
+	@media screen and (max-width: 650px) {
+		position: relative;
+	}
 }
 
 .permanentContent {

@@ -52,6 +52,7 @@ class Header extends React.Component {
 	};
 
 	toggleExpand = () => {
+		if (this.props.isMobile) return;
 		if (window.scrollY === 0 && !this.state.expanded) {
 			this.setState({expanded: true});
 		} else if (window.scrollY > 0 && this.state.expanded) {
@@ -106,7 +107,7 @@ class Header extends React.Component {
 						</div>
 						<button 
 							className={styles.scrollBtn} 
-							onClick={scrollToForm}
+							onClick={() => scrollToForm(this.props.isMobile)}
 							title="Collapse Header"
 						>
 							<i className="fas fa-chevron-down"></i>

@@ -31,7 +31,10 @@ export function getCookie(name) {
 }
 
 
-export function scrollToForm() {
+export function scrollToForm(isMobile) {
+	if (isMobile) {
+		document.getElementById('underHeader').scrollIntoView();
+	} else {
 		const fontSize = getComputedStyle(document.documentElement).fontSize;
 		const headerHeight = 5 * parseFloat(fontSize);
 		if (window.scrollY < headerHeight) {
@@ -42,3 +45,4 @@ export function scrollToForm() {
 			});
 		}
 	}
+}

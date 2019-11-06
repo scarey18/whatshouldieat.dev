@@ -34,8 +34,4 @@
 	@extend %flex-center;
 	width: 100%;
 	flex-grow: 1;
-
-	button {
-		@extend %flatBtn;
-	}
 }

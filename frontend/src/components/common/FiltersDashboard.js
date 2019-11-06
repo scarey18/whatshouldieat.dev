@@ -64,12 +64,19 @@ class FiltersDashboard extends React.Component {
 
 		return (
 			<React.Fragment>
-				<h2>{headerText}</h2>
+				<div className={styles.addItemsHeader}>
+					<h2>{headerText}</h2>
+					<button 
+						onClick={applyChanges} 
+						disabled={selectedList.length === 0}
+					>
+						Apply Changes
+					</button>
+				</div>
 				<AddItemsList 
 					items={items} 
 					selectedItems={selectedList}
 					toggleSelection={toggleSelection}
-					applyChanges={applyChanges}
 				/>
 			</React.Fragment>
 		);

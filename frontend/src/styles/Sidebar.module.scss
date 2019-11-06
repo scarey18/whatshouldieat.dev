@@ -7,7 +7,7 @@
 	color: $white;
 	top: $header-height;
 	right: 0;
-	height: calc(100vh - #{$header-height});
+	height: calc(100% - #{$header-height});
 	width: 1.5rem;
 	z-index: 995;
 	border-radius: 10px 0 0 10px;
@@ -45,5 +45,5 @@
 .expanded {
 	width: 25rem;
 	max-width: 100%;
-	height: calc(100vh - #{$header-height});
+	height: calc(100% - #{$header-height});
 }

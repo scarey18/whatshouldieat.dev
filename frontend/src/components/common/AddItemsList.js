@@ -26,12 +26,7 @@ function AddItemsList(props) {
 				{items}
 			</div>
 			<div className={styles.footer}>
-				<button 
-					onClick={props.applyChanges} 
-					disabled={props.selectedItems.length === 0}
-				>
-					Apply Changes
-				</button>
+			
 			</div>
 		</React.Fragment>
 	);
