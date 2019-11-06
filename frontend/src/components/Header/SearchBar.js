@@ -66,7 +66,7 @@ class SearchBar extends React.Component {
 	};
 
 	updateSuggestions = async value => {
-		const url = `http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${value}&category=Address,Primary+Postal,City&countryCode=USA&f=json`;
+		const url = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${value}&category=Address,Primary+Postal,City&countryCode=USA&f=json`;
 	  const resp = await fetch(url);
 	  let data;
 	  if (resp.ok) {
