@@ -13,7 +13,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'api',
+    'backend.api',
 ]
 
 MIDDLEWARE = [
@@ -45,7 +45,7 @@ TEMPLATES = [
     },
 ]
 
-AUTH_USER_MODEL = 'api.User'
+AUTH_USER_MODEL = 'backend.api.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -101,5 +101,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/build/static/'),
+]
 
 WHITENOISE_ROOT = os.path.join(BASE_DIR, 'frontend/build/root')
