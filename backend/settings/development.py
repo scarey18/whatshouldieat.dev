@@ -9,15 +9,6 @@ ALLOWED_HOSTS += [os.environ.get('HOST', '')]
 
 TEMPLATES[0]['DIRS'] += [os.path.join(BASE_DIR, 'frontend/public')]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'wsie',
-        'USER': 'wsie',
-        'PASSWORD': os.environ['DB_PASS'],
-        'HOST': 'LOCALHOST',
-        'PORT': '',
-    }
-}
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/src/static/'),
+]

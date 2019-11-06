@@ -84,7 +84,7 @@ class Card extends React.Component {
 		const rating = this.props.restaurant.rating;
 		const isFloat = rating % 1 !== 0;
 		const num = isFloat ? Math.floor(rating) + '_half' : rating;
-		return `assets/yelp_stars/web_and_ios/${prefix}/${prefix}_${num}.png`;
+		return `static/media/yelp_stars/web_and_ios/${prefix}/${prefix}_${num}.png`;
 	};
 
 	render() {
@@ -153,7 +153,7 @@ class Card extends React.Component {
 								>
 									<img 
 										className={styles.yelpLogo}
-										src='assets/YelpLogo_Trademark/Screen(R)/Yelp_trademark_RGB_outline.png'
+										src='static/media/YelpLogo_Trademark/Screen(R)/Yelp_trademark_RGB_outline.png'
 										title='www.yelp.com'
 										alt="Yelp logo"
 									></img>

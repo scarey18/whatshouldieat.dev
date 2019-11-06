@@ -1,8 +1,8 @@
 import React from 'react';
 import SearchBar from './SearchBar';
 import styles from 'styles/Header.module.scss';
-import sadPlate from 'assets/sad-plate.png';
-import logo from 'assets/wsie_logo.png';
+import sadPlate from 'static/media/sad-plate.png';
+import logo from 'static/media/wsie_logo.png';
 import { scrollToForm } from 'commonUtils/miscFunctions';
 
 

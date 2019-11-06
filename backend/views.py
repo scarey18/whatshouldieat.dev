@@ -9,7 +9,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 # Streams content from the React development server
 @ensure_csrf_cookie
-def dev(request, upstream=f'http://{os.environ.get("HOST", "")}:9000'):
+def development(request, upstream=f'http://{os.environ.get("HOST", "")}:9000'):
 	upstream_url = upstream + request.path
 	response = requests.get(upstream_url, stream=True)
 	content_type = response.headers.get('Content-Type')
@@ -29,4 +29,9 @@ def dev(request, upstream=f'http://{os.environ.get("HOST", "")}:9000'):
 		)
 
 
-catchall = dev if settings.DEBUG else 'future production view'
+@ensure_csrf_cookie
+def production(request):
+	return render(request, 'index.html')
+
+
+catchall = development if settings.DEBUG else production
