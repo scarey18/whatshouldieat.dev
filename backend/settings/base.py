@@ -32,7 +32,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -45,7 +45,7 @@ TEMPLATES = [
     },
 ]
 
-AUTH_USER_MODEL = 'backend.api.User'
+AUTH_USER_MODEL = 'api.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -91,9 +91,6 @@ DATABASES = {
         'PORT': '',
     }
 }
-
-
-WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 STATIC_URL = '/static/'
