@@ -21,6 +21,7 @@ const initialState = {
 	restaurantSelected: false,
 	price: 4,
 	seenCategories: new SeenCategories(),
+	badRequest: false,
 }
 
 
@@ -62,6 +63,10 @@ class SuggestRestaurants extends React.Component {
 		const request = utils.getOrCreateRequest(this);
 		if (request.canFetchMore) {
 			const resp = await fetch(request.url);
+			if (!resp.ok) {
+				this.setState({badRequest: true, loading: false});
+				return;
+			}
 			const data = await resp.json();
 
 			request.resultsLog.push(data.businesses.length);
@@ -203,6 +208,13 @@ class SuggestRestaurants extends React.Component {
 		const stackClass = !this.state.restaurantSelected ?
 			styles.cardStack : styles.selectedCardContainer;
 
+		let message;
+		if (!this.state.loading && this.state.badRequest) {
+			message = "Yelp's API seems to be down. Please try again later."
+		} else if (!this.state.loading && this.state.restaurants.length === 0) {
+			message = "We couldn't find any more restaurants for this search area. Try widening your search or using less filters."
+		}
+
 		return (
 			<React.Fragment>
 				<div className={styles.suggestRestaurants}>
@@ -249,9 +261,9 @@ class SuggestRestaurants extends React.Component {
 					</div>
 
 				{/* Message if no restaurants found */}
-					{!this.state.loading && this.state.restaurants.length === 0 &&
+					{message &&
 						<div className={styles.messageSection}>
-							<h2>We couldn't find any more restaurants for this search area. Try widening your search or using less filters.</h2>
+							<h2>{message}</h2>
 						</div>
 					}
 				</div>
