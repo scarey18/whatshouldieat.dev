@@ -3,7 +3,6 @@ import os
 import json
 from django.http import HttpResponse
 from django.core.cache import cache
-import certifi
 
 from .forms import FeedbackPostForm
 
