@@ -105,15 +105,26 @@ class SearchBar extends React.Component {
 		}, 200);
 	};
 
+	onFormSubmit = () => {
+		let value;
+		if (this.props.suggestions.length > 0) {
+			const i = this.props.focusedSuggestion || 0;
+			value = this.props.suggestions[i];
+		} else {
+			value = this.props.value;
+		}
+		this.props.setLocation(value);
+	};
+
 	btnClick = event => {
 		event.preventDefault();
 		clearTimeout(this.timeout);
-		if (this.props.suggestions.length > 0 && this.props.inputFocused) {
-			const i = this.props.focusedSuggestion || 0;
-			const value = this.props.suggestions[i];
-			this.props.setLocation(value);
-		} else {
+		if (!this.props.inputFocused ||
+			!this.props.focusedSuggestion || 
+			this.props.focusedSuggestion === this.props.value) {
 			this.input.focus();
+		} else {
+			this.onFormSubmit();
 		}
 	};
 
@@ -128,7 +139,8 @@ class SearchBar extends React.Component {
 			<form
 				role='search' 
 				className={classList.join(' ')} 
-				autoComplete="off" 
+				autoComplete="off"
+				onSubmit={this.onFormSubmit}
 			>
 				<div className={styles.suggestionsContainer}>
 					<div className={styles.inputContainer}>
@@ -146,7 +158,7 @@ class SearchBar extends React.Component {
 					</div>
 
 					{/* Suggestions */}
-					{this.props.inputFocused && 
+					{this.props.inputFocused &&
 						this.props.value.length >= 3 &&
 						this.props.suggestions.map((suggestion, i) => {
 							const suggestionClassList = [styles.suggestion];
