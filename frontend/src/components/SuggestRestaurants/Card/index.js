@@ -168,6 +168,7 @@ class Card extends React.Component {
 										restaurantSelected={this.props.restaurantSelected}
 										changePrice={this.props.changePrice}
 										key={0}
+										isMobile={this.props.isMobile}
 									/>
 								}
 

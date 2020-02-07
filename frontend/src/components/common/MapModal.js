@@ -33,34 +33,28 @@ class MapModal extends React.Component {
 
 	handleClick = () => {
 		this.props.onClose();
-	}
+	};
 
 	render() {
-		const classList = [styles.modal];
-		let iframeVisibility = 'visible';
-		if (!this.props.render) {
-			classList.push(styles.hidden);
-			iframeVisibility = 'hidden';
-		}
-
-		const iframeStyle = {visibility: iframeVisibility};
-
 		return (
-			<div className={classList.join(' ')} onClick={this.handleClick}>
-				<i 
-					className="fas fa-times fa-2x"
-					onClick={this.props.onClose}
-				></i>
-				<div className={styles.loadingRingContainer}>
-					<LoadingRing />
+			<React.Fragment>
+			{this.props.render &&
+				<div className={styles.modal} onClick={this.handleClick}>
+					<i 
+						className="fas fa-times fa-2x"
+						onClick={this.props.onClose}
+					></i>
+					<div className={styles.loadingRingContainer}>
+						<LoadingRing />
+					</div>
+					<iframe 
+						src={this.getSrc()} 
+						title="Google Map centered on current restaurant"
+					>
+					</iframe>
 				</div>
-				<iframe 
-					src={this.getSrc()} 
-					title="Google Map centered on current restaurant"
-					style={iframeStyle}
-				>
-				</iframe>
-			</div>
+			}
+			</React.Fragment>
 		);
 	}
 }

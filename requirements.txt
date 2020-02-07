@@ -1,11 +1,12 @@
+asgiref==3.2.3
 certifi==2019.11.28
 chardet==3.0.4
-Django==2.1.5
+Django==3.0.3
 django-shortcuts==1.6
 idna==2.8
 mysqlclient==1.4.2.post1
 pytz==2018.9
 requests==2.22.0
+sqlparse==0.3.0
 urllib3==1.25.8
-waitress==1.4.1
 whitenoise==5.0.1

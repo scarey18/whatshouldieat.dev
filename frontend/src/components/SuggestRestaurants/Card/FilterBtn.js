@@ -94,6 +94,7 @@ class FilterBtn extends React.Component {
 
 		const borderStyle = {
 			width: (this.state.hover || this.state.expanded ? "100%" : 0),
+			left: (this.state.hover || this.state.expanded ? 0 : "50%"),
 		}
 
 		const expandedStyle = {
