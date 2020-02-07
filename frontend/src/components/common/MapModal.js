@@ -37,9 +37,13 @@ class MapModal extends React.Component {
 
 	render() {
 		const classList = [styles.modal];
+		let iframeVisibility = 'visible';
 		if (!this.props.render) {
 			classList.push(styles.hidden);
+			iframeVisibility = 'hidden';
 		}
+
+		const iframeStyle = {visibility: iframeVisibility};
 
 		return (
 			<div className={classList.join(' ')} onClick={this.handleClick}>
@@ -53,6 +57,7 @@ class MapModal extends React.Component {
 				<iframe 
 					src={this.getSrc()} 
 					title="Google Map centered on current restaurant"
+					style={iframeStyle}
 				>
 				</iframe>
 			</div>
