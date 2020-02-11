@@ -7,5 +7,5 @@ mysqlclient==1.4.2.post1
 pytz==2018.9
 requests==2.22.0
 urllib3==1.25.8
-waitress==1.4.1
+waitress==1.4.3
 whitenoise==5.0.1
