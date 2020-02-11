@@ -1,6 +1,6 @@
 certifi==2019.11.28
 chardet==3.0.4
-Django==2.1.5
+Django==2.2.10
 django-shortcuts==1.6
 idna==2.8
 mysqlclient==1.4.2.post1
