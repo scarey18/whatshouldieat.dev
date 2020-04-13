@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from 'styles/SearchBar.module.scss';
+import fetch from 'unfetch';
 
 
 // Trims 'USA' from fetched location autocomplete suggestions to avoid duplicates

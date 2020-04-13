@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "braces": "^2.3.1",
-    "node-sass": "^4.11.0",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
+    "braces": "^2.3.2",
+    "node-sass": "^4.13.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-scripts": "2.1.5",
-    "react-transition-group": "^2.5.3"
+    "react-transition-group": "^2.9.0",
+    "unfetch": "^4.1.0"
   },
   "scripts": {
     "start": "NODE_PATH=src/ react-scripts start",

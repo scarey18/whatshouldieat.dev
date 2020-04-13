@@ -3,6 +3,8 @@ import Card from './Card';
 import styles from 'styles/SuggestRestaurants.module.scss';
 import * as utils from './utils';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import fetch from 'unfetch';
+
 import MapModal from 'components/common/MapModal';
 import Sidebar from 'components/common/Sidebar';
 import LoadingRing from 'components/common/LoadingRing';

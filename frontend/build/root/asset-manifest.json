@@ -1,15 +1,15 @@
 {
-  "main.css": "/static/css/main.1ffbc3e6.chunk.css",
-  "main.js": "/static/js/main.39e9c810.chunk.js",
-  "main.js.map": "/static/js/main.39e9c810.chunk.js.map",
+  "main.css": "/static/css/main.ad2c13e6.chunk.css",
+  "main.js": "/static/js/main.9ff5b8ab.chunk.js",
+  "main.js.map": "/static/js/main.9ff5b8ab.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.fdfcfda2.js",
   "runtime~main.js.map": "/static/js/runtime~main.fdfcfda2.js.map",
-  "static/js/2.19d5d187.chunk.js": "/static/js/2.19d5d187.chunk.js",
-  "static/js/2.19d5d187.chunk.js.map": "/static/js/2.19d5d187.chunk.js.map",
+  "static/js/2.ed98d310.chunk.js": "/static/js/2.ed98d310.chunk.js",
+  "static/js/2.ed98d310.chunk.js.map": "/static/js/2.ed98d310.chunk.js.map",
   "index.html": "/index.html",
-  "precache-manifest.de84cc6738f63a9be835051145cd8c78.js": "/precache-manifest.de84cc6738f63a9be835051145cd8c78.js",
+  "precache-manifest.0e14f682e7b6ebdf404b04caeef61d6a.js": "/precache-manifest.0e14f682e7b6ebdf404b04caeef61d6a.js",
   "service-worker.js": "/service-worker.js",
-  "static/css/main.1ffbc3e6.chunk.css.map": "/static/css/main.1ffbc3e6.chunk.css.map",
+  "static/css/main.ad2c13e6.chunk.css.map": "/static/css/main.ad2c13e6.chunk.css.map",
   "static/media/sad-plate.png": "/static/media/sad-plate.99770d9a.png",
   "static/media/wsie_logo.png": "/static/media/wsie_logo.6886045f.png"
 }

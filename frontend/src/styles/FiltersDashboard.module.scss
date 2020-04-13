@@ -47,7 +47,6 @@
 	.content {
 		display: flex;
 		flex-direction: column;
-		flex-grow: 1;
 		margin: 0 10px 10px 10px;
 		overflow-y: auto;
 
@@ -66,9 +65,11 @@
 		.addItemsHeader {
 			display: flex;
 			align-items: flex-end;
+			margin-top: 2rem;
 			border-bottom: 1px solid $white;
 
 			h2 {
+				margin-top: 0;
 				border: none;
 				width: auto;
 			}

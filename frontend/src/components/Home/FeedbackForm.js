@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from 'styles/FeedbackForm.module.scss';
 import { getCookie } from 'commonUtils/miscFunctions';
+import fetch from 'unfetch';
 
 
 export default function FeedbackForm(props) {
