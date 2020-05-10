@@ -1,12 +1,11 @@
 import React from 'react';
-import styles from 'styles/FlexibleImg.module.scss';
 
 
 class FlexibleImg extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			className: styles.hidden,
+			style: {width: 1, height: 1},
 		}
 	}
 
@@ -18,7 +17,7 @@ class FlexibleImg extends React.Component {
 			const triggerBool = this.props.restyleTriggers[i][0];
 			if (triggerBool !== prevProps.restyleTriggers[i][0]) {
 				const timer = this.props.restyleTriggers[i][1];
-				this.setState({className: styles.hidden});
+				this.setState({style: {width: 1, height: 1}});
 				this.restyleTimeout = setTimeout(this.styleImg, timer);
 				break;
 			}
@@ -48,21 +47,22 @@ class FlexibleImg extends React.Component {
 
 	styleImg = () => {
 		const parentRect = this.parent.getBoundingClientRect();
-		const imgRect = this.img.getBoundingClientRect();
-		const widthRatio = parentRect.width / imgRect.width;
-		const heightRatio = parentRect.height / imgRect.height;
-		const className = widthRatio < heightRatio ? styles.landscape : styles.portrait;
+		const imgWidth = this.img.naturalWidth;
+		const imgHeight = this.img.naturalHeight;
+		const aspectRatio = imgWidth / imgHeight;
+		const widthRatio = parentRect.width / imgWidth;
+		const heightRatio = parentRect.height / imgHeight;
 
-		if (this.props.fitParentToImg && className === styles.landscape) {
-			this.img.parentElement.style.height = 'auto';
-			this.img.parentElement.style.width = null;
-		} else if (this.props.fitParentToImg) {
-			this.img.parentElement.style.width = 'auto';
-			this.img.parentElement.style.height = null;
-		}
-
-		if (className !== this.state.className) {
-			this.setState({className});
+		if (widthRatio <= heightRatio) {
+			this.setState({style: {
+				width: parentRect.width,
+				height: parentRect.width / aspectRatio,
+			}})
+		} else {
+			this.setState({style: {
+				height: parentRect.height,
+				width: parentRect.height * aspectRatio,
+			}})
 		}
 	};
 
@@ -71,7 +71,7 @@ class FlexibleImg extends React.Component {
 			<img 
 				src={this.props.src}
 				alt={this.props.alt}
-				className={this.state.className}
+				style={this.state.style}
 				onLoad={this.onLoad}
 				ref={ref => this.img = ref}
 			></img>
