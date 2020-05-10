@@ -32,17 +32,18 @@ export function getCookie(name) {
 
 
 export function scrollToForm(isMobile) {
-	if (isMobile) {
-		document.getElementById('underHeader').scrollIntoView();
-	} else {
-		const fontSize = getComputedStyle(document.documentElement).fontSize;
-		const headerHeight = 5 * parseFloat(fontSize);
-		if (window.scrollY < headerHeight) {
-			window.scroll({
-				top: headerHeight,
-				left: 0,
-				behavior: 'smooth',
-			});
-		}
-	}
+	document.getElementById('underHeader').scrollIntoView();
+	// if (isMobile) {
+	// 	document.getElementById('underHeader').scrollIntoView();
+	// } else {
+	// 	const fontSize = getComputedStyle(document.documentElement).fontSize;
+	// 	const headerHeight = 5 * parseFloat(fontSize);
+	// 	if (window.scrollY < headerHeight) {
+	// 		window.scroll({
+	// 			top: headerHeight,
+	// 			left: 0,
+	// 			behavior: 'smooth',
+	// 		});
+	// 	}
+	// }
 }

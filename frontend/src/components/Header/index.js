@@ -27,7 +27,7 @@ class Header extends React.Component {
 	}
 
 	componentWillUnmount() {
-		document.removeEventListener('scroll', this.toggleExpand);
+		// document.removeEventListener('scroll', this.toggleExpand);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -38,7 +38,7 @@ class Header extends React.Component {
 
 	handleLocationChange = () => {
 		if (this.props.location === null) {
-			document.addEventListener('scroll', this.toggleExpand);
+			// document.addEventListener('scroll', this.toggleExpand);
 			this.setState(this.initialState);
 		} else {
 			document.removeEventListener('scroll', this.toggleExpand);
@@ -53,11 +53,11 @@ class Header extends React.Component {
 
 	toggleExpand = () => {
 		if (this.props.isMobile) return;
-		if (window.scrollY === 0 && !this.state.expanded) {
-			this.setState({expanded: true});
-		} else if (window.scrollY > 0 && this.state.expanded) {
-			this.setState({expanded: false});
-		}
+		// if (window.scrollY === 0 && !this.state.expanded) {
+		// 	this.setState({expanded: true});
+		// } else if (window.scrollY > 0 && this.state.expanded) {
+		// 	this.setState({expanded: false});
+		// }
 	};
 
 	render() {

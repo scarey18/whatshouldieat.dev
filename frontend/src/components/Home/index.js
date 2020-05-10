@@ -8,14 +8,14 @@ import { scrollToForm } from 'commonUtils/miscFunctions';
 function Home(props) {
 	return (
 		<div className={styles.home}>
-			<div className={styles.underHeader} id="underHeader">
-				<FeedbackForm scrollToForm={scrollToForm}/>
-			</div>
-
 			<div className={styles.description}>
 				<p>
 					Are you hungry? Hangry, even? So famished that you can’t even begin to think of what your options could be? Let us be your guide. Enter your location (the more specific, the better) and swipe away until you find something that will satisfy you.
 				</p>
+			</div>
+
+			<div className={styles.underHeader} id="underHeader">
+				<FeedbackForm scrollToForm={scrollToForm}/>
 			</div>
 
 			<footer>

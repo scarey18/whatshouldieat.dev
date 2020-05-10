@@ -11,6 +11,7 @@
 
 	.description {
 		@extend %flex-center;
+		align-items: flex-start;
 		width: 100%;
 		min-height: calc(100vh - #{$expanded-header-height});
 

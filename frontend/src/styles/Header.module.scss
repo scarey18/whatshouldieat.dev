@@ -17,13 +17,10 @@
 
 .expanded {
 	height: $expanded-header-height;
+	position: relative;
 
 	@media screen and (max-height: 875px) {
 		height: 100vh;
-	}
-
-	@media screen and (max-width: 650px) {
-		position: relative;
 	}
 }
 

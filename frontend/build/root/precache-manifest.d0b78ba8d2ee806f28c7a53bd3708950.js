@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "9ff5b8abb284bd0b8790",
-    "url": "/static/css/main.ad2c13e6.chunk.css"
+    "revision": "85df0a23ca6c32a4d958",
+    "url": "/static/css/main.d6307bf5.chunk.css"
   },
   {
-    "revision": "9ff5b8abb284bd0b8790",
-    "url": "/static/js/main.9ff5b8ab.chunk.js"
+    "revision": "85df0a23ca6c32a4d958",
+    "url": "/static/js/main.85df0a23.chunk.js"
   },
   {
     "revision": "fdfcfda2d9b1bf31db52",
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/static/media/wsie_logo.6886045f.png"
   },
   {
-    "revision": "a238ca14f81b02f31c15ff9193903010",
+    "revision": "661c514887eca8de6340338fee760d51",
     "url": "/index.html"
   }
 ];
